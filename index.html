@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Jayden Li's Home Page</title>
+        <style>
+            body{margin:40px
+                auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
+                10px}h1,h2,h3{line-height:1.2}
+        </style>
+    </head>
+    <body>
+        <h1>Jayden Li's Home Page</h1>
+        <p>
+            Hello, dear friend, and welcome to my home page.
+        </p>
+        <p>
+            I am a student at the Peddie School and member of the Class of 2026.
+            You may find me as a programming student and pit lead of <a href="https://www.thebluealliance.com/team/5895">FRC Team 5895</a>, <a href="https://www.statbotics.io/team/5895">Peddie Robotics</a>.
+        </p>
+        <p>
+            I am also the Secretary and (hopefully) Co-President of the <a href="https://peddiemathclub.github.io/">Math Club</a> and leader of the Computer Science Club.
+        </p>
+
+        <h2>Contacts</h2>
+        <ul>
+            <li>Github: <a href="https://github.com/glolichen">@glolichen</a></li>
+            <li>Email: jlche18659 at gmail dot com</li>
+        </ul>
+
+        <h2>Projects</h2>
+
+        <h3><a href="https://github.com/glolichen/lios">LiOS</a></h3>
+        <p>
+            A 64-bit operating system, currently targeting x86. Everything was designed and programmed from scratch in C and some Assembly, except the bootloader (used GRUB) and a library to read EFI structures.
+        </p>
+        <p>
+            I'm looking to be able to run a shell, text editor and file reader in user mode. This is not trivial and involves implementing a C library, system calls, processes, context switching, etc etc. Multitasking and concurrency are more advanced and I hope I can get to that eventually.
+        </p>
+
+        <h3><a href="https://github.com/glolichen/potato-chess-uci">Potato Chess</a></h3>
+        <p>
+            An absolutely ancient project from middle school. This is a simple UCI-compatible chess engine written in C++, and played on Lichess as a bot for a few weeks, where it has an Elo rating between 1800 and 2000.
+        </p>
+        <p>
+            There is also an older browser version, available <a href="https://glolichen.github.io/potato-chess-browser/">here</a>. It is slightly weaker than the UCI version because it runs client-side through web assembly (C++ code compiled to WASM through Emscripten), and therefore cannot utilize multithreading. 
+        </p>
+
+        <h3>Other</h3>
+        <p>
+            Other projects that are not as significant or technically challenging.
+        </p>
+        <ul>
+            <li><a href="https://glolichen.github.io/wordhunt-solver/">GamePigeon Wordhunt solver</a> (<a href="https://github.com/glolichen/wordhunt-solver">code</a>): using binary indexed trees to solve the Wordhunt game to own my friends. As before, written in C++ but compiled to web assembly with Emscripten.</li>
+            <li><a href="https://github.com/glolichen/jasm">jasm</a>: A short-lived attempt at creating an x86 assembler. I soon ran out of interest and went back to working on LiOS. It does have a lexer and somewhat working parser though.</li>
+            <li><a href="https://glolichen.github.io/mandelbrot/">Mandelbrot set viewer</a>: (<a href="https://github.com/glolichen/mandelbrot">code</a>): It was really annoying to get the Javascript interface to work, though I am happy with the speed of generation made possible by using <a href="https://en.wikipedia.org/wiki/Single_instruction,_multiple_data">SIMD</a> instructions in C.</li>
+            <li><a href="https://github.com/glolichen/bitwise-connect4">Connect 4 game</a>: <i>Extremely</i> simple, but very happy with how well using bitwise operators and bitboards (chess engine trick) instead of the usual for loops turned out.</li>
+            <li><a href="https://github.com/glolichen/peddie-math">Peddie math</a>: There's something wrong with my head that caused me to write my math homework in LaTeX for 2.5 years. Enjoy the result of my insanity.</li>
+        </ul>
+
+        <h2>Personal Peculiarities</h2>
+        <p>
+            I use Arch (btw) Linux with the Hyprland tiling window manager because... reasons? I am also addicted to using vim keybinds to edit code, which I appear to have a reputation for. You can find my computer configuration <a href="https://github.com/glolichen/dotfiles">here</a>.
+        </p>
+
+        <h2>Website CSS</h2>
+
+        <p>
+            The CSS for this website is copied from the <a href="http://bettermotherfuckingwebsite.com/">Better Mother....ing Website.</a>. Thank you to whoever made that, you're the goat.
+        </p>
+
+        <p>
+            By the way, Alvin, I'm not adding dark mode.
+        </p>
+    </body>
+</html>
