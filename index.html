@@ -15,8 +15,21 @@
 				max-width: 650px;
 				line-height: 1.6;
 				font-size: 18px;
-				color: #444;
+				color: #ffffff;
+                background-color: #121212;
 				padding: 0 10px
+            }
+            a {
+                color: #88e2fd;
+            }
+            a:visited {
+                color: #e4a0f7;
+            }
+            a:hover {
+                color: #dddddd;
+            }
+            a:active {
+                color: #ff0000;
             }
             h1, h2, h3 {
                 line-height: 1.2
@@ -26,41 +39,25 @@
     <body>
         <h1>Jayden Li's Home Page</h1>
         <p>
-            Welcome to my home page.
+            Welcome to my home page!
         </p>
-        <p>
-            I am a student at the Peddie School and member of the Class of 2026.
-            You may find me as a programming student and pit lead of <a href="https://www.thebluealliance.com/team/5895">FRC Team 5895</a>, <a href="https://www.statbotics.io/team/5895">Peddie Robotics</a>.
-        </p>
-        <p>
-            I am also the Secretary and (hopefully) Co-President of the <a href="https://peddiemathclub.github.io/">Math Club</a> and leader of the Computer Science Club.
-        </p>
-
-        <h2>Contacts</h2>
         <ul>
-            <li>Github: <a href="https://github.com/glolichen">@glolichen</a></li>
-            <li>Email: jlche18659 at gmail dot com</li>
+            <li>
+                Harvard College '30 (Computer Science)
+                <ul>
+                    <li>Not yet determined</li>
+                </ul>
+            </li>
+            <li>
+                Peddie School '26
+                <ul>
+                    <li>Computer Science Club leader</li>
+                    <li>PeddieHacks web developer</li>
+                    <li>Math Club Secretary</li>
+                    <li>FIRST Robotics</li>
+                </ul>
+            </li>
         </ul>
-
-        <h2>Robotics</h2>
-        <p>
-            I am the programming lead and operator of FRC team <a href="https://www.thebluealliance.com/team/5895">5895</a> (Peddie Robotics), and part of the 2024 (Crescendo), 2025 (Reefscape) and 2026 (Rebuilt) seasons.
-            <ul>
-                <li><b>2024 Mid-Atlantic District Championship Winner</b></li>
-                <li>2024 Hopper Division Finalist</li>
-                <li>2025 Mid-Atlantic District Championship Finalist</li>
-                <li><b>2025 Milstein Division Winner</b></li>
-                <li>2026 TBD!</li>
-            </ul>
-            Cool features I developed:
-            <ul>
-                <li>2024: autonomous routines with convolutional neural networks-powered game piece detection</li>
-                <li>2025: automatic reef/human player station align and scoring sequence with linear algebra and trigonometry</li>
-                <li>2026: (decently) high accuracy shooting on the move with physics and linear algebra, double turrets, state machine</li>
-            </ul>
-        </p>
-        
-        Videos: <a href="https://www.youtube.com/watch?v=ZwdZN7-8sKA">2025 Behind the Bumpers</a>, 2026 Behind the Bumpers (to be filmed)
 
         <h2>Projects</h2>
         <h3><a href="https://github.com/glolichen/jlang">JLang</a></h3>
@@ -84,6 +81,26 @@
             There is also an older browser version, available <a href="https://glolichen.github.io/potato-chess-browser/">here</a>. It is slightly weaker than the UCI version because it runs client-side through web assembly (C++ code compiled to WASM through Emscripten), and therefore cannot utilize multithreading. 
         </p>
 
+        <h2>Robotics</h2>
+        <p>
+            I am the programming lead and operator of FRC team <a href="https://www.thebluealliance.com/team/5895">5895</a> (Peddie Robotics), and part of the 2024 (Crescendo), 2025 (Reefscape) and 2026 (Rebuilt) seasons.
+            <ul>
+                <li><b>2024 Mid-Atlantic District Championship Winner</b></li>
+                <li>2024 Hopper Division Finalist</li>
+                <li>2025 Mid-Atlantic District Championship Finalist</li>
+                <li><b>2025 Milstein Division Winner</b></li>
+                <li>2026 TBD!</li>
+            </ul>
+            Cool features I developed:
+            <ul>
+                <li>2024: autonomous routines with convolutional neural networks-powered game piece detection</li>
+                <li>2025: automatic reef/human player station align and scoring sequence with linear algebra and trigonometry</li>
+                <li>2026: (decently) high accuracy shooting on the move with physics and linear algebra, double turrets, state machine</li>
+            </ul>
+        </p>
+        
+        Featured videos: <a href="https://www.youtube.com/watch?v=ZwdZN7-8sKA">2025 Behind the Bumpers</a>, 2026 Behind the Bumpers (TBD)
+
         <h3>Other</h3>
         <p>
             Other projects that are not as significant or technically challenging.
@@ -93,8 +110,16 @@
             <li><a href="https://github.com/glolichen/jasm">jasm</a>: A short-lived attempt at creating an x86 assembler. I soon ran out of interest and went back to working on LiOS. It does have a lexer and somewhat working parser though.</li>
             <li><a href="https://glolichen.github.io/mandelbrot/">Mandelbrot set viewer</a>: (<a href="https://github.com/glolichen/mandelbrot">code</a>): It was really annoying to get the Javascript interface to work, though I am happy with the speed of generation made possible by using <a href="https://en.wikipedia.org/wiki/Single_instruction,_multiple_data">SIMD</a> instructions in C.</li>
             <li><a href="https://github.com/glolichen/bitwise-connect4">Connect 4 game</a>: <i>Extremely</i> simple, but very happy with how well using bitwise operators and bitboards (chess engine trick) instead of the usual for loops turned out.</li>
-            <li><a href="https://github.com/glolichen/peddie-math">Peddie math</a>: There's something wrong with my head that caused me to write my math homework in LaTeX for 2.5 years. Enjoy the result of my insanity.</li>
+            <li><a href="https://github.com/glolichen/peddie-math">Peddie math</a>: Math homework in LaTeX. Enjoy the result of my insanity.</li>
+            <li><a href="https://github.com/glolichen/peddie-physics">Peddie physics</a>: AP Physics C <a href="https://raw.githubusercontent.com/glolichen/peddie-physics/main/mechanics.pdf">Mechanics</a>, <a href="https://raw.githubusercontent.com/glolichen/peddie-physics/main/em.pdf">E&M</a> notes in LaTeX.</li>
         </ul>
+
+        <h2>Contacts</h2>
+        <ul>
+            <li>Github: <a href="https://github.com/glolichen">@glolichen</a></li>
+            <li>Email: jlche18659 at gmail dot com</li>
+        </ul>
+
 
         <h2>Other</h2>
         <ul>
