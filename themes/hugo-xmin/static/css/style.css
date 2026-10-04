@@ -42,10 +42,13 @@ a:hover {
 .menu {
   padding: 0;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 0;
 }
 
 .menu li {
-	display: inline-block;
+	display: block;
 	margin-left: 2pt;
 	margin-right: 2pt;
 }
