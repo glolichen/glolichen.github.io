@@ -46,6 +46,8 @@ a:hover {
 
 .menu li {
 	display: inline-block;
+	margin-left: 2pt;
+	margin-right: 2pt;
 }
 
 .menu a {
