@@ -1,0 +1,14 @@
+baseURL: "https://glolichen.github.io/"
+languageCode: "en-us"
+title: "Jayden Li's Website"
+
+build:
+  writeStats: true
+
+params:
+  author: "Jayden Li"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true

@@ -1,0 +1,18 @@
+baseURL = 'https://example.org/'
+locale = 'en-us'
+title = 'Jayden Li'
+theme = 'hugo-xmin'
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+  [[menu.main]]
+    identifier = "blog"
+    name = "Rambling"
+    url = "/blog/"
+  [[menu.main]]
+    identifier = "projects"
+    name = "Projects"
+    url = "/projects/"
