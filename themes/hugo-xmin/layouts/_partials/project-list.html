@@ -1,0 +1,17 @@
+<div class="project-list">
+  {{ range . }}
+  <article class="project-list-item">
+    <h2 class="project-list-title">
+      <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+    </h2>
+
+    {{ with .Params.period }}
+      <div class="project-list-meta">{{ . }}</div>
+    {{ end }}
+
+    {{ with .Description }}
+      <p class="project-list-description">{{ . }}</p>
+    {{ end }}
+  </article>
+  {{ end }}
+</div>
