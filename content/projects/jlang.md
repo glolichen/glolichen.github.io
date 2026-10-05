@@ -13,71 +13,71 @@ I tried to avoid using the stack (and therefore the LLVM `mem2reg` pass), so the
 IO is possible but highly impractical. For example, [here](https://github.com/glolichen/jlang/blob/main/test/fibonacci.jlang) is a Fibonacci program:
 ```
 i32 main() {
-	i32 n;
-	i32 input;
-	i32 inputdigits;
-	i32 i;
-	i32 answer;
-	i32 prev;
-	i32 prevprev;
-	i32 current;
-	i32 next;
-	i32 answerdigits;
-	i32 maxpower;
-	i32 power;
-	i32 digit;
+    i32 n;
+    i32 input;
+    i32 inputdigits;
+    i32 i;
+    i32 answer;
+    i32 prev;
+    i32 prevprev;
+    i32 current;
+    i32 next;
+    i32 answerdigits;
+    i32 maxpower;
+    i32 power;
+    i32 digit;
 
-	n = toi32(0);
-	input = toi32(48);
-	inputdigits = -toi32(1);
+    n = toi32(0);
+    input = toi32(48);
+    inputdigits = -toi32(1);
 
-	for (i = toi32(1000000000); input != toi32(10); i = i / toi32(10)) {
-		n = n + i * (input - toi32(48));
-		inputdigits = inputdigits + toi32(1);
-		input = toi32(getchar());
-	}
+    for (i = toi32(1000000000); input != toi32(10); i = i / toi32(10)) {
+        n = n + i * (input - toi32(48));
+        inputdigits = inputdigits + toi32(1);
+        input = toi32(getchar());
+    }
 
-	for (i = toi32(0); i < toi32(10) - inputdigits - toi32(1); i = i + toi32(1)) {
-		n = n / toi32(10);
-	}
+    for (i = toi32(0); i < toi32(10) - inputdigits - toi32(1); i = i + toi32(1)) {
+        n = n / toi32(10);
+    }
 
-	answer = toi32(1);
-	if (n > toi32(2)) {
-		prev = toi32(1);
-		prevprev = toi32(1);
-		current = toi32(2);
-		for (i = toi32(0); i < n - toi32(3); i = i + toi32(1)) {
-			next = prev + current;
-			prevprev = prev;
-			prev = current;
-			current = next;
-		}
-		answer = current;
-	}
-	else {
-		if (n <= toi32(0)) {
-			answer = toi32(0);
-		}
-	}
+    answer = toi32(1);
+    if (n > toi32(2)) {
+        prev = toi32(1);
+        prevprev = toi32(1);
+        current = toi32(2);
+        for (i = toi32(0); i < n - toi32(3); i = i + toi32(1)) {
+            next = prev + current;
+            prevprev = prev;
+            prev = current;
+            current = next;
+        }
+        answer = current;
+    }
+    else {
+        if (n <= toi32(0)) {
+            answer = toi32(0);
+        }
+    }
 
-	if (answer == toi32(0)) {
-		putchar(toi32(48));
-	}
-	else {
-		answerdigits = toi32(0);
-		maxpower = toi32(1);
-		for (; maxpower <= answer; maxpower = maxpower * toi32(10)) { }
+    if (answer == toi32(0)) {
+        putchar(toi32(48));
+    }
+    else {
+        answerdigits = toi32(0);
+        maxpower = toi32(1);
+        for (; maxpower <= answer; maxpower = maxpower * toi32(10)) { }
 
-		for (power = maxpower / toi32(10); power >= toi32(1); power = power / toi32(10)) {
-			digit = answer / power;
-			putchar(digit + toi32(48));
-			answer = answer % power;
-		}
-	}
+        for (power = maxpower / toi32(10); power >= toi32(1); power = power / toi32(10)) {
+            digit = answer / power;
+            putchar(digit + toi32(48));
+            answer = answer % power;
+        }
+    }
 
-	putchar(toi32(10));
+    putchar(toi32(10));
 
-	return toi32(0);
+    return toi32(0);
 }
 ```
 
