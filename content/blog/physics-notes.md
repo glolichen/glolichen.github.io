@@ -8,18 +8,19 @@ AP Physics notes typed in LaTeX for fun. *(Might/probably has mistakes and diagr
 
 ## Mechanics
 
-*[download](https://raw.githubusercontent.com/glolichen/peddie-physics/main/mechanics.pdf), [TeX](https://github.com/glolichen/peddie-physics/blob/main/mechanics.tex)*
+*[PDF](/pdfjs/web/viewer.html?file=/peddie-physics/mechanics.pdf), [TeX](https://github.com/glolichen/peddie-physics/blob/main/mechanics.tex)*
 
 {{< embed-pdf "/peddie-physics/mechanics.pdf" >}}
 
 ## E&M
 
-*[download](https://raw.githubusercontent.com/glolichen/peddie-physics/main/em.pdf), [TeX](https://github.com/glolichen/peddie-physics/blob/main/em.tex)*
+*[PDF](/pdfjs/web/viewer.html?file=/peddie-physics/em.pdf), [TeX](https://github.com/glolichen/peddie-physics/blob/main/em.tex)*
 
 {{< embed-pdf "/peddie-physics/em.pdf" >}}
 
 ## Physics 1
 
-*[download](https://raw.githubusercontent.com/glolichen/peddie-physics/main/summer.pdf), [TeX](https://github.com/glolichen/peddie-physics/blob/main/summer.tex)*
+*[PDF](/pdfjs/web/viewer.html?file=/peddie-physics/summer.pdf), [TeX](https://github.com/glolichen/peddie-physics/blob/main/summer.tex)*
 
 {{< embed-pdf "/peddie-physics/summer.pdf" >}}
+

@@ -1,3 +1,6 @@
 [submodule "static/peddie-physics"]
 	path = static/peddie-physics
 	url = https://github.com/glolichen/peddie-physics
+[submodule "static/pdfjs-dist"]
+	path = static/pdfjs-dist
+	url = https://github.com/mozilla/pdfjs-dist
