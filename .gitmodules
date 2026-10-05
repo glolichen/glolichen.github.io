@@ -1,0 +1,3 @@
+[submodule "static/peddie-physics"]
+	path = static/peddie-physics
+	url = https://github.com/glolichen/peddie-physics

@@ -21,11 +21,11 @@
 				<description>&lt;p&gt;I started tinkering with Linux (and the rest of my computer) during the COVID lockdown (like may others, I gather). My first thought was, &amp;ldquo;I want to be cool&amp;rdquo; (I was like 13 at the time) so I tried Arch first. Of course Arch Linux installation isn&amp;rsquo;t the easiest thing (especially for a dumb 7th grader) so of course I bricked my system (probably). Fortunately I had a full backup of my disk and I learned to start with something more manageable first.&lt;/p&gt;</description>
 			</item>
 			<item>
-				<title>Some Other Blog Post</title>
-				<link>http://localhost:1313/blog/second-post/</link>
-				<pubDate>Wed, 23 Jul 2025 00:00:00 +0000</pubDate>
-				<guid>http://localhost:1313/blog/second-post/</guid>
-				<description>&lt;p&gt;hi&lt;/p&gt;</description>
+				<title>AP Physics C Notes</title>
+				<link>http://localhost:1313/blog/physics-notes/</link>
+				<pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/blog/physics-notes/</guid>
+				<description>&lt;p&gt;AP Physics notes typed in LaTeX for fun. &lt;em&gt;(Might/probably has mistakes and diagrams omitted because I&amp;rsquo;m lazy)&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;mechanics&#34;&gt;Mechanics&lt;/h2&gt;&#xA;&lt;p&gt;&lt;em&gt;&lt;a href=&#34;https://raw.githubusercontent.com/glolichen/peddie-physics/main/mechanics.pdf&#34;&gt;download&lt;/a&gt;, &lt;a href=&#34;https://github.com/glolichen/peddie-physics/blob/main/mechanics.tex&#34;&gt;TeX&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;embed&#xA;&#x9;src=&#34;http://localhost:1313/peddie-physics/mechanics.pdf&#34;&#xA;&#x9;type=&#34;application/pdf&#34;&#xA;&#x9;width=&#34;100%&#34;&#xA;&#x9;height=&#34;800px&#34;&#xA;&#x9;allowfullscreen&#xA;&gt;&#xA;&#xA;&lt;h2 id=&#34;em&#34;&gt;E&amp;amp;M&lt;/h2&gt;&#xA;&lt;p&gt;&lt;em&gt;&lt;a href=&#34;https://raw.githubusercontent.com/glolichen/peddie-physics/main/em.pdf&#34;&gt;download&lt;/a&gt;, &lt;a href=&#34;https://github.com/glolichen/peddie-physics/blob/main/em.tex&#34;&gt;TeX&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;embed&#xA;&#x9;src=&#34;http://localhost:1313/peddie-physics/em.pdf&#34;&#xA;&#x9;type=&#34;application/pdf&#34;&#xA;&#x9;width=&#34;100%&#34;&#xA;&#x9;height=&#34;800px&#34;&#xA;&#x9;allowfullscreen&#xA;&gt;&#xA;&#xA;&lt;h2 id=&#34;physics-1&#34;&gt;Physics 1&lt;/h2&gt;&#xA;&lt;p&gt;&lt;em&gt;&lt;a href=&#34;https://raw.githubusercontent.com/glolichen/peddie-physics/main/summer.pdf&#34;&gt;download&lt;/a&gt;, &lt;a href=&#34;https://github.com/glolichen/peddie-physics/blob/main/summer.tex&#34;&gt;TeX&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;embed&#xA;&#x9;src=&#34;http://localhost:1313/peddie-physics/summer.pdf&#34;&#xA;&#x9;type=&#34;application/pdf&#34;&#xA;&#x9;width=&#34;100%&#34;&#xA;&#x9;height=&#34;800px&#34;&#xA;&#x9;allowfullscreen&#xA;&gt;</description>
 			</item>
 			<item>
 				<title>LiOS Operating System</title>

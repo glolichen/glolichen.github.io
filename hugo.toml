@@ -16,3 +16,6 @@ theme = 'hugo-xmin'
     identifier = "projects"
     name = "Projects"
     url = "/projects/"
+
+[markup.goldmark.renderer]
+	unsafe = true

@@ -1,29 +1,33 @@
 <div class="post-list">
-  {{ range . }}
-  <article class="post-list-item">
-    <h2 class="post-list-title">
-      <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
-    </h2>
+	{{ range sort . "Date" "desc" }}
+	<article class="post-list-item">
+		<h2 class="post-list-title">
+			<a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+		</h2>
 
-    {{ if .Date }}
-      <div class="post-list-meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">
-          {{ .Date.Format "Jan 2, 2006" }}
-        </time>
+		{{ if or .Date .Params.period }}
+		<div class="post-list-meta">
+			{{ if .Params.period }}
+			<span class="post-list-period">{{ .Params.period }}</span>
+			{{ else if .Date }}
+			<time datetime="{{ .Date.Format "2006-01-02" }}">
+				{{ .Date.Format "Jan 2, 2006" }}
+			</time>
+			{{ end }}
 
-        {{ with .Params.tags }}
-          <span class="post-list-tags">
-            {{ range . }}
-              <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/">{{ . }}</a>
-            {{ end }}
-          </span>
-        {{ end }}
-      </div>
-    {{ end }}
+			{{ with .Params.tags }}
+			<span class="post-list-tags">
+				{{ range . }}
+				<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/">{{ . }}</a>
+				{{ end }}
+			</span>
+			{{ end }}
+		</div>
+		{{ end }}
 
-    {{ with .Description }}
-      <p class="post-list-description">{{ . }}</p>
-    {{ end }}
-  </article>
-  {{ end }}
+		{{ with .Description }}
+		<p class="post-list-description">{{ . }}</p>
+		{{ end }}
+	</article>
+	{{ end }}
 </div>
