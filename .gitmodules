@@ -2,3 +2,7 @@
 	path = static/peddie-physics
 	url = https://github.com/glolichen/peddie-physics
 
+[submodule "public/peddie-physics"]
+	path = public/peddie-physics
+	url = https://github.com/glolichen/peddie-physics
+
