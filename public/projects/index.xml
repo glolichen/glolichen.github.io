@@ -12,6 +12,13 @@
 		
 			<atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
 			<item>
+				<title>JLang Compiler</title>
+				<link>http://localhost:1313/projects/jlang/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/projects/jlang/</guid>
+				<description>&lt;p&gt;Compiler for a simple C-like programming language in C using LLVM codegen backend. It might be more accurate to describe it as an LLVM frontend with ad-hoc lexing and recursive descent parser. Source &lt;a href=&#34;https://github.com/glolichen/jlang&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;JLang supports: for loops, if and if/else, integer types (8/16/32/64 bit signed), strict and static type checking, &lt;code&gt;getchar&lt;/code&gt;/&lt;code&gt;putchar&lt;/code&gt; terminal IO, functions and standard signed integer arithmetic.&lt;/p&gt;&#xA;&lt;p&gt;I tried to avoid using the stack (and therefore the LLVM &lt;code&gt;mem2reg&lt;/code&gt; pass), so the JLang compiler generates the static-single assignment form LLVM-IR directly (and therefore I had to program all control flows manually). This was a serious mistake in hindsight as things like &lt;a href=&#34;https://github.com/glolichen/jlang/blob/main/src/codegen/forloop.c&#34;&gt;loops&lt;/a&gt; have fairly horrific control flows when accounting for all possibilities. Pointers (and therefore arrays) are also quite complicated to deal with in SSA so I didn&amp;rsquo;t implement them. As a result JLang is &lt;em&gt;not&lt;/em&gt; Turing complete because it cannot access unbounded storage (memory). But learning how to generate/debug CFGs (control flow graphs, not context free grammar) manually and SSA form (phi nodes, etc) was cool.&lt;/p&gt;</description>
+			</item>
+			<item>
 				<title>LiOS Operating System</title>
 				<link>http://localhost:1313/projects/lios/</link>
 				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

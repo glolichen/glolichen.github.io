@@ -1,12 +1,5 @@
 /* Base */
 
-@font-face {
-	font-family: "Adwaita Sans";
-	src: url("/fonts/AdwaitaSans-Regular.ttf") format("truetype");
-	font-weight: normal;
-	font-style: normal;
-}
-
 html {
 	background: #1a1a1a;
 	color: #ddd;
@@ -18,8 +11,6 @@ body {
 	margin: auto;
 	padding: 1em;
 	line-height: 1.5;
-	font-family: "Adwaita Sans", sans-serif !important;
-	sans-serif;
 }
 
 h2,h3,h4,h5,h6 {
