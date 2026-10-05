@@ -1,17 +1,29 @@
 <div class="project-list">
-  {{ range . }}
-  <article class="project-list-item">
-    <h2 class="project-list-title">
-      <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
-    </h2>
+	{{ range sort . "Date" "desc" }}
+	<article class="project-list-item">
+		<h2 class="project-list-title">
+			<a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+		</h2>
 
-    {{ with .Params.period }}
-      <div class="project-list-meta">{{ . }}</div>
-    {{ end }}
+		{{ if or .Date .Params.period }}
+		<div class="project-list-meta">
+			{{ if .Params.period }}
+			<span class="project-list-period">{{ .Params.period }}</span>
+			{{ else if .Date }}
+			<time datetime="{{ .Date.Format "2006-01-02" }}">
+				{{ .Date.Format "Jan 2, 2006" }}
+			</time>
+			{{ end }}
 
-    {{ with .Description }}
-      <p class="project-list-description">{{ . }}</p>
-    {{ end }}
-  </article>
-  {{ end }}
+			{{ with .Params.project }}
+			<span class="project-list-project">{{ . }}</span>
+			{{ end }}
+		</div>
+		{{ end }}
+
+		{{ with .Description }}
+		<p class="project-list-description">{{ . }}</p>
+		{{ end }}
+	</article>
+	{{ end }}
 </div>
