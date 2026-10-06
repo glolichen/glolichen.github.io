@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chess Engine | Jayden Li</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      <li><a href="/">Home</a></li><li><a href="/projects/">Projects</a></li><li><a href="/blog/">Rambling</a></li>
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+	<h1><span class="title">Chess Engine</span></h1>
+
+
+	
+	<span>2022-2023</span>
+	
+</div>
+
+<main>
+	<p><em><a href="https://github.com/glolichen/potato-chess-uci">Github (UCI)</a>, <a href="https://github.com/glolichen/potato-chess-browser">Github (Browser)</a></em></p>
+<p>I made a chess engine while bored in middle school during Covid. I originally made a browser version <a href="https://glolichen.github.io/potato-chess-browser/">here</a> (it still works, you can play against it), which runs fully client-side on WebAssembly (compiled from C++ with <a href="https://github.com/emscripten-core/emscripten">Emscripten</a>). I then made a UCI-compliant (a protocol that chess engines follow for other applications) version that doesn&rsquo;t have to run fully in the browser client and supports things like multithreading and ponder (thinking during opponent&rsquo;s turn) and is therefore stronger.</p>
+<p>I set it up as a <a href="https://lichess.org/@/potato-chess-bot">Lichess bot</a> and it has a rating of around 1800-2000 (back when it was up). It ran on my old computer when I wasn&rsquo;t using it. I believe its &ldquo;true&rdquo; rating to be around slightly higher (around 2000) because it almost exclusively faced other bots. It will probably be at least a bit stronger running on a more powerful computer/server.</p>
+<p>Programming this used a lot of cool programming techniques I did not know at the time: bitwise operators and bitmaps (&ldquo;bitboard&rdquo; move generation), multithreading, Minimax-derived search functions, web development for website, etc.</p>
+<ul>
+<li>30-100 million nodes per second move generator (depends on platform and position)
+<ul>
+<li>Keeps track of pinned pieces and the direction they are pinned</li>
+<li>Keeps track of squares attacked by the opponent to prevent king from moving there</li>
+</ul>
+</li>
+<li>Tapered static evaluation (uses game phase to &ldquo;weigh&rdquo; the importance of midgame score to endgame score) with piece tables</li>
+<li>Minimax search with Alpha-Beta pruning</li>
+<li>Transposition table with Zobrist Hashing</li>
+<li>Move ordering is used to guess the strength of moves to speed up AB pruning</li>
+<li>Syzygy endgame tablebase (powered by <a href="https://github.com/lichess-org/lila-tablebase">Lichess</a>)</li>
+</ul>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

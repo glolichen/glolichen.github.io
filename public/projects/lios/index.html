@@ -27,7 +27,37 @@
 </div>
 
 <main>
-	<p>hi</p>
+	<p><em><a href="https://github.com/glolichen/lios">Github</a></em></p>
+<p>A 64-bit operating system for x86. I worked on this on and off since 2024, and here are some features I have implemented so far (copiped from README):</p>
+<ul>
+<li>Bootstrapping to long mode</li>
+<li>Interrupts (only keyboard implemented)</li>
+<li>Printing to VGA graphical mode and serial</li>
+<li>Minimum viable memory manager/allocator
+<ul>
+<li>Uses paging (obviously)</li>
+<li>Linked list based page frame and virtual address allocator</li>
+<li>Kernel heap allocator (using linked lists and bitmap)</li>
+</ul>
+</li>
+<li>Supports UEFI and runs on real hardware (at least it did ~late 2025, I should test again soon)</li>
+<li>Basic file system functionality:
+<ul>
+<li>reading and writing from NVMe SSD volume</li>
+<li>FAT32 file system</li>
+<li>Can read and create new files, but not write data</li>
+<li>No directory support for now</li>
+</ul>
+</li>
+<li>User mode support and system calls (IO only for now)</li>
+<li>Basic ELF/program loading functionality
+<ul>
+<li>C runtime (<code>crt0</code> only)</li>
+</ul>
+</li>
+</ul>
+<p>I am currently (well, whenever I have time in college) working on implementing processes. Right now we <em>can</em> run <em>a</em> user process (from a binary on file system), but that&rsquo;s it&hellip; The next priorities are getting better (not full) C support (I don&rsquo;t want to keep writing programs in assembly, but a full C library is quite hard and unnecessary for now), and using that to write a shell from where we can hopefully start other processes.</p>
+<p>There&rsquo;s some more details in the repository itself but of note is I (try my best to) keep a journal of changes and features <a href="https://github.com/glolichen/lios/blob/main/journal.md">here</a>.</p>
 
 </main>
 

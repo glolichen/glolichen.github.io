@@ -4,7 +4,9 @@ period: "2026"
 date: "2023-01-01"
 ---
 
-Compiler for a simple C-like programming language in C using LLVM codegen backend. It might be more accurate to describe it as an LLVM frontend with ad-hoc lexing and recursive descent parser. Source [here](https://github.com/glolichen/jlang).
+*[Github](https://github.com/glolichen/jlang)*
+
+Compiler for a simple C-like programming language in C using LLVM codegen backend. It might be more accurate to describe it as an LLVM frontend with ad-hoc lexing and recursive descent parser. 
 
 JLang supports: for loops, if and if/else, integer types (8/16/32/64 bit signed), strict and static type checking, `getchar`/`putchar` terminal IO, functions and standard signed integer arithmetic. 
 
