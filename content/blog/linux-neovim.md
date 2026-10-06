@@ -28,3 +28,4 @@ Similar with neovim: VS code is a good editor, and of course there are ideologic
 
 Anyway, I just wanted to write this to express some of my thoughts on why I use these tools/apps/operating systems (*"...GNU/Linux, or as I've recently taken to calling it..."*). To summarize, I find the ideological arguments for Linux somewhat compelling, but there are legitimate, non-ideological reasons to use Linux. You never really know what you'd like to customize on your system until you use something that doesn't force you into a certain design choice. Freedom is a beautiful thing, I think. I feel similar about using a tiling window maanger or using neovim for some/most of my tasks: you might like it more than what you use, or you might not. 
 
+Also my configs/dotfiles are [here](https://github.com/glolichen/dotfiles). Totally not copied from other people.
