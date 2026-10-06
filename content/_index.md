@@ -6,7 +6,7 @@ title: Home
 
 ## About
 
-*Computer Science (+Math?) at Harvard* \
+*Computer Science (+Math?) at Harvard, '30* \
 *jaydenli at college dot harvard dot edu* \
 *[Linkedin](https://www.linkedin.com/in/che-jayden-li/) [Github](https://github.com/glolichen/)*
 
