@@ -22,8 +22,6 @@ theme = 'hugo-xmin'
 
 [markup.goldmark]
 	[markup.goldmark.extensions]
-		[markup.goldmark.extensions.footnote]
-			enable = true
 		[markup.goldmark.extensions.passthrough]
 			enable = true
 		[markup.goldmark.extensions.passthrough.delimiters]
