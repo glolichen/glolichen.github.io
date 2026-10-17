@@ -19,4 +19,4 @@ I like operating systems, embedded systems, compilers, and other systems/low lev
 
 I did FRC in high school (team 5895). I use neovim and Linux. I like history follow current events/politics when not too busy. I might write about these in my [blog](/blog/).
 
-*Made with Hugo with [xmin](https://github.com/yihui/hugo-xmin) and [coder](https://github.com/luizdepra/hugo-coder/) themes.*
+*Made with Hugo with [xmin](https://github.com/yihui/hugo-xmin) theme.*

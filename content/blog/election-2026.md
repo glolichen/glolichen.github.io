@@ -24,7 +24,7 @@ The point is that polls can miss in both directions, and the variance in generic
 
 So, it may be interesting to see a model that *not* take polls into account. We will use some (but not all) of the following data points (links are for most recent elections in 2025/2026):
  - [New Jersey](https://en.wikipedia.org/wiki/2025_New_Jersey_gubernatorial_election) and [Virginia](https://en.wikipedia.org/wiki/2025_Virginia_gubernatorial_election) gubernatorial elections.
- - Washington primaries. WA uses top-two primaries, where all candidates (regardless of party) are listed on the same ballot in the primary, and the top-two finishers advance to the general election in November. We can find partisanship by adding up the votes received by D and R candidates in each race. Washington's state-wide elections are held in presidential years, so we consider [US House primaries](https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections_in_Washington) instead.
+ - Washington primaries. WA uses top-two primaries, where all candidates (regardless of party) are listed on the same ballot in the primary, and the top-two finishers advance to the general election in November. We can find partisanship by adding up the votes received by D and R candidates in each race. Washington's state-wide elections are held in presidential years, so use [US House primaries](https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections_in_Washington) instead.
  - [Special elections](https://en.wikipedia.org/wiki/Category:Special_elections_to_the_119th_United_States_Congress) to the current House of Representatives (triggered when a member resigns or dies).
  - Presidential approval rating. I didn't want to use polls at all, but it improved the model significantly. Approval rating measures the environment instead of polling the results directly, so I think we can use it.
 
@@ -34,20 +34,25 @@ The history of primaries in Washington and California is very interesting. Open 
 
 Washington used the *blanket* primary between 1935 and 2003, where all candidates are ranked on the same ballot and the top performers of *each party* advance to the general election (so there is one candidate from each party in the general election). This is different from the *top-two* primary used in WA and CA now, where the top two performers regardless of party, advance.
 
-California adopted the blanket primary by 1996 (by Proposition 198), and it was used in the 1998 statewide elections. In 2000, the Supreme Court [found the blanket primary unconstitutional](https://en.wikipedia.org/wiki/California_Democratic_Party_v._Jones), and California reverted to party primaries. Nonetheless, Washington used the same blanket primary in 2000 and 2002, before it too was struck down ahead of the 2004 elections. In 2004, Washington used party primaries. Also in 2004, Washington adopted a top-two primary by Initiative 872, but it was struck down as unconstitutional by a US District Court. In 2006, Washington again used party primaries. In 2008, though, the Supreme Court [upheld the constitutionality of the top-two primary](https://en.wikipedia.org/wiki/Washington_State_Grange_v._Washington_State_Republican_Party) in Washington, and 2008 was the first election conducted with the top-two system. Washington has used the top-two primary for all elections since then.
+California adopted the blanket primary by 1996 (by Proposition 198), and it was used in the 1998 statewide elections. In 2000, the Supreme Court [found the blanket primary unconstitutional](https://en.wikipedia.org/wiki/California_Democratic_Party_v._Jones), and California reverted to party primaries. Nonetheless, Washington used the same blanket primary in 2000 and 2002, before it too was struck down ahead of the 2004 elections. In 2004, Washington used party primaries. Also in 2004, Washington adopted the top-two primary by Initiative 872, but it was struck down as unconstitutional by a US District Court. In 2006, Washington again used party primaries. In 2008, though, the Supreme Court [upheld the constitutionality of the top-two primary](https://en.wikipedia.org/wiki/Washington_State_Grange_v._Washington_State_Republican_Party) in Washington, and 2008 was the first election conducted with the top-two system. Washington has used the top-two primary for all elections since then.
 
-In 2010, California adopted the top-two primary with Proposition 14. It was used starting with the 2012 elections and has been used since then.
+In 2010, California adopted the top-two primary with Proposition 14. It was used in 2012 elections and has been used since then.
 </details>
 
 I will not be using:
  - California primaries. California only used a top-two or blanket primary system in 1998 and since 2012, so there is not enough data.
  - [Primary elections](https://en.wikipedia.org/wiki/2026_United_States_electoral_calendar) in other states by considering *primary composition*: voters in D primary minus voters in R primary. Unlike top-two primaries, party primaries with D/R candidates on separate ballots only sample those leaning/supporting a certain party. (Some states have open primaries where all voters can vote and there is no "voter registration," some have semi-closed or closed primaries where primary voting eligibility is limited by registration.) Additionally, primary composition is skewed by the competitiveness of the primary: if there's only one candidate who is a heavy favorite, of course turnout will be lower. Primary composition is good at measuring *enthusiasm* in a certain party's base, though, and may be predictive of the November electorate's party affiliation.
+ - NJ and VA legislative elections. Too much noise
 
 Some forecasters already include these metrics. [RaceToTheWH](https://www.racetothewh.com/house/methodology) uses CA/WA primaries, congressional special elections and NJ/VA gubernatorial elections, for example.
 
 Our model is quite simple and will have a number of limitations. We discuss them at the end. At the end, I'll also include a simple and dumb prediction for each House seat.
 
 You can view the code and dataset [here](https://github.com/glolichen/election-2026).
+
+<!-- Note: you can verify the date of publication by checking the [Wayback Machine](). I made an archive on October 16.[^1] -->
+<!---->
+<!-- [^1]: Yeah, I forgot to update the publication date from "10/5" the first time. -->
 
 ## Dataset
 
