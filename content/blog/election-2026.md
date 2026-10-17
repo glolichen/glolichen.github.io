@@ -1,7 +1,7 @@
 ---
 title: Linear Regression Model for 2026 Elections
 author: 'Jayden Li'
-date: '2026-10-05'
+date: '2026-10-16'
 params:
   math: true
 ---
@@ -47,7 +47,7 @@ Some forecasters already include these metrics. [RaceToTheWH](https://www.raceto
 
 Our model is quite simple and will have a number of limitations. We discuss them at the end. At the end, I'll also include a simple and dumb prediction for each House seat.
 
-You can view the code and dataset [here].
+You can view the code and dataset [here](https://github.com/glolichen/election-2026).
 
 ## Dataset
 
