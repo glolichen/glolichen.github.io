@@ -227,7 +227,7 @@ The predicted margin \(M\) is a seat's CPVI (\(+\) for Democratic, \(-\) for Rep
 
 ![House predictions](/images/2026-house.png)
 
-I think this is actually somewhat reasonable. There are some seats that I think are wrong (NC-01, NY-01, TX-15, MO-05, Ohio and Colorado), but mainly: OH-10 (Mike Turner won by a lot more than the presidential margin) and PA-01 (Fitzpatrick is a strong overperformer). The tilt seats are extremely close so they all could go either way.
+I think this is actually somewhat reasonable. There are some seats that I think are wrong (NC-01, NY-01, TX-15, MO-05, NJ-02, Ohio and Colorado), but especially: OH-10 (Mike Turner won by a lot more than the presidential margin) and PA-01 (Fitzpatrick is a strong overperformer). The tilt seats are extremely close so they all could go either way.
 
 Overall, though, I think it's as good as it gets for a uniform swing model. You can compare it to the [RaceToTheWH](https://www.racetothewh.com/house) and [Split Ticket](https://www.theargumentmag.com/p/split-ticket-2026-midterms-model) forecasts.
 
