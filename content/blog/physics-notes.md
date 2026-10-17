@@ -1,5 +1,6 @@
 ---
 title: AP Physics C Notes
+author: 'Jayden Li'
 period: "2025-26"
 date: "2026-05-24"
 ---

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Linear Regression Model for 2026 Elections | Jayden Li</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      <li><a href="/">Home</a></li><li><a href="/projects/">Projects</a></li><li><a href="/blog/">Rambling</a></li>
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+	<h1><span class="title">Linear Regression Model for 2026 Elections</span></h1>
+
+
+	
+	<time datetime="2026-10-05">
+		Oct 5, 2026
+	</time>
+	
+</div>
+
+<main>
+	<h2 id="introduction">Introduction</h2>
+<p><strong>TLDR: Generic ballot D+&hellip;, House xxx-yyy, Senate xxx-yyy.</strong></p>
+<p>We will create a simple model to predict the <em>generic ballot</em> for the 2026 US midterm elections. Much has been said about polls and how they&rsquo;re unreliable; overall, polls are pretty good and are themselves evolving into models in of themselves (sampling, weighting, demographics, response rate, etc). In recent memory (to my knowledge) polls have been wrong in <em>both</em> directions (D-biased meaning overestimating democrats, and vice cersa):</p>
+<ul>
+<li><strong>2025</strong>: very R-biased (NJ/VA gubernatorial). Poll aggregators had Sherrill (D) up only <a href="https://en.wikipedia.org/wiki/2025_New_Jersey_gubernatorial_election#Polling_3">~4.7pp</a> (causing some to think she might actually lose). She actually won by ~14.4pp, a difference of almost 10pp! The error was around 5pp in <a href="https://en.wikipedia.org/wiki/2025_Virginia_gubernatorial_election#Polling_3">Virginia</a> in favor of Rs as well.</li>
+<li><strong>2024</strong>: slightly D-biased. <a href="https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_2024_United_States_presidential_election">National polls</a> had Harris up slightly in the popular vote, which Trump won by 1.5pp in the end for ~2pp poll error. Overall, there was a similar error in statewide presidential and congressional polls as well.</li>
+<li><strong>2022</strong>: no significant bias. <a href="https://www.realclearpolling.com/polls/state-of-the-union/2022/generic-congressional-vote">RCP average</a> of R+2.5 for Rs was almost exactly the R+2.7 actual popular vote. 538 was around <a href="https://en.wikipedia.org/wiki/2022_United_States_House_of_Representatives_election_ratings#Generic_ballot_polls">1.5pp off</a> in favor of democrats.</li>
+<li><strong>2020</strong>: very D-biased.</li>
+</ul>
+<p>The point is that polls can miss in both directions, and the variance in generic ballot polling this year has been quite high: they show a margin of anywhere from <a href="https://www.nytimes.com/interactive/polls/congressional-vote-2026.html">D+2 to D+15</a> just in late September-early October when I am writing this.</p>
+<p>So, it may be interesting to see a model that <em>not</em> take polls into account at all. We will use some (but not all) of the following data points (links are for most recent elections in 2025/2026):</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/2025_New_Jersey_gubernatorial_election">New Jersey</a> and <a href="https://en.wikipedia.org/wiki/2025_Virginia_gubernatorial_election">Virginia</a> gubernatorial elections.</li>
+<li><a href="https://en.wikipedia.org/wiki/2025_New_Jersey_General_Assembly_election">New Jersey</a> and <a href="https://en.wikipedia.org/wiki/2025_Virginia_House_of_Delegates_election">Virginia</a> legislative elections. These aren&rsquo;t as good as statewide elections in NJ/VA because legislative races have a lot of localized effects that are hard to account for nationally.</li>
+<li>California and Washington primaries. CA and WA use jungle/top-two primaries, where all candidates (regardless of party) are listed on the same ballot in the primary, and the top-two finishers advance to the general election in November. We can find partisanship by adding up the votes received by D and R candidates in each race. California is especially good because all statewide offices (Governor, Lt. Gov, etc) are up for election. We can consider these in California and consider <a href="https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections_in_Washington">US House primaries in Washington</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Category:Special_elections_to_the_119th_United_States_Congress">Special elections</a> to the current House of Representatives (triggered when a member resigns or dies).</li>
+<li><a href="https://en.wikipedia.org/wiki/2026_United_States_electoral_calendar">primary elections</a> in other states by considering <em>primary composition</em>: voters in D primary minus voters in R primary. These are not as good as CA/WA primaries because D/R candidates because top-two primaries sample <em>all</em> voters, while primaries with D/R candidates on separate ballots only sample those leaning/supporting a certain party. (Some states have open primaries where all voters can vote and there is no &ldquo;voter registration,&rdquo; some have semi-closed or closed primaries where primary voting eligibility is limited by registration.) Additionally, primary composition is skewed by the competitiveness of the primary: if there&rsquo;s only one candidate who is a heavy favorite, of course turnout will be lower. Primary composition is good at measuring <em>enthusiasm</em> in a certain party&rsquo;s base, though.</li>
+</ul>
+<p>Some forecasters already include these metrics. <a href="https://www.racetothewh.com/house/methodology">RaceToTheWH</a> uses CA/WA primaries, congressional special elections and NJ/VA gubernatorial elections, for example.</p>
+<p>We can run a linear regression on some subset of the above data points to predict the national popular vote in the House, with the dataset being elections dating back to, say, 2009. Realignments happen constantly but Obama&rsquo;s election in 2008 can roughly be said to be the start of the &ldquo;modern party system.&rdquo; We have a fairly small dataset of elections, and we need to be careful of overfitting. For this reason, we can train a linear regression on a <em>subset</em> of elections per model prior to 2022 (for example, excluding primary composition for one model), and comparing their results on the 2022 results as a &ldquo;test set.&rdquo;</p>
+<h3 id="limitations">Limitations</h3>
+<p>Note on reliability. I cannot possibly claim that this is a model as good as those available now. Caveats with this model include:</p>
+<ul>
+<li>Localized effects: we are looking at a fairly limited sample of the electorate here. We have NJ, VA, CA, WA and some special elections across the country. What if there are factors specific to a certain area that may not be present or as significant nationally? For example, Spanberger ran up the margin because of how bad her opponent was and Trump&rsquo;s cuts to the national government having an outsized impact to Northern Virginia, where many federal employees live. We are assuming a <em>uniform</em> national swing, but this of course isn&rsquo;t true.</li>
+<li>Off-year electorate: in recent years, it&rsquo;s becoming the case that high-propensity (likely to vote) voters are disproportionately democratic. They are more likely to vote in primaries and non-midterm or presidential elections like 2025. This may be a reason why polls overestimate Ds in presidential elections but often underestimate them in midterm or odd-year elections.</li>
+<li>Lack of polling or fundamentals: I mean, kind of self explanatory. Although we are excluding polls on purpose.</li>
+</ul>
+<p>Each of the data points are also not independent: elections in a national environment which affects every state. As noted above, we also have a small training dataset so overfitting is possible/likely.</p>
+<p>In the end I&rsquo;ll include a map of seat-by-seat predictions for both houses of Congress and Gubernatorial elections using our derived generic ballot margin for fun. This is very unscientific, because as noted swings are not uniform nationwide.</p>
+<h2 id="dataset">Dataset</h2>
+<h2 id="regression">Regression</h2>
+<h2 id="conclusion">Conclusion</h2>
+<h2 id="seat-by-seat-predictions">Seat-by-Seat Predictions</h2>
+<p>We&rsquo;ll see how well we did in November!</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

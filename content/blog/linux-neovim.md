@@ -1,5 +1,6 @@
 ---
 title: Thoughts on Linux, Neovim, Hyprland, etc.
+author: 'Jayden Li'
 date: '2026-10-04'
 ---
 

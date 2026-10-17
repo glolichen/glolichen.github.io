@@ -1,5 +1,6 @@
 ---
 title: Miscellaneous Items
+author: 'Jayden Li'
 period: "2007-present"
 date: "2022-01-01"
 ---

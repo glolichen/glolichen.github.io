@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Linear Regression Model for 2026 Elections | Jayden Li</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      <li><a href="/">Home</a></li><li><a href="/projects/">Projects</a></li><li><a href="/blog/">Rambling</a></li>
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+	<h1><span class="title">Linear Regression Model for 2026 Elections</span></h1>
+
+	
+	<span class="author">Jayden Li</span>
+	
+
+	<br>
+
+	
+	<time datetime="2026-10-05">
+		October 5, 2026
+	</time>
+	
+</div>
+
+<head>
+
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    },
+    loader:{
+      load: ['ui/safe']
+    },
+  };
+</script>
+
+
+</head>
+
+
+
+<main>
+	<h2 id="introduction">Introduction</h2>
+<p><strong>TLDR: Generic ballot D+8.53, House D236-R199.</strong> <a href="#results">Jump to results</a></p>
+<p>We will create a simple model to predict the <em>generic ballot</em> for the 2026 US midterm elections. Much has been said about polls and how they&rsquo;re unreliable; overall, polls are pretty good and are themselves evolving into models in of themselves (sampling, weighting, demographics, response rate, etc). In recent memory (to my knowledge) polls have been wrong in <em>both</em> directions (D-biased meaning overestimating democrats, and vice versa):</p>
+<details>
+<summary>Poll bias</summary>
+<ul>
+<li><strong>2025</strong>: very R-biased (NJ/VA gubernatorial). Poll aggregators had Sherrill (D) up only <a href="https://en.wikipedia.org/wiki/2025_New_Jersey_gubernatorial_election#Polling_3">~4.7pp</a> (causing some to think she might actually lose). She actually won by ~14.4pp, a difference of almost 10pp! The error was around 5pp in <a href="https://en.wikipedia.org/wiki/2025_Virginia_gubernatorial_election#Polling_3">Virginia</a> in favor of Rs as well.</li>
+<li><strong>2024</strong>: slightly D-biased. <a href="https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_2024_United_States_presidential_election">National polls</a> had Harris up slightly in the popular vote, which Trump won by 1pp in the end for ~2pp poll error. Overall, there was a similar error in statewide presidential and congressional polls as well.</li>
+<li><strong>2022</strong>: no significant bias. <a href="https://www.realclearpolling.com/polls/state-of-the-union/2022/generic-congressional-vote">RCP average</a> of R+2 for Rs was almost exactly the R+2.7 actual popular vote. 538 was around <a href="https://en.wikipedia.org/wiki/2022_United_States_House_of_Representatives_election_ratings#Generic_ballot_polls">1.5pp off</a> in favor of democrats.</li>
+<li><strong>2020</strong>: very D-biased.</li>
+</ul>
+</details>
+<p>The point is that polls can miss in both directions, and the variance in generic ballot polling this year has been quite high: they show a margin of anywhere from <a href="https://www.nytimes.com/interactive/polls/congressional-vote-2026.html">D+2 to D+15</a> just in late September-early October when I am writing this.</p>
+<p>So, it may be interesting to see a model that <em>not</em> take polls into account. We will use some (but not all) of the following data points (links are for most recent elections in 2025/2026):</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/2025_New_Jersey_gubernatorial_election">New Jersey</a> and <a href="https://en.wikipedia.org/wiki/2025_Virginia_gubernatorial_election">Virginia</a> gubernatorial elections.</li>
+<li>Washington primaries. WA uses top-two primaries, where all candidates (regardless of party) are listed on the same ballot in the primary, and the top-two finishers advance to the general election in November. We can find partisanship by adding up the votes received by D and R candidates in each race. Washington&rsquo;s state-wide elections are held in presidential years, so we consider <a href="https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections_in_Washington">US House primaries</a> instead.</li>
+<li><a href="https://en.wikipedia.org/wiki/Category:Special_elections_to_the_119th_United_States_Congress">Special elections</a> to the current House of Representatives (triggered when a member resigns or dies).</li>
+<li>Presidential approval rating. I didn&rsquo;t want to use polls at all, but it improved the model significantly. Approval rating measures the environment instead of polling the results directly, so I think we can use it.</li>
+</ul>
+<p>The history of primaries in Washington and California is very interesting. Open the drop-down below for more information.</p>
+<details>
+<summary>Note on Washington and California primaries</summary>
+<p>Washington used the <em>blanket</em> primary between 1935 and 2003, where all candidates are ranked on the same ballot and the top performers of <em>each party</em> advance to the general election (so there is one candidate from each party in the general election). This is different from the <em>top-two</em> primary used in WA and CA now, where the top two performers regardless of party, advance.</p>
+<p>California adopted the blanket primary by 1996 (by Proposition 198), and it was used in the 1998 statewide elections. In 2000, the Supreme Court <a href="https://en.wikipedia.org/wiki/California_Democratic_Party_v._Jones">found the blanket primary unconstitutional</a>, and California reverted to party primaries. Nonetheless, Washington used the same blanket primary in 2000 and 2002, before it too was struck down ahead of the 2004 elections. In 2004, Washington used party primaries. Also in 2004, Washington adopted a top-two primary by Initiative 872, but it was struck down as unconstitutional by a US District Court. In 2006, Washington again used party primaries. In 2008, though, the Supreme Court <a href="https://en.wikipedia.org/wiki/Washington_State_Grange_v._Washington_State_Republican_Party">upheld the constitutionality of the top-two primary</a> in Washington, and 2008 was the first election conducted with the top-two system. Washington has used the top-two primary for all elections since then.</p>
+<p>In 2010, California adopted the top-two primary with Proposition 14. It was used starting with the 2012 elections and has been used since then.</p>
+</details>
+<p>I will not be using:</p>
+<ul>
+<li>California primaries. California only used a top-two or blanket primary system in 1998 and since 2012, so there is not enough data.</li>
+<li><a href="https://en.wikipedia.org/wiki/2026_United_States_electoral_calendar">Primary elections</a> in other states by considering <em>primary composition</em>: voters in D primary minus voters in R primary. Unlike top-two primaries, party primaries with D/R candidates on separate ballots only sample those leaning/supporting a certain party. (Some states have open primaries where all voters can vote and there is no &ldquo;voter registration,&rdquo; some have semi-closed or closed primaries where primary voting eligibility is limited by registration.) Additionally, primary composition is skewed by the competitiveness of the primary: if there&rsquo;s only one candidate who is a heavy favorite, of course turnout will be lower. Primary composition is good at measuring <em>enthusiasm</em> in a certain party&rsquo;s base, though, and may be predictive of the November electorate&rsquo;s party affiliation.</li>
+</ul>
+<p>Some forecasters already include these metrics. <a href="https://www.racetothewh.com/house/methodology">RaceToTheWH</a> uses CA/WA primaries, congressional special elections and NJ/VA gubernatorial elections, for example.</p>
+<p>Our model is quite simple and will have a number of limitations. We discuss them at the end. At the end, I&rsquo;ll also include a simple and dumb prediction for each House seat.</p>
+<p>You can view the code and dataset [here].</p>
+<h2 id="dataset">Dataset</h2>
+<p>The full dataset will be:</p>
+<ul>
+<li>Special elections to current congress.</li>
+<li>Virginia gubernatorial election result.</li>
+<li>New Jersey gubernatorial election result.</li>
+<li>Washington congressional primary result.</li>
+<li>Presidential approval rating.</li>
+</ul>
+<p>For the first four, it makes more sense to compare the result to the state or district&rsquo;s known partisanship rather than the raw result. This gives us a standard national baseline accounting (partially) for regional differences. We find the partisanship (PVI)) by taking a weighted average of the last two presidential elections in that state/district.</p>
+<p>Let \(A\) be the margin (D percentage minus R percentage) of the last presidential election and \(B\) be the margin of the one before that. (So in 2026, 2024 and 2020, respectively). The PVI of any district/state is:
+</p>
+\[
+    \text{PVI}=\alpha A+\beta B
+\]<p>
+For congressional districts we use 3:1 weighting \(\alpha=3/4,\beta=1/4\), but for NJ and VA we use 2:1 weighting \(\alpha=2/3,\beta=1/3\) due to large swings in the 2024 election.</p>
+<p>This is similar to how <a href="https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index">Cook PVI</a> is calculated.</p>
+<p>Unfortunately I was too lazy to do this for elections before 2008 (where I had to gather results manually) so for those the PVI is just the presidential margin from the last election.</p>
+<p>Then, for each election, we calculate the swing by subtracting the district/state&rsquo;s PVI from the margin. We use the convention that positive values are Democratic and negative values are Republican. For example, the swing in the <a href="https://en.wikipedia.org/wiki/2025_Tennessee%27s_7th_congressional_district_special_election">TN District 7</a> special election in December 2025 was D+11.25, or \(+11.25\).</p>
+<p>For VA and NJ gubernatorial elections, there is a single swing. For special elections and the Washington congressional primaries, we take the swing of each individual race and take the <a href="https://en.wikipedia.org/wiki/Truncated_mean">trimmed mean</a> by \(10\%\).</p>
+<p>Important note for Washington primaries: Washington held a party primary in 2006 after its system was struck down (I talked about this in the history of WA/CA primaries). Because 2006 is too important a year to leave out (second term, unpopular president, &hellip;?), I added up the D and R vote shares anyway like it were a top-two/blanket primary, even if they appeared on separate ballots. The Washington Secretary of State&rsquo;s website appears to do this too.</p>
+<p>I used presidential approval rating from <a href="https://news.gallup.com/poll/116677/presidential-approval-ratings-gallup-historical-statistics-trends.aspx">Gallup</a>. I used value from the last poll before the midterm election. They polled this since 1945 but stopped in 2026, so I used <a href="https://www.natesilver.net/p/trump-approval-ratings-nate-silver-bulletin">Nate Silver&rsquo;s average</a> for 2026 instead. Yes, it&rsquo;s not ideal.</p>
+<p>Let \(R\) be the president&rsquo;s approval rating. Assuming everyone else disapproves, the net approval rating is \(N=R-(100-R)=2R-100\). Interpret this as a partisan value by multiplying it by \(1\) for Republicans and \(-1\) for Democrats. For example, Joe Biden&rsquo;s approval rating on November 1, 2022 was 40 for a signal of R+20 or \(-20\). We could half these values but they would be equivalent in the regression.</p>
+<p>We will go back to the 1994 election for a total of 8 elections in the &ldquo;training set&rdquo; (up to 2022). I didn&rsquo;t want to go so far back at first but we really just need more data, even if politics has changed a lot since 1994.</p>
+<h2 id="model">Model</h2>
+<p>Let the predictors \(S,V,N,W,A\) be special election swing, VA gubernatorial swing, NJ gubernatorial swing, WA congressional primary swing and presidential approval rating, respectively. Let \(Y\) be the midterm generic congressional ballot, which we are trying to predict. For convenience, let \(X_1=S,X_2=V,\ldots\). A multivariable linear regression for \(Y\) is:
+</p>
+\[
+    Y
+    =X_0+B_1S+B_2V+B_3N+B_4W+B_5A
+    =X_0+\sum_{i=1}^5 B_iX_i
+\]<p>
+Note that the predictors are highly correlated with each other. Having information on one of these gives a lot of information on the others, as it indicates something about the national environment. These predictors are highly <em>collinear</em> and we need to correct for this multicollinearity.</p>
+<p>We use <a href="https://www.ibm.com/think/topics/ridge-regression">ridge regression</a>, which is commonly used to correct for multicollinearity. It is an ordinary least squares regression with a penalty term on the size of the coefficients, in effect forcing the coefficients \(B_i\)&rsquo;s to be smaller. This increases numerical stability and reduces the risk of overfitting.</p>
+<p>We don&rsquo;t know which of the signals above are the most predictive so we will train a model on each nonempty subset of the predictors (and ignore the others). There are \(2^5-1=31\) such subsets of \(\{ S,V,N,W,A \}\) and thus 31 models, each trained on a different selection of predictors.</p>
+<p>We want to know how well each subset/model performs with leave one out cross-validation (LOOCV). We train the model <strong>excluding a certain year</strong>. It is important to do this to avoid &ldquo;testing on the training set.&rdquo; Then we evaluate the model on the left out year and compare its output to the actual House popular vote. We have the errors \(E_1,\ldots,E_8\), each representing the error for each year between 1994 and 2022.</p>
+<p>The root mean square error (\(\text{RMSE}\)) and mean absolute error (\(\text{MAE}\)) are:
+</p>
+\[
+    \text{RMSE}
+    =\sqrt{\frac 18 \sum_{i=1}^8 E_i^2}
+    \qquad \text{MAE}
+    =\frac 18\sum_{i=1}^8 |E_i|
+\]<p>
+Then, we can find the best subset of predictors to use by comparing \(\text{RMSE}\) and \(\text{MAE}\). We prefer models with lower errors.</p>
+<h2 id="results">Results</h2>
+<p>The columns on the left show whether each predictor was used, followed by \(Y\), the predicted 2026 generic ballot, and finally the \(\text{RMSE}\) and \(\text{MAE}\) error values. The best models were:</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">Specials</th>
+					<th style="text-align: center">VA</th>
+					<th style="text-align: center">NJ</th>
+					<th style="text-align: center">WA</th>
+					<th style="text-align: center">Pres. App.</th>
+					<th style="text-align: center">\(Y\)</th>
+					<th style="text-align: center">\(\text{RMSE}\)</th>
+					<th style="text-align: center">\(\text{MAE}\)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"><strong>D+8.53</strong></td>
+					<td style="text-align: center">1.079</td>
+					<td style="text-align: center">0.944</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"><strong>D+8.35</strong></td>
+					<td style="text-align: center">1.279</td>
+					<td style="text-align: center">1.178</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"><strong>D+8.57</strong></td>
+					<td style="text-align: center">1.380</td>
+					<td style="text-align: center">1.201</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"><strong>D+5.95</strong></td>
+					<td style="text-align: center">1.770</td>
+					<td style="text-align: center">1.430</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"><strong>D+9.97</strong></td>
+					<td style="text-align: center">2.024</td>
+					<td style="text-align: center">1.515</td>
+			</tr>
+	</tbody>
+</table>
+<p>The Specials+WA+Approval model had the best \(\text{RMSE}\) and the best \(\text{MAE}\).</p>
+<p>Interestingly, the best model does not use VA or NJ gubernatorial results. It makes sense as (when politics were not as polarized) there are huge localized effects, such as <a href="https://en.wikipedia.org/wiki/2013_New_Jersey_gubernatorial_election">Chris Christie&rsquo;s landslide reelection in 2014 in NJ</a>. But it is encouraging that adding each individually to the Specials+WA+Approval model gives three models give results within 0.22 points of each other, and with good error values as well.</p>
+<p>Presidential approval rating is essential here, hence I was willing to bend/eliminate the &ldquo;no polling&rdquo; stipulation to add it. The Washington primary is also highly predictive, confirming a fairly well known fact.</p>
+<p><strong>Final prediction: D+8.53.</strong></p>
+<details>
+<summary>Fun and bad models</summary>
+<p>The most democratic, most republican and worst (highest error) models were:</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">Specials</th>
+					<th style="text-align: center">VA</th>
+					<th style="text-align: center">NJ</th>
+					<th style="text-align: center">WA</th>
+					<th style="text-align: center">Pres. App.</th>
+					<th style="text-align: center">\(Y\)</th>
+					<th style="text-align: center">\(\text{RMSE}\)</th>
+					<th style="text-align: center">\(\text{MAE}\)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">D+9.97</td>
+					<td style="text-align: center">2.024</td>
+					<td style="text-align: center">1.515</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">R+0.07</td>
+					<td style="text-align: center">6.938</td>
+					<td style="text-align: center">5.891</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center">Y</td>
+					<td style="text-align: center"></td>
+					<td style="text-align: center">D+5.86</td>
+					<td style="text-align: center">11.716</td>
+					<td style="text-align: center">7.751</td>
+			</tr>
+	</tbody>
+</table>
+<p>The D+9.97 model isn&rsquo;t even that bad error wise (and is in the top 5 above). The other two are worse, though. Yes, the Specials+VA+NJ+WA model has the worst \(\text{RMSE}\) and the worst \(\text{MAE}\), and by a good margin as well.</p>
+</details>
+<details>
+<summary>All models</summary>
+<p>I am too lazy to enter all 31 into a table, so here&rsquo;s a raw dump.</p>
+<pre tabindex="0"><code>S+WA+A: D+8.53, RMSE 1.079, MAE 0.944
+S+NJ+WA+A: D+8.35, RMSE 1.279, MAE 1.178
+S+VA+WA+A: D+8.57, RMSE 1.380, MAE 1.201
+WA+A: D+5.95, RMSE 1.770, MAE 1.430
+S+A: D+9.97, RMSE 2.024, MAE 1.515
+VA+WA+A: D+5.95, RMSE 2.143, MAE 1.809
+S+VA+A: D+9.41, RMSE 2.399, MAE 1.985
+NJ+WA+A: D+5.56, RMSE 2.516, MAE 2.118
+NJ+VA+WA+A: D+5.64, RMSE 3.201, MAE 2.646
+S+NJ+A: D+9.46, RMSE 3.592, MAE 2.944
+S+NJ+VA+WA+A: D+8.27, RMSE 3.683, MAE 2.598
+S: D+8.36, RMSE 4.283, MAE 3.746
+S+NJ+WA: D+6.26, RMSE 4.524, MAE 4.126
+VA+A: D+4.99, RMSE 4.728, MAE 4.374
+S+VA: D+7.51, RMSE 5.086, MAE 4.448
+S+WA: D+6.21, RMSE 5.131, MAE 4.637
+S+NJ: D+7.66, RMSE 5.168, MAE 4.576
+S+VA+WA: D+5.87, RMSE 5.193, MAE 4.693
+S+NJ+VA+A: D+8.97, RMSE 5.196, MAE 3.530
+NJ+VA+A: D+4.54, RMSE 5.570, MAE 4.771
+NJ+A: D+2.95, RMSE 5.911, MAE 4.884
+A: D+2.41, RMSE 6.013, MAE 5.376
+WA: D+2.95, RMSE 6.778, MAE 5.504
+NJ: R+0.07, RMSE 6.938, MAE 5.891
+S+NJ+VA: D+7.04, RMSE 7.035, MAE 5.655
+NJ+WA: D+3.01, RMSE 7.066, MAE 6.219
+NJ+VA+WA: D+2.56, RMSE 7.136, MAE 6.094
+NJ+VA: D+1.03, RMSE 7.196, MAE 5.999
+VA+WA: D+2.54, RMSE 7.356, MAE 6.336
+VA: D+0.84, RMSE 7.468, MAE 6.353
+S+NJ+VA+WA: D+5.86, RMSE 11.716, MAE 7.751
+</code></pre></details>
+<h2 id="limitations">Limitations</h2>
+<p>I cannot possibly claim that this is a model as good as those available now. Our dataset (past year election results) is affected by the national environment (a signal we try to extract) and a number of other factors, including:</p>
+<ul>
+<li>Localized effects: we are looking at a fairly limited sample of the electorate here. We have NJ, VA, CA, WA and some special elections across the country. What if there are factors specific to a certain area that may not be present or as significant nationally? For example, Spanberger ran up the margin because of how bad her opponent was and Trump&rsquo;s cuts to the national government having an outsized impact to Northern Virginia, where many federal employees live. We are assuming a <em>uniform</em> national swing, but this of course isn&rsquo;t true.</li>
+<li>Candidate quality: self explanatory, better/worse candidates will cause the margin/result of an election to change in a way that may not fully translate to other races. (This is not <em>fully</em> localized, though; for example in 2022 and 2024 Rs nominated a number of fairly bad candidates and lost seats that should have been winnable.)</li>
+<li>Off-year electorate: in recent years, it&rsquo;s becoming the case that high-propensity (likely to vote) voters are disproportionately democratic. They are more likely to vote in primaries and non-midterm or presidential elections like 2025. This is especially exaggerated in lesser-known/lower-profile contests like <a href="https://en.wikipedia.org/wiki/2026_Georgia_Public_Service_Commission_election">2026 GA PSC</a> or <a href="https://en.wikipedia.org/wiki/2026_Wisconsin_Supreme_Court_election">WI Supreme Court</a> elections. This may be a reason why polls overestimate Ds in presidential elections but often underestimate them in midterm or odd-year elections.</li>
+<li>Lack of polling or fundamentals: kind of self explanatory. We did use presidential approval rating though. Public opinion changes a lot, and the November general election may be held under an electorate whose opinion has changed significantly since the previous elections held a few months or a year out. You need polling to measure such changes, and we are not doing that.</li>
+</ul>
+<p>Of course, the biggest limitation: <u><strong>historical trends hold, until they don&rsquo;t</strong></u>. This model is, by its design, entirely based on historical data. The 2024 Washington primary <a href="https://split-ticket.org/2024/08/22/a-very-detailed-examination-of-the-washington-primary/">suggested</a> a 2% improvement for Democrats from 2020, which obviously did not happen. I would not be surprised at all if I am somewhat or totally wrong, as the only constant in politics is change.</p>
+<h2 id="seat-by-seat-predictions">Seat-by-Seat Predictions</h2>
+<p>Here is a uniform-swing prediction of each seat in the House of Representatives (post-redistricting) using nothing but generic ballot (predicted as D+8.53) and <a href="https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index">Cook PVI from Wikipedia</a>. I am comparing the generic ballot to a district&rsquo;s partisanship, and ignoring everything like candidate quality, localized swings, etc, so this will almost certainly be wrong!</p>
+<p>With the same sign convention as throughout the article (\(+\) for D, \(-\) for R): let \(C\) be the Cook PVI of a seat and let \(N_D,N_R\) be the &ldquo;national popular vote&rdquo; share for Democrats and Republicans, respectively (for president when calculating CPVI, but national House generic ballot for our purposes). Let \(D,R\) be the Democratic and Republican vote share of this district. Assuming there are only votes for Democrats and Republicans: we have \(R=1-D\). The generic ballot margin is \(M_N=N_D-N_R\).
+</p>
+\[
+D=N_D+C \qquad R=N_R-C
+\]<p>
+Let \(M_\text{seat}\) be the margin of this seat:
+</p>
+\[
+M_\text{seat}
+=D-R
+=(N_D+C)-(N_R+C)
+=(N_D-N_R)+2C
+=M_N+2C
+\]<p>
+The Democrats will win a seat if and only if \(M_\text{seat}>0\) (suppose there are no ties):
+</p>
+\[
+\text{D Win}
+\iff M_\text{seat}=M_N+2C>0
+\iff M_N>-2C
+\]<p>
+For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national generic ballot of greater (more Democratic) than \(-(-4)=+8\), i.e. D+8 or more.</p>
+<p>The predicted margin \(M\) is a seat&rsquo;s CPVI (\(+\) for Democratic, \(-\) for Republican) plus \(+8.53\). Sort into tilt/lean/likely/safe as follows:</p>
+<ul>
+<li>\(0 < M \leq 1\): Tilt.</li>
+<li>\(1 < M \leq 5\): Lean.</li>
+<li>\(5 < M \leq 12\): Likely.</li>
+<li>\(M > 12\): Safe.</li>
+</ul>
+<p><img src="/images/2026-house.png" alt="House predictions"></p>
+<p>I think this is actually somewhat reasonable. There are some seats that I disagree with (NC-01, NY-01, OH-07 because of the Max Miller scandal, OH-09, OH-10, TX-15), but overall, I think it&rsquo;s as good as it gets for a uniform swing model. You can compare it to the <a href="https://www.racetothewh.com/house">RaceToTheWH</a> and <a href="https://www.theargumentmag.com/p/split-ticket-2026-midterms-model">Split Ticket</a> forecasts. The predictions are not too dissimilar.</p>
+<details>
+<summary>Seat flips</summary>
+<p><u>Underlined</u> incumbents retiring. Seats marked by * affected by redistricting.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">Seat</th>
+					<th style="text-align: center">Incumbent</th>
+					<th style="text-align: center">Before</th>
+					<th style="text-align: center">After</th>
+					<th style="text-align: center">Margin</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">AL-2 *</td>
+					<td style="text-align: center">Figures</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">AZ-1</td>
+					<td style="text-align: center"><u>Schweikert</u></td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+6</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">AZ-6</td>
+					<td style="text-align: center">Ciscomani</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CA-1 *</td>
+					<td style="text-align: center">Gallagher</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+22</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CA-6 *</td>
+					<td style="text-align: center">Kiley</td>
+					<td style="text-align: center">I(R)</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+20</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CA-22 *</td>
+					<td style="text-align: center">Valadao</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+10</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CA-41 *</td>
+					<td style="text-align: center"><u>Calvert</u>¹</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+26</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CA-48 *</td>
+					<td style="text-align: center"><u>Issa</u></td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+12</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CO-8</td>
+					<td style="text-align: center">Evans</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">FL-9 *</td>
+					<td style="text-align: center">Soto</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+7</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">IA-1</td>
+					<td style="text-align: center">Miller-Meeks</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+0.5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">IA-2</td>
+					<td style="text-align: center"><u>Hinson</u></td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+0.5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">IA-3</td>
+					<td style="text-align: center">Nunn</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+4</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">LA-6 *</td>
+					<td style="text-align: center">Fields</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+23</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MI-4</td>
+					<td style="text-align: center">Huizenga</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MI-7</td>
+					<td style="text-align: center">Barrett</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MI-10</td>
+					<td style="text-align: center"><u>James</u></td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MO-2</td>
+					<td style="text-align: center">Wagner</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+0.5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NE-2</td>
+					<td style="text-align: center"><u>Bacon</u></td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+14</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NJ-7</td>
+					<td style="text-align: center">Kean</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NY-1</td>
+					<td style="text-align: center">LaLota</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+0.5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NY-17</td>
+					<td style="text-align: center">Lawler</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+10</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NC-1 *</td>
+					<td style="text-align: center">Davis</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+1</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">OH-9 *</td>
+					<td style="text-align: center">Kaptur</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+1</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">OH-10 *</td>
+					<td style="text-align: center">Turner</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+0.5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">PA-1</td>
+					<td style="text-align: center">Fitzpatrick</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+10</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">PA-7</td>
+					<td style="text-align: center">Mackenzie</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+6</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">PA-8</td>
+					<td style="text-align: center">Bresnahan</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+0.5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">PA-10</td>
+					<td style="text-align: center">Perry</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">TN-9 *</td>
+					<td style="text-align: center"><u>Cohen</u></td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+9</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">TX-9 *</td>
+					<td style="text-align: center"><em>None</em></td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+9</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">TX-32 *</td>
+					<td style="text-align: center"><em>None</em></td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">R+7</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">UT-1 *</td>
+					<td style="text-align: center"><em>None</em></td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+32</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">VA-1</td>
+					<td style="text-align: center">Wittman</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">VA-2</td>
+					<td style="text-align: center">Kiggans</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">WI-1</td>
+					<td style="text-align: center">Steil</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+4</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">WI-3</td>
+					<td style="text-align: center">Van Orden</td>
+					<td style="text-align: center">R</td>
+					<td style="text-align: center">D</td>
+					<td style="text-align: center">D+2</td>
+			</tr>
+	</tbody>
+</table>
+<p>¹: Running in CA-40.</p>
+<p>Margins are not precise as I only got PVI without decimal places. I probably got the redistricting mixed up somewhere, especially California.</p>
+</details>
+<p>Take these this with a grain of salt. Uniform national swing like this is not a good way of predicting the House as the <a href="#limitations">limitations</a>, specifically the localized effects, are even more pronounced.</p>
+<p>This is even worse at predicting the Senate, as candidate quality, localized effects, state-specific factors, etc are all have a greater effect on statewide races than House races. Here is a prediction anyway.</p>
+<details>
+<summary>Senate</summary>
+<p><img src="/images/2026-senate.png" alt="Senate predictions"></p>
+<p>This is actually consistent with where analysis of the Senate race is right now. The Lean R states of Iowa, Texas, Alaska, Ohio are the current battlegrounds, and a good/bad candidate and some localized trends give Democrats a chance to win. I&rsquo;m would not rate New Hampshire and especially Maine as Safe D, but the model only considers generic ballot and in that case it would make sense.</p>
+</details>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>WWU, <a href="https://library.cqpress.com/cqalmanac/document.php?id=cqal93-844-25158-1103932#_">1992 Presidential Election by Congressional District</a>.</li>
+<li>WWU, <a href="https://sigcfe.maps.arcgis.com/apps/mapviewer/index.html?panel=gallery&amp;suggestField=true&amp;layers=e5a43dafa46f4d4585611c4d51b5f5cd">1996 Presidential Election by Congressional District</a>.</li>
+<li>WWU, <a href="https://wwu.maps.arcgis.com/apps/instant/minimalist/index.html?appid=ec3ad6a61b334fb6b858e1f4e791c583">2000 Presidential Election by Congressional District</a>.</li>
+<li>WWU, <a href="https://wwu.maps.arcgis.com/apps/instant/minimalist/index.html?appid=8f02b1ba3b3043f4bd9d5f534df128dd">2004 Presidential Election by Congressional District</a>.</li>
+<li>The Downballot, <a href="https://www.the-downballot.com/p/the-downballots-calculations-of-presidential">Presidential Elections by Congressional District since 2008</a>.</li>
+<li>Washington Secretary of State, <a href="https://www.sos.wa.gov/elections/data-research/history-laws-and-litigation/history-washington-state-primary">History of WA State Primaries</a>.</li>
+<li>Washington Secretary of State, <a href="https://www.sos.wa.gov/elections/data-research/election-data-and-maps/election-results-and-voters-pamphlets">Past Election Results</a>.</li>
+<li>Ballotpedia, <a href="https://ballotpedia.org/U.S._Congress_special_elections_historical_data,_1987-2024">Congressional Special Elections since 1987</a>.</li>
+<li>Gallup, <a href="https://news.gallup.com/poll/116677/presidential-approval-ratings-gallup-historical-statistics-trends.aspx">Presidential Approval Ratings Before 2026</a>.</li>
+<li>Nate Silver, <a href="https://www.natesilver.net/p/trump-approval-ratings-nate-silver-bulletin">Trump Approval Rating 2026</a>.</li>
+<li>Too much from Wikipedia to count, but <a href="https://en.wikipedia.org/wiki/Elections_in_Virginia">VA elections</a> and <a href="https://en.wikipedia.org/wiki/Elections_in_New_Jersey">NJ elections</a>.</li>
+</ul>
+<p>(WWU = Western Washington University. Something about Washington, I guess.)</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

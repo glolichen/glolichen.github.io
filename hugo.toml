@@ -4,18 +4,30 @@ title = 'Jayden Li'
 theme = 'hugo-xmin'
 
 [menu]
-  [[menu.main]]
-    identifier = "home"
-    name = "Home"
-    url = "/"
-  [[menu.main]]
-    identifier = "blog"
-    name = "Rambling"
-    url = "/blog/"
-  [[menu.main]]
-    identifier = "projects"
-    name = "Projects"
-    url = "/projects/"
+	[[menu.main]]
+		identifier = "home"
+		name = "Home"
+		url = "/"
+	[[menu.main]]
+		identifier = "blog"
+		name = "Rambling"
+		url = "/blog/"
+	[[menu.main]]
+		identifier = "projects"
+		name = "Projects"
+		url = "/projects/"
 
 [markup.goldmark.renderer]
 	unsafe = true
+
+[markup.goldmark]
+	[markup.goldmark.extensions]
+		[markup.goldmark.extensions.footnote]
+			enable = true
+		[markup.goldmark.extensions.passthrough]
+			enable = true
+		[markup.goldmark.extensions.passthrough.delimiters]
+			block = [['\[', '\]']]
+			inline = [['\(', '\)']]
+[params]
+	math = true

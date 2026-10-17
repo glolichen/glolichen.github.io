@@ -2,15 +2,28 @@
 <div class="article-meta">
 	<h1><span class="title">{{ .Title | markdownify }}</span></h1>
 
+	{{ with .Params.author }}
+	<span class="author">{{ . }}</span>
+	{{ end }}
+
+	<br>
 
 	{{ if .Params.period }}
 	<span>{{ .Params.period }}</span>
 	{{ else if .Date }}
 	<time datetime="{{ .Date.Format "2006-01-02" }}">
-		{{ .Date.Format "Jan 2, 2006" }}
+		{{ .Date.Format "January 2, 2006" }}
 	</time>
 	{{ end }}
 </div>
+
+<head>
+{{ if .Param "math" }}
+	{{ partialCached "math.html" . }}
+{{ end }}
+</head>
+
+
 
 <main>
 	{{ .Content }}

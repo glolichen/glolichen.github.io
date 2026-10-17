@@ -1,5 +1,6 @@
 ---
 title: Chess Engine
+author: 'Jayden Li'
 period: "2022-2023"
 date: "2022-01-01"
 ---

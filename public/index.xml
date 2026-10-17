@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sun, 04 Oct 2026 00:00:00 +0000</lastBuildDate>
+			<lastBuildDate>Mon, 05 Oct 2026 00:00:00 +0000</lastBuildDate>
 		
 			<atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Linear Regression Model for 2026 Elections</title>
+				<link>http://localhost:1313/blog/election-2026/</link>
+				<pubDate>Mon, 05 Oct 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/blog/election-2026/</guid>
+				<description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;TLDR: Generic ballot D+8.53, House xxx-yyy.&lt;/strong&gt; &lt;a href=&#34;#results&#34;&gt;Jump to results&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;We will create a simple model to predict the &lt;em&gt;generic ballot&lt;/em&gt; for the 2026 US midterm elections. Much has been said about polls and how they&amp;rsquo;re unreliable; overall, polls are pretty good and are themselves evolving into models in of themselves (sampling, weighting, demographics, response rate, etc). In recent memory (to my knowledge) polls have been wrong in &lt;em&gt;both&lt;/em&gt; directions (D-biased meaning overestimating democrats, and vice cersa):&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>Thoughts on Linux, Neovim, Hyprland, etc.</title>
 				<link>http://localhost:1313/blog/linux-neovim/</link>

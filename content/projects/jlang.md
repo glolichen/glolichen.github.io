@@ -1,5 +1,6 @@
 ---
 title: JLang Compiler
+author: 'Jayden Li'
 period: "2026"
 date: "2023-01-01"
 ---
