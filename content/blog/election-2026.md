@@ -220,14 +220,16 @@ The Democrats will win a seat if and only if \(M_\text{seat}>0\) (suppose there 
 For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national generic ballot of greater (more Democratic) than \(-(-4)=+8\), i.e. D+8 or more.
 
 The predicted margin \(M\) is a seat's CPVI (\(+\) for Democratic, \(-\) for Republican) plus \(+8.53\). Sort into tilt/lean/likely/safe as follows:
- - \(0 < M \leq 1\): Tilt.
- - \(1 < M \leq 5\): Lean.
+ - \(0 < M \leq 2\): Tilt.
+ - \(2 < M \leq 5\): Lean.
  - \(5 < M \leq 12\): Likely.
  - \(M > 12\): Safe.
 
 ![House predictions](/images/2026-house.png)
 
-I think this is actually somewhat reasonable. There are some seats that I disagree with (NC-01, NY-01, OH-07 because of the Max Miller scandal, OH-09, OH-10, TX-15), but overall, I think it's as good as it gets for a uniform swing model. You can compare it to the [RaceToTheWH](https://www.racetothewh.com/house) and [Split Ticket](https://www.theargumentmag.com/p/split-ticket-2026-midterms-model) forecasts. The predictions are not too dissimilar.
+I think this is actually somewhat reasonable. There are some seats that I think are wrong (NC-01, NY-01, TX-15, MO-05, Ohio and Colorado), but mainly: OH-10 (Mike Turner won by a lot more than the presidential margin) and PA-01 (Fitzpatrick is a strong overperformer). The tilt seats are extremely close so they all could go either way.
+
+Overall, though, I think it's as good as it gets for a uniform swing model. You can compare it to the [RaceToTheWH](https://www.racetothewh.com/house) and [Split Ticket](https://www.theargumentmag.com/p/split-ticket-2026-midterms-model) forecasts.
 
 <details>
 <summary>Seat flips</summary>
@@ -266,16 +268,17 @@ I think this is actually somewhat reasonable. There are some seats that I disagr
 |PA-8|Bresnahan|R|D|D+0.5|
 |PA-10|Perry|R|D|D+2|
 |TN-9 *|<u>Cohen</u>|D|R|R+9|
-|TX-9 *|*None*|D|R|R+9|
-|TX-32 *|*None*|D|R|R+7|
-|UT-1 *|*None*|R|D|D+32|
+|TX-9 *|*None*²|D|R|R+9|
+|TX-32 *|*None*²|D|R|R+7|
+|UT-1 *|*None*²|R|D|D+32|
 |VA-1|Wittman|R|D|D+2|
 |VA-2|Kiggans|R|D|D+8|
 |WI-1|Steil|R|D|D+4|
 |WI-3|Van Orden|R|D|D+2|
 
 
-¹: Running in CA-40.
+¹ Running in CA-40.
+² Open seat due to redistricting.
 
 Margins are not precise as I only got PVI without decimal places. I probably got the redistricting mixed up somewhere, especially California.
 </details>
