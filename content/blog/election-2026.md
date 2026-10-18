@@ -238,47 +238,48 @@ Overall, though, I think it's as good as it gets for a uniform swing model. You 
 
 |Seat|Incumbent|Before|After|Margin|
 |:-:|:-:|:-:|:-:|:-:|
-|AL-2 *|Figures|D|R|R+5|
-|AZ-1|<u>Schweikert</u>|R|D|D+6|
-|AZ-6|Ciscomani|R|D|D+8|
-|CA-1 *|Gallagher|R|D|D+22|
-|CA-3 *|Kiley|I(R)|D|D+20|
+|AL-02 *|Figures|D|R|R+5|
+|AZ-01|<u>Schweikert</u>|R|D|D+6|
+|AZ-06|Ciscomani|R|D|D+8|
+|CA-01 *|Gallagher|R|D|D+22|
+|CA-06 *|Kiley¹|I(R)|D|D+20|
 |CA-22 *|Valadao|R|D|D+10|
-|CA-41 *|<u>Calvert</u>¹|R|D|D+26|
+|CA-41 *|<u>Calvert</u>²|R|D|D+26|
 |CA-48 *|<u>Issa</u>|R|D|D+12|
-|CO-8|Evans|R|D|D+8|
-|FL-9 *|Soto|D|R|R+7|
-|IA-1|Miller-Meeks|R|D|D+0.5|
-|IA-2|<u>Hinson</u>|R|D|D+0.5|
-|IA-3|Nunn|R|D|D+4|
-|LA-6 *|Fields|D|R|R+23|
-|MI-4|Huizenga|R|D|D+2|
-|MI-7|Barrett|R|D|D+8|
+|CO-08|Evans|R|D|D+8|
+|FL-09 *|Soto|D|R|R+7|
+|IA-01|Miller-Meeks|R|D|D+0.5|
+|IA-02|<u>Hinson</u>|R|D|D+0.5|
+|IA-03|Nunn|R|D|D+4|
+|LA-06 *|Fields|D|R|R+23|
+|MI-04|Huizenga|R|D|D+2|
+|MI-07|Barrett|R|D|D+8|
 |MI-10|<u>James</u>|R|D|D+2|
-|MO-2|Wagner|R|D|D+0.5|
-|NE-2|<u>Bacon</u>|R|D|D+14|
-|NJ-7|Kean|R|D|D+8|
-|NY-1|LaLota|R|D|D+0.5|
+|MO-02|Wagner|R|D|D+0.5|
+|NE-02|<u>Bacon</u>|R|D|D+14|
+|NJ-07|Kean|R|D|D+8|
+|NY-01|LaLota|R|D|D+0.5|
 |NY-17|Lawler|R|D|D+10|
-|NC-1 *|Davis|D|R|R+1|
-|OH-9 *|Kaptur|D|R|R+1|
+|NC-01 *|Davis|D|R|R+1|
+|OH-09 *|Kaptur|D|R|R+1|
 |OH-10 *|Turner|R|D|D+0.5|
-|PA-1|Fitzpatrick|R|D|D+10|
-|PA-7|Mackenzie|R|D|D+6|
-|PA-8|Bresnahan|R|D|D+0.5|
+|PA-01|Fitzpatrick|R|D|D+10|
+|PA-07|Mackenzie|R|D|D+6|
+|PA-08|Bresnahan|R|D|D+0.5|
 |PA-10|Perry|R|D|D+2|
-|TN-9 *|<u>Cohen</u>|D|R|R+9|
-|TX-9 *|*None*²|D|R|R+9|
-|TX-32 *|*None*²|D|R|R+7|
-|UT-1 *|*None*²|R|D|D+32|
-|VA-1|Wittman|R|D|D+2|
-|VA-2|Kiggans|R|D|D+8|
-|WI-1|Steil|R|D|D+4|
-|WI-3|Van Orden|R|D|D+2|
+|TN-09 *|<u>Cohen</u>|D|R|R+9|
+|TX-09 *|*None*³|D|R|R+9|
+|TX-32 *|*None*³|D|R|R+7|
+|UT-01 *|*None*³|R|D|D+32|
+|VA-01|Wittman|R|D|D+2|
+|VA-02|Kiggans|R|D|D+8|
+|WI-01|Steil|R|D|D+4|
+|WI-03|Van Orden|R|D|D+2|
 
 
-¹ Running in CA-40.
-² Open seat due to redistricting.
+¹ Redistricted from CA-03.
+² Running in CA-40.
+³ Open seat due to redistricting.
 
 Margins are not precise as I only got PVI without decimal places. I probably got the redistricting mixed up somewhere, especially California.
 </details>
