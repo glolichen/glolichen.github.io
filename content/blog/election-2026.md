@@ -242,7 +242,7 @@ Overall, though, I think it's as good as it gets for a uniform swing model. You 
 |AZ-1|<u>Schweikert</u>|R|D|D+6|
 |AZ-6|Ciscomani|R|D|D+8|
 |CA-1 *|Gallagher|R|D|D+22|
-|CA-6 *|Kiley|I(R)|D|D+20|
+|CA-3 *|Kiley|I(R)|D|D+20|
 |CA-22 *|Valadao|R|D|D+10|
 |CA-41 *|<u>Calvert</u>¹|R|D|D+26|
 |CA-48 *|<u>Issa</u>|R|D|D+12|
