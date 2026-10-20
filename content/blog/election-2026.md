@@ -339,9 +339,9 @@ If neither candidate has a WAR rating (never run for Congress before), \(\text{W
 
 ![Senate predictions](/images/2026-senate.png)
 
-This came down to Sherrod Brown (D-OH) and Mary Peltola's (D-AK) overperformances in 2024 (WAR D+4.6, D+9.1, respectively). Susan Collins's (R-ME) overperformance in 2020 (WAR R+12.5) was not enough against Maine's partisanship and the generic ballot.
+This came down to Sherrod Brown (D-OH) and Mary Peltola's (D-AK) overperformances in 2024 (WAR D+4.6, D+9.1, respectively). Susan Collins's (R-ME) overperformance in 2020 (WAR R+12.5) is not enough against Maine's partisanship and the generic ballot this year.
 
-We are missing WAR on some fairly important candidates in somewhat competitive states, including but not limited to (underlined means we have WAR):
+We are missing WAR on some fairly important candidates in somewhat competitive states, including but not limited to:
 |State|D Candidate|R Candidate|
 |:-:|:-:|:-:|
 |Florida|Angie Nixon|Ashley Moody|
@@ -367,9 +367,10 @@ It would help our accuracy greatly if we had these. Anyway, of course WAR doesn'
 - Washington Secretary of State, [History of WA State Primaries](https://www.sos.wa.gov/elections/data-research/history-laws-and-litigation/history-washington-state-primary).
 - Washington Secretary of State, [Past Election Results](https://www.sos.wa.gov/elections/data-research/election-data-and-maps/election-results-and-voters-pamphlets).
 - Ballotpedia, [Congressional Special Elections since 1987](https://ballotpedia.org/U.S._Congress_special_elections_historical_data,_1987-2024).
+- MIT Elections Lab, [U.S. House 1976-2024](https://electionlab.mit.edu/data).
 - Gallup, [Presidential Approval Ratings Before 2026](https://news.gallup.com/poll/116677/presidential-approval-ratings-gallup-historical-statistics-trends.aspx).
 - Nate Silver, [Trump Approval Rating 2026](https://www.natesilver.net/p/trump-approval-ratings-nate-silver-bulletin).
-- Split Ticket, [Wins Above Replacement Database](https://split-ticket.org/full-wins-above-replacement-war-database/)
+- Split Ticket, [Wins Above Replacement Database](https://split-ticket.org/full-wins-above-replacement-war-database/).
 - Too much from Wikipedia to count, but [VA elections](https://en.wikipedia.org/wiki/Elections_in_Virginia) and [NJ elections](https://en.wikipedia.org/wiki/Elections_in_New_Jersey).
 
 (WWU = Western Washington University. Something about Washington, I guess.)
