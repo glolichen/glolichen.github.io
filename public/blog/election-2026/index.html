@@ -56,7 +56,7 @@
 
 <main>
 	<h2 id="introduction">Introduction</h2>
-<p><strong>TLDR: Generic ballot D+8.53, House D236-R199.</strong> <a href="#results">Jump to results</a></p>
+<p><strong>TLDR: Generic ballot D+8.53, House D233-R202.</strong> <a href="#results">Jump to results</a></p>
 <p>We will create a simple model to predict the <em>generic ballot</em> for the 2026 US midterm elections. Much has been said about polls and how they&rsquo;re unreliable; overall, polls are pretty good and are themselves evolving into models in of themselves (sampling, weighting, demographics, response rate, etc). In recent memory (to my knowledge) polls have been wrong in <em>both</em> directions (D-biased meaning overestimating democrats, and vice versa):</p>
 <details>
 <summary>Poll bias</summary>
@@ -305,7 +305,8 @@ S+NJ+VA+WA: D+5.86, RMSE 11.716, MAE 7.751
 </ul>
 <p>Of course, the biggest limitation: <u><strong>historical trends hold, until they don&rsquo;t</strong></u>. This model is, by its design, entirely based on historical data. The 2024 Washington primary <a href="https://split-ticket.org/2024/08/22/a-very-detailed-examination-of-the-washington-primary/">suggested</a> a 2% improvement for Democrats from 2020, which obviously did not happen. I would not be surprised at all if I am somewhat or totally wrong, as the only constant in politics is change.</p>
 <h2 id="seat-by-seat-predictions">Seat-by-Seat Predictions</h2>
-<p>Here is a uniform-swing prediction of each seat in the House of Representatives (post-redistricting) using nothing but generic ballot (predicted as D+8.53) and <a href="https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index">Cook PVI from Wikipedia</a>. I am comparing the generic ballot to a district&rsquo;s partisanship, and ignoring everything like candidate quality, localized swings, etc, so this will almost certainly be wrong!</p>
+<p>Don&rsquo;t take these too seriously.</p>
+<p>Here is a uniform-swing prediction of each seat in the House of Representatives (post-redistricting) with the generic ballot (predicted as D+8.53) and <a href="https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index">Cook PVI from Wikipedia</a>. We do adjust for candidate quality, but in a very naive way.</p>
 <p>With the same sign convention as throughout the article (\(+\) for D, \(-\) for R): let \(C\) be the Cook PVI of a seat and let \(N_D,N_R\) be the &ldquo;national popular vote&rdquo; share for Democrats and Republicans, respectively (for president when calculating CPVI, but national House generic ballot for our purposes). Let \(D,R\) be the Democratic and Republican vote share of this district. Assuming there are only votes for Democrats and Republicans: we have \(R=1-D\). The generic ballot margin is \(M_N=N_D-N_R\).
 </p>
 \[
@@ -316,19 +317,28 @@ Let \(M_\text{seat}\) be the margin of this seat:
 \[
 M_\text{seat}
 =D-R
-=(N_D+C)-(N_R+C)
+=(N_D+C)-(N_R-C)
 =(N_D-N_R)+2C
 =M_N+2C
 \]<p>
-The Democrats will win a seat if and only if \(M_\text{seat}>0\) (suppose there are no ties):
+To quantify candidate quality, add an &ldquo;over/underperformance&rdquo; term. This is the delta between the presidential margin in a district and the House election margin (in percentage points, not raw votes). We exclude retiring or defeated incumbents, new seats from redistricting. Note that we do not know whether the performance gap is due to the candidate being good/bad, or the opposing candidate being bad/good. We also exclude freshmen (first term representatives) for this reason. <a href="https://split-ticket.org/2025/01/15/our-2024-wins-above-replacement-war-models/">&ldquo;Incumbents tended to keep roughly half of their overperformance&rdquo;</a> according to Split Ticket, so we scale this factor by \(0.5\).
+</p>
+\[
+M_\text{seat}'=M_N+2C+\begin{cases}
+ 0 & \text{open/retiring/freshman} \\
+ 0.5(H_{2024}-\text{PVI}) & \text{otherwise}
+\end{cases}
+\]<p>
+Where \(H_{2024}\) is the D minus R percentage point margin in the 2024 House election. The \(\text{PVI}\) is as we calculated before: \(0.75P_{2024}+0.25P_{2020}\). It is not Cook PVI, but it is similar. For brevity, let \(O\) be the overperformance (piecewise) term.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>The Democrats will win a seat if and only if \(M_\text{seat}>0\) (suppose there are no ties):
 </p>
 \[
 \text{D Win}
-\iff M_\text{seat}=M_N+2C>0
-\iff M_N>-2C
+\iff M_\text{seat}'=\boxed{M_N+2C+O>0}
+\iff M_N>-2C-O
 \]<p>
-For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national generic ballot of greater (more Democratic) than \(-(-4)=+8\), i.e. D+8 or more.</p>
-<p>The predicted margin \(M\) is a seat&rsquo;s CPVI (\(+\) for Democratic, \(-\) for Republican) plus \(+8.53\). Sort into tilt/lean/likely/safe as follows:</p>
+For example, assuming no overperformance, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national generic ballot of greater (more Democratic) than \(-(-4)=+8\), i.e. D+8 or more.</p>
+<p>The predicted margin \(M=8.53+2C+O\) is a seat&rsquo;s CPVI (\(+\) for Democratic, \(-\) for Republican) plus \(+8.53\) and the candidate quality term if applicable. Sort into tilt/lean/likely/safe as follows:</p>
 <ul>
 <li>\(0 < M \leq 2\): Tilt.</li>
 <li>\(2 < M \leq 5\): Lean.</li>
@@ -336,8 +346,8 @@ For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national ge
 <li>\(M > 12\): Safe.</li>
 </ul>
 <p><img src="/images/2026-house.png" alt="House predictions"></p>
-<p>I think this is actually somewhat reasonable. There are some seats that I think are wrong (NC-01, NY-01, TX-15, MO-05, NJ-02, Ohio and Colorado), but especially: OH-10 (Mike Turner won by a lot more than the presidential margin) and PA-01 (Fitzpatrick is a strong overperformer). The tilt seats are extremely close so they all could go either way.</p>
-<p>Overall, though, I think it&rsquo;s as good as it gets for a uniform swing model. You can compare it to the <a href="https://www.racetothewh.com/house">RaceToTheWH</a> and <a href="https://www.theargumentmag.com/p/split-ticket-2026-midterms-model">Split Ticket</a> forecasts.</p>
+<p>I think this is actually somewhat reasonable. You can compare it to the <a href="https://www.racetothewh.com/house">RaceToTheWH</a>, <a href="https://fiftyplusone.news/forecast/house">FiftyPlusOne</a> and <a href="https://www.theargumentmag.com/p/split-ticket-2026-midterms-model">Split Ticket</a> forecasts.</p>
+<p>Note on data below: Cook does not publish CPVI with decimal places, so the margin values are somewhat imprecise as a result.</p>
 <details>
 <summary>Seat flips</summary>
 <p><u>Underlined</u> incumbents retiring. Seats marked by * affected by redistricting.</p>
@@ -353,196 +363,154 @@ For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national ge
 	</thead>
 	<tbody>
 			<tr>
-					<td style="text-align: center">AL-02 *</td>
+					<td style="text-align: center">AL-2 *</td>
 					<td style="text-align: center">Figures</td>
 					<td style="text-align: center">D</td>
 					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+5</td>
+					<td style="text-align: center">R+5.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">AZ-01</td>
+					<td style="text-align: center">AZ-1</td>
 					<td style="text-align: center"><u>Schweikert</u></td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+6</td>
+					<td style="text-align: center">D+6.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">AZ-06</td>
+					<td style="text-align: center">AZ-6</td>
 					<td style="text-align: center">Ciscomani</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+8</td>
+					<td style="text-align: center">D+7.6</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">CA-01 *</td>
+					<td style="text-align: center">CA-1 *</td>
 					<td style="text-align: center">Gallagher</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+22</td>
+					<td style="text-align: center">D+22.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">CA-06 *</td>
+					<td style="text-align: center">CA-6 *</td>
 					<td style="text-align: center">Kiley¹</td>
-					<td style="text-align: center">I(R)</td>
+					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+20</td>
+					<td style="text-align: center">D+16.4</td>
 			</tr>
 			<tr>
 					<td style="text-align: center">CA-22 *</td>
 					<td style="text-align: center">Valadao</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+10</td>
+					<td style="text-align: center">D+7.7</td>
 			</tr>
 			<tr>
 					<td style="text-align: center">CA-41 *</td>
 					<td style="text-align: center"><u>Calvert</u>²</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+26</td>
+					<td style="text-align: center">D+27.2</td>
 			</tr>
 			<tr>
 					<td style="text-align: center">CA-48 *</td>
 					<td style="text-align: center"><u>Issa</u></td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+12</td>
+					<td style="text-align: center">D+12.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">CO-08</td>
+					<td style="text-align: center">CO-8</td>
 					<td style="text-align: center">Evans</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+8</td>
+					<td style="text-align: center">D+8.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">FL-09 *</td>
+					<td style="text-align: center">FL-9 *</td>
 					<td style="text-align: center">Soto</td>
 					<td style="text-align: center">D</td>
 					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+7</td>
+					<td style="text-align: center">R+4.4</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">IA-01</td>
+					<td style="text-align: center">IA-1</td>
 					<td style="text-align: center">Miller-Meeks</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+0.5</td>
+					<td style="text-align: center">D+4.2</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">IA-02</td>
+					<td style="text-align: center">IA-2</td>
 					<td style="text-align: center"><u>Hinson</u></td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
 					<td style="text-align: center">D+0.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">IA-03</td>
+					<td style="text-align: center">IA-3</td>
 					<td style="text-align: center">Nunn</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+4</td>
+					<td style="text-align: center">D+4.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">LA-06 *</td>
-					<td style="text-align: center">Fields</td>
+					<td style="text-align: center">LA-6 *</td>
+					<td style="text-align: center"><u>Fields</u></td>
 					<td style="text-align: center">D</td>
 					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+23</td>
+					<td style="text-align: center">R+23.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">MI-04</td>
-					<td style="text-align: center">Huizenga</td>
-					<td style="text-align: center">R</td>
-					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+2</td>
-			</tr>
-			<tr>
-					<td style="text-align: center">MI-07</td>
+					<td style="text-align: center">MI-7</td>
 					<td style="text-align: center">Barrett</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+8</td>
+					<td style="text-align: center">D+8.5</td>
 			</tr>
 			<tr>
 					<td style="text-align: center">MI-10</td>
 					<td style="text-align: center"><u>James</u></td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+2</td>
+					<td style="text-align: center">D+2.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">MO-02</td>
-					<td style="text-align: center">Wagner</td>
-					<td style="text-align: center">R</td>
-					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+0.5</td>
-			</tr>
-			<tr>
-					<td style="text-align: center">NE-02</td>
+					<td style="text-align: center">NE-2</td>
 					<td style="text-align: center"><u>Bacon</u></td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+14</td>
+					<td style="text-align: center">D+14.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">NJ-07</td>
+					<td style="text-align: center">NJ-7</td>
 					<td style="text-align: center">Kean</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+8</td>
-			</tr>
-			<tr>
-					<td style="text-align: center">NY-01</td>
-					<td style="text-align: center">LaLota</td>
-					<td style="text-align: center">R</td>
-					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+0.5</td>
+					<td style="text-align: center">D+6.1</td>
 			</tr>
 			<tr>
 					<td style="text-align: center">NY-17</td>
 					<td style="text-align: center">Lawler</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+10</td>
+					<td style="text-align: center">D+6.7</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">NC-01 *</td>
-					<td style="text-align: center">Davis</td>
-					<td style="text-align: center">D</td>
-					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+1</td>
-			</tr>
-			<tr>
-					<td style="text-align: center">OH-09 *</td>
-					<td style="text-align: center">Kaptur</td>
-					<td style="text-align: center">D</td>
-					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+1</td>
-			</tr>
-			<tr>
-					<td style="text-align: center">OH-10 *</td>
-					<td style="text-align: center">Turner</td>
-					<td style="text-align: center">R</td>
-					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+0.5</td>
-			</tr>
-			<tr>
-					<td style="text-align: center">PA-01</td>
+					<td style="text-align: center">PA-1</td>
 					<td style="text-align: center">Fitzpatrick</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+10</td>
+					<td style="text-align: center">D+3.4</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">PA-07</td>
+					<td style="text-align: center">PA-7</td>
 					<td style="text-align: center">Mackenzie</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+6</td>
+					<td style="text-align: center">D+6.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">PA-08</td>
+					<td style="text-align: center">PA-8</td>
 					<td style="text-align: center">Bresnahan</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
@@ -553,77 +521,285 @@ For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national ge
 					<td style="text-align: center">Perry</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+2</td>
+					<td style="text-align: center">D+4.3</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">TN-09 *</td>
+					<td style="text-align: center">TN-9 *</td>
 					<td style="text-align: center"><u>Cohen</u></td>
 					<td style="text-align: center">D</td>
 					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+9</td>
+					<td style="text-align: center">R+9.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">TX-09 *</td>
+					<td style="text-align: center">TX-9 *</td>
 					<td style="text-align: center"><em>None</em>³</td>
 					<td style="text-align: center">D</td>
 					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+9</td>
+					<td style="text-align: center">R+9.5</td>
 			</tr>
 			<tr>
 					<td style="text-align: center">TX-32 *</td>
 					<td style="text-align: center"><em>None</em>³</td>
 					<td style="text-align: center">D</td>
 					<td style="text-align: center">R</td>
-					<td style="text-align: center">R+7</td>
+					<td style="text-align: center">R+7.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">UT-01 *</td>
+					<td style="text-align: center">UT-1 *</td>
 					<td style="text-align: center"><em>None</em>³</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+32</td>
+					<td style="text-align: center">D+32.5</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">VA-01</td>
-					<td style="text-align: center">Wittman</td>
-					<td style="text-align: center">R</td>
-					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+2</td>
-			</tr>
-			<tr>
-					<td style="text-align: center">VA-02</td>
+					<td style="text-align: center">VA-2</td>
 					<td style="text-align: center">Kiggans</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+8</td>
+					<td style="text-align: center">D+6.4</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">WI-01</td>
+					<td style="text-align: center">WI-1</td>
 					<td style="text-align: center">Steil</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+4</td>
+					<td style="text-align: center">D+1.6</td>
 			</tr>
 			<tr>
-					<td style="text-align: center">WI-03</td>
+					<td style="text-align: center">WI-3</td>
 					<td style="text-align: center">Van Orden</td>
 					<td style="text-align: center">R</td>
 					<td style="text-align: center">D</td>
-					<td style="text-align: center">D+2</td>
+					<td style="text-align: center">D+4.3</td>
 			</tr>
 	</tbody>
 </table>
 <p>¹ Redistricted from CA-03.
 ² Running in CA-40.
 ³ Open seat due to redistricting.</p>
-<p>Margins are not precise as I only got PVI without decimal places. I probably got the redistricting mixed up somewhere, especially California.</p>
 </details>
-<p>Take these this with a grain of salt. Uniform national swing like this is not a good way of predicting the House as the <a href="#limitations">limitations</a>, specifically the localized effects, are even more pronounced.</p>
-<p>This is even worse at predicting the Senate, as candidate quality, localized effects, state-specific factors, etc are all have a greater effect on statewide races than House races. Here is a prediction anyway.</p>
+<p>Here are all seats colored &ldquo;tilt&rdquo; for either party, i.e. within 2 points. These could go either way on election day.</p>
+<details>
+<summary>Tilt/close seats</summary>
+<p>* denotes incumbent. Ordered by margin.</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">Seat</th>
+					<th style="text-align: center">D Candidate</th>
+					<th style="text-align: center">R Candidate</th>
+					<th style="text-align: center">Margin</th>
+					<th></th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">OH-9</td>
+					<td style="text-align: center">Kaptur*</td>
+					<td style="text-align: center">Merrin</td>
+					<td style="text-align: center">D+1.8</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">WI-1</td>
+					<td style="text-align: center">Berman</td>
+					<td style="text-align: center">Steil*</td>
+					<td style="text-align: center">D+1.6</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">FL-22</td>
+					<td style="text-align: center">Dandiya</td>
+					<td style="text-align: center">Askar</td>
+					<td style="text-align: center">D+0.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">IA-2</td>
+					<td style="text-align: center">James</td>
+					<td style="text-align: center">Mitchell</td>
+					<td style="text-align: center">D+0.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">ME-2</td>
+					<td style="text-align: center">Dunlap</td>
+					<td style="text-align: center">LePage</td>
+					<td style="text-align: center">D+0.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">PA-8</td>
+					<td style="text-align: center">Cognetti</td>
+					<td style="text-align: center">Bresnahan*</td>
+					<td style="text-align: center">D+0.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">TX-35</td>
+					<td style="text-align: center">Garcia</td>
+					<td style="text-align: center">De La Cruz</td>
+					<td style="text-align: center">D+0.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NC-1</td>
+					<td style="text-align: center">Davis*</td>
+					<td style="text-align: center">Buckhout</td>
+					<td style="text-align: center">D+0.4</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MI-4</td>
+					<td style="text-align: center">McCann</td>
+					<td style="text-align: center">Huizenga*</td>
+					<td style="text-align: center">R+0.6</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NY-1</td>
+					<td style="text-align: center">Gallant</td>
+					<td style="text-align: center">LaLota*</td>
+					<td style="text-align: center">R+1.0</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">VA-1</td>
+					<td style="text-align: center">Taylor</td>
+					<td style="text-align: center">Wittman*</td>
+					<td style="text-align: center">R+1.2</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CO-3</td>
+					<td style="text-align: center">Romero</td>
+					<td style="text-align: center">Hurd*</td>
+					<td style="text-align: center">R+1.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">CO-5¹</td>
+					<td style="text-align: center">Killin</td>
+					<td style="text-align: center">Crank*</td>
+					<td style="text-align: center">R+1.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">FL-7</td>
+					<td style="text-align: center">Dalton</td>
+					<td style="text-align: center">Elijah</td>
+					<td style="text-align: center">R+1.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MO-2</td>
+					<td style="text-align: center">Wellman</td>
+					<td style="text-align: center">Wagner*</td>
+					<td style="text-align: center">R+1.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MT-1</td>
+					<td style="text-align: center">Forstag</td>
+					<td style="text-align: center">Flint</td>
+					<td style="text-align: center">R+1.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">NC-11</td>
+					<td style="text-align: center">Adams</td>
+					<td style="text-align: center">Codiga</td>
+					<td style="text-align: center">R+1.5</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td style="text-align: center">WA-5</td>
+					<td style="text-align: center">Conroy</td>
+					<td style="text-align: center">Baumgartner*</td>
+					<td style="text-align: center">R+1.5</td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+<p>¹ I can&rsquo;t be the only one to find both the names of both candidates amusing.</p>
+</details>
+<p>Republicans will win the house R218-D217 with a generic ballot of D+4.3 (mostly a result of gerrymandering, coalition efficiency gaps, etc), according to this model. I won&rsquo;t be too rigorous here, but because the best model before had a \(\text{RMSE}\) of \(1.079\), we can interpret the generic ballot \(X\) as following a normal distribution with mean \(\mu=+8.53\) and standard deviation \(\sigma=1.079\), since there are error/residuals in our model. (Standard deviation is the \(\text{RMSE}\) of the difference to the mean \(e_i-\overline e\).) Using the cumulative distribution function of a normal distribution, the probability that the generic ballot is exactly or below D+4.3 is:
+\begin{align}
+\DeclareMathOperator\erf{erf} P(X\leq+4.3)
+&amp;=\frac12 \left( 1+\erf\left(\frac{x-\mu}{\sigma\sqrt2}\right) \right) \\\
+&amp;=\frac12 \left( 1+\erf\left(\frac{4.3-8.53}{1.079\sqrt2}\right) \right) \\\
+&amp;=0.0000442
+\end{align}
+The probability that Republicans win the House is: \(0.00442\%\), or around a \(1\) in \(22600\).</p>
+<p>Take these predictions this with a grain of salt. Uniform national swing like this is not a good way of predicting the House as the <a href="#limitations">limitations</a>, specifically the localized effects, are even more pronounced. While we have somewhat adjusted for candidate, we have only done so by 2024 historical data. We have no information on electoral newcomers (something you would get from polling). Our candidate quality model is also not as sophisticated as, for example, <a href="https://split-ticket.org/full-wins-above-replacement-war-database/">Split Ticket WAR</a>.</p>
+<p>This is even worse at predicting the Senate, as candidate quality, localized effects, state-specific factors, etc are all have a greater effect on statewide races than House races. Here is a prediction anyway, but I will cheat a bit and adjust the generic ballot/CPVI model with the aforementioned Split Ticket WAR.</p>
 <details>
 <summary>Senate</summary>
+Again, we use the formula:
+\[
+M_\text{seat}=M_N+2C+0.5\cdot\text{WAR}
+\]
+If neither candidate has a WAR rating (never run for Congress before), \(\text{WAR}=0\). If both candidates have WAR ratings, *add* them (not average). 
 <p><img src="/images/2026-senate.png" alt="Senate predictions"></p>
-<p>This is actually consistent with where analysis of the Senate race is right now. The Lean R states of Iowa, Texas, Alaska, Ohio are the current battlegrounds, and a good/bad candidate and some localized trends give Democrats a chance to win. I&rsquo;m would not rate New Hampshire and especially Maine as Safe D, but the model only considers generic ballot and in that case it would make sense.</p>
+<p>This came down to Sherrod Brown (D-OH) and Mary Peltola&rsquo;s (D-AK) overperformances in 2024 (WAR D+4.6, D+9.1, respectively). Susan Collins&rsquo;s (R-ME) overperformance in 2020 (WAR R+12.5) was not enough against Maine&rsquo;s partisanship and the generic ballot.</p>
+<p>We are missing WAR on some fairly important candidates in somewhat competitive states, including but not limited to (underlined means we have WAR):</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">State</th>
+					<th style="text-align: center">D Candidate</th>
+					<th style="text-align: center">R Candidate</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">Florida</td>
+					<td style="text-align: center">Angie Nixon</td>
+					<td style="text-align: center">Ashley Moody</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Texas</td>
+					<td style="text-align: center">Ken Paxton</td>
+					<td style="text-align: center">James Talarico</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Minnesota</td>
+					<td style="text-align: center">Peggy Flanagan</td>
+					<td style="text-align: center">Michelle Tafoya</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Maine</td>
+					<td style="text-align: center">Troy Jackson</td>
+					<td style="text-align: center">*</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Ohio</td>
+					<td style="text-align: center">*</td>
+					<td style="text-align: center">Jon Husted</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Michigan</td>
+					<td style="text-align: center">Abdul El-Sayed</td>
+					<td style="text-align: center">*</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Kansas</td>
+					<td style="text-align: center">Adam Hamilton</td>
+					<td style="text-align: center">*</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">Iowa</td>
+					<td style="text-align: center">Josh Turek</td>
+					<td style="text-align: center">*</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">New Hampshire</td>
+					<td style="text-align: center">*</td>
+					<td style="text-align: center">Chris Sununu</td>
+			</tr>
+	</tbody>
+</table>
+<p>It would help our accuracy greatly if we had these. Anyway, of course WAR doesn&rsquo;t capture the full picture, and they were calculated from 2 or 6 years ago so may not be entirely accurate. I think it&rsquo;s still a reasonable prediction and consistent with the &ldquo;analysis&rdquo; (punditry) on the Senate right now.</p>
 </details>
 <h2 id="sources">Sources</h2>
 <ul>
@@ -637,6 +813,7 @@ For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national ge
 <li>Ballotpedia, <a href="https://ballotpedia.org/U.S._Congress_special_elections_historical_data,_1987-2024">Congressional Special Elections since 1987</a>.</li>
 <li>Gallup, <a href="https://news.gallup.com/poll/116677/presidential-approval-ratings-gallup-historical-statistics-trends.aspx">Presidential Approval Ratings Before 2026</a>.</li>
 <li>Nate Silver, <a href="https://www.natesilver.net/p/trump-approval-ratings-nate-silver-bulletin">Trump Approval Rating 2026</a>.</li>
+<li>Split Ticket, <a href="https://split-ticket.org/full-wins-above-replacement-war-database/">Wins Above Replacement Database</a></li>
 <li>Too much from Wikipedia to count, but <a href="https://en.wikipedia.org/wiki/Elections_in_Virginia">VA elections</a> and <a href="https://en.wikipedia.org/wiki/Elections_in_New_Jersey">NJ elections</a>.</li>
 </ul>
 <p>(WWU = Western Washington University. Something about Washington, I guess.)</p>
@@ -645,6 +822,9 @@ For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national ge
 <ol>
 <li id="fn:1">
 <p>Yeah, I forgot to update the publication date from 10/5.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>If you&rsquo;re wondering why we use Cook PVI sometimes and why we use the custom \(\text{PVI}\) elsewhere: it is because I cannot find 2020 presidential election data on 2026 congressional districts, so I had to resort to the calculated Cook PVI values.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>

@@ -8,7 +8,7 @@ params:
 
 ## Introduction
 
-**TLDR: Generic ballot D+8.53, House D236-R199.** [Jump to results](#results)
+**TLDR: Generic ballot D+8.53, House D233-R202.** [Jump to results](#results)
 
 We will create a simple model to predict the *generic ballot* for the 2026 US midterm elections. Much has been said about polls and how they're unreliable; overall, polls are pretty good and are themselves evolving into models in of themselves (sampling, weighting, demographics, response rate, etc). In recent memory (to my knowledge) polls have been wrong in *both* directions (D-biased meaning overestimating democrats, and vice versa):
 <details>
@@ -197,7 +197,9 @@ Of course, the biggest limitation: <u>**historical trends hold, until they don't
 
 ## Seat-by-Seat Predictions
 
-Here is a uniform-swing prediction of each seat in the House of Representatives (post-redistricting) using nothing but generic ballot (predicted as D+8.53) and [Cook PVI from Wikipedia](https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index). I am comparing the generic ballot to a district's partisanship, and ignoring everything like candidate quality, localized swings, etc, so this will almost certainly be wrong!
+Don't take these too seriously.
+
+Here is a uniform-swing prediction of each seat in the House of Representatives (post-redistricting) with the generic ballot (predicted as D+8.53) and [Cook PVI from Wikipedia](https://en.wikipedia.org/wiki/Cook_Partisan_Voting_Index). We do adjust for candidate quality, but in a very naive way.
 
 With the same sign convention as throughout the article (\(+\) for D, \(-\) for R): let \(C\) be the Cook PVI of a seat and let \(N_D,N_R\) be the "national popular vote" share for Democrats and Republicans, respectively (for president when calculating CPVI, but national House generic ballot for our purposes). Let \(D,R\) be the Democratic and Republican vote share of this district. Assuming there are only votes for Democrats and Republicans: we have \(R=1-D\). The generic ballot margin is \(M_N=N_D-N_R\).
 \[
@@ -207,19 +209,30 @@ Let \(M_\text{seat}\) be the margin of this seat:
 \[
 M_\text{seat}
 =D-R
-=(N_D+C)-(N_R+C)
+=(N_D+C)-(N_R-C)
 =(N_D-N_R)+2C
 =M_N+2C
 \]
+To quantify candidate quality, add an "over/underperformance" term. This is the delta between the presidential margin in a district and the House election margin (in percentage points, not raw votes). We exclude retiring or defeated incumbents, new seats from redistricting. Note that we do not know whether the performance gap is due to the candidate being good/bad, or the opposing candidate being bad/good. We also exclude freshmen (first term representatives) for this reason. ["Incumbents tended to keep roughly half of their overperformance"](https://split-ticket.org/2025/01/15/our-2024-wins-above-replacement-war-models/) according to Split Ticket, so we scale this factor by \(0.5\).
+\[
+M_\text{seat}'=M_N+2C+\begin{cases}
+ 0 & \text{open/retiring/freshman} \\
+ 0.5(H_{2024}-\text{PVI}) & \text{otherwise}
+\end{cases}
+\]
+Where \(H_{2024}\) is the D minus R percentage point margin in the 2024 House election. The \(\text{PVI}\) is as we calculated before: \(0.75P_{2024}+0.25P_{2020}\). It is not Cook PVI, but it is similar. For brevity, let \(O\) be the overperformance (piecewise) term.[^2]
+
+[^2]: If you're wondering why we use Cook PVI sometimes and why we use the custom \(\text{PVI}\) elsewhere: it is because I cannot find 2020 presidential election data on 2026 congressional districts, so I had to resort to the calculated Cook PVI values.
+
 The Democrats will win a seat if and only if \(M_\text{seat}>0\) (suppose there are no ties):
 \[
 \text{D Win}
-\iff M_\text{seat}=M_N+2C>0
-\iff M_N>-2C
+\iff M_\text{seat}'=\boxed{M_N+2C+O>0}
+\iff M_N>-2C-O
 \]
-For example, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national generic ballot of greater (more Democratic) than \(-(-4)=+8\), i.e. D+8 or more.
+For example, assuming no overperformance, suppose a seat has CPVI R+4, or \(-4\). Then it takes a national generic ballot of greater (more Democratic) than \(-(-4)=+8\), i.e. D+8 or more.
 
-The predicted margin \(M\) is a seat's CPVI (\(+\) for Democratic, \(-\) for Republican) plus \(+8.53\). Sort into tilt/lean/likely/safe as follows:
+The predicted margin \(M=8.53+2C+O\) is a seat's CPVI (\(+\) for Democratic, \(-\) for Republican) plus \(+8.53\) and the candidate quality term if applicable. Sort into tilt/lean/likely/safe as follows:
  - \(0 < M \leq 2\): Tilt.
  - \(2 < M \leq 5\): Lean.
  - \(5 < M \leq 12\): Likely.
@@ -227,9 +240,9 @@ The predicted margin \(M\) is a seat's CPVI (\(+\) for Democratic, \(-\) for Rep
 
 ![House predictions](/images/2026-house.png)
 
-I think this is actually somewhat reasonable. There are some seats that I think are wrong (NC-01, NY-01, TX-15, MO-05, NJ-02, Ohio and Colorado), but especially: OH-10 (Mike Turner won by a lot more than the presidential margin) and PA-01 (Fitzpatrick is a strong overperformer). The tilt seats are extremely close so they all could go either way.
+I think this is actually somewhat reasonable. You can compare it to the [RaceToTheWH](https://www.racetothewh.com/house), [FiftyPlusOne](https://fiftyplusone.news/forecast/house) and [Split Ticket](https://www.theargumentmag.com/p/split-ticket-2026-midterms-model) forecasts.
 
-Overall, though, I think it's as good as it gets for a uniform swing model. You can compare it to the [RaceToTheWH](https://www.racetothewh.com/house) and [Split Ticket](https://www.theargumentmag.com/p/split-ticket-2026-midterms-model) forecasts.
+Note on data below: Cook does not publish CPVI with decimal places, so the margin values are somewhat imprecise as a result.
 
 <details>
 <summary>Seat flips</summary>
@@ -238,62 +251,112 @@ Overall, though, I think it's as good as it gets for a uniform swing model. You 
 
 |Seat|Incumbent|Before|After|Margin|
 |:-:|:-:|:-:|:-:|:-:|
-|AL-02 *|Figures|D|R|R+5|
-|AZ-01|<u>Schweikert</u>|R|D|D+6|
-|AZ-06|Ciscomani|R|D|D+8|
-|CA-01 *|Gallagher|R|D|D+22|
-|CA-06 *|Kiley¹|I(R)|D|D+20|
-|CA-22 *|Valadao|R|D|D+10|
-|CA-41 *|<u>Calvert</u>²|R|D|D+26|
-|CA-48 *|<u>Issa</u>|R|D|D+12|
-|CO-08|Evans|R|D|D+8|
-|FL-09 *|Soto|D|R|R+7|
-|IA-01|Miller-Meeks|R|D|D+0.5|
-|IA-02|<u>Hinson</u>|R|D|D+0.5|
-|IA-03|Nunn|R|D|D+4|
-|LA-06 *|Fields|D|R|R+23|
-|MI-04|Huizenga|R|D|D+2|
-|MI-07|Barrett|R|D|D+8|
-|MI-10|<u>James</u>|R|D|D+2|
-|MO-02|Wagner|R|D|D+0.5|
-|NE-02|<u>Bacon</u>|R|D|D+14|
-|NJ-07|Kean|R|D|D+8|
-|NY-01|LaLota|R|D|D+0.5|
-|NY-17|Lawler|R|D|D+10|
-|NC-01 *|Davis|D|R|R+1|
-|OH-09 *|Kaptur|D|R|R+1|
-|OH-10 *|Turner|R|D|D+0.5|
-|PA-01|Fitzpatrick|R|D|D+10|
-|PA-07|Mackenzie|R|D|D+6|
-|PA-08|Bresnahan|R|D|D+0.5|
-|PA-10|Perry|R|D|D+2|
-|TN-09 *|<u>Cohen</u>|D|R|R+9|
-|TX-09 *|*None*³|D|R|R+9|
-|TX-32 *|*None*³|D|R|R+7|
-|UT-01 *|*None*³|R|D|D+32|
-|VA-01|Wittman|R|D|D+2|
-|VA-02|Kiggans|R|D|D+8|
-|WI-01|Steil|R|D|D+4|
-|WI-03|Van Orden|R|D|D+2|
-
+|AL-2 *| Figures  |D|R|R+5.5|
+|AZ-1|  <u>Schweikert</u>  |R|D|D+6.5|
+|AZ-6|  Ciscomani |R|D|D+7.6|
+|CA-1 *| Gallagher  |R|D|D+22.5|
+|CA-6 *|  Kiley¹  |R|D|D+16.4|
+|CA-22 *|  Valadao |R|D|D+7.7|
+|CA-41 *|  <u>Calvert</u>²  |R|D|D+27.2|
+|CA-48 *|  <u>Issa</u>  |R|D|D+12.5|
+|CO-8|Evans   |R|D|D+8.5|
+|FL-9 *|Soto   |D|R|R+4.4|
+|IA-1|Miller-Meeks   |R|D|D+4.2|
+|IA-2|  <u>Hinson</u>  |R|D|D+0.5|
+|IA-3| Nunn  |R|D|D+4.5|
+|LA-6 *|  <u>Fields</u>  |D|R|R+23.5|
+|MI-7|  Barrett  |R|D|D+8.5|
+|MI-10|  <u>James</u>  |R|D|D+2.5|
+|NE-2|  <u>Bacon</u>  |R|D|D+14.5|
+|NJ-7|  Kean |R|D|D+6.1|
+|NY-17| Lawler  |R|D|D+6.7|
+|PA-1|  Fitzpatrick |R|D|D+3.4|
+|PA-7| Mackenzie  |R|D|D+6.5|
+|PA-8| Bresnahan  |R|D|D+0.5|
+|PA-10| Perry  |R|D|D+4.3|
+|TN-9 *|  <u>Cohen</u>  |D|R|R+9.5|
+|TX-9 *|  *None*³  |D|R|R+9.5|
+|TX-32 *|  *None*³  |D|R|R+7.5|
+|UT-1 *|  *None*³  |R|D|D+32.5|
+|VA-2|  Kiggans  |R|D|D+6.4|
+|WI-1|  Steil  |R|D|D+1.6|
+|WI-3| Van Orden  |R|D|D+4.3|
 
 ¹ Redistricted from CA-03.
 ² Running in CA-40.
 ³ Open seat due to redistricting.
-
-Margins are not precise as I only got PVI without decimal places. I probably got the redistricting mixed up somewhere, especially California.
 </details>
 
-Take these this with a grain of salt. Uniform national swing like this is not a good way of predicting the House as the [limitations](#limitations), specifically the localized effects, are even more pronounced.
+Here are all seats colored "tilt" for either party, i.e. within 2 points. These could go either way on election day.
+<details>
+<summary>Tilt/close seats</summary>
 
-This is even worse at predicting the Senate, as candidate quality, localized effects, state-specific factors, etc are all have a greater effect on statewide races than House races. Here is a prediction anyway.
+\* denotes incumbent. Ordered by margin.
+
+|Seat|D Candidate|R Candidate|Margin|
+|:-:|:-:|:-:|:-:|:-:|
+|OH-9|Kaptur*|Merrin|D+1.8|
+|WI-1|Berman|Steil*|D+1.6|
+|FL-22|Dandiya|Askar|D+0.5|
+|IA-2|James|Mitchell|D+0.5|
+|ME-2|Dunlap|LePage|D+0.5|
+|PA-8|Cognetti|Bresnahan*|D+0.5|
+|TX-35|Garcia|De La Cruz|D+0.5|
+|NC-1|Davis*|Buckhout|D+0.4|
+|MI-4|McCann|Huizenga*|R+0.6|
+|NY-1|Gallant|LaLota*|R+1.0|
+|VA-1|Taylor|Wittman*|R+1.2|
+|CO-3|Romero|Hurd*|R+1.5|
+|CO-5¹|Killin|Crank*|R+1.5|
+|FL-7|Dalton|Elijah|R+1.5|
+|MO-2|Wellman|Wagner*|R+1.5|
+|MT-1|Forstag|Flint|R+1.5|
+|NC-11|Adams|Codiga|R+1.5|
+|WA-5|Conroy|Baumgartner*|R+1.5|
+
+¹ I can't be the only one to find both the names of both candidates amusing.
+</details>
+
+Republicans will win the house R218-D217 with a generic ballot of D+4.3 (mostly a result of gerrymandering, coalition efficiency gaps, etc), according to this model. I won't be too rigorous here, but because the best model before had a \(\text{RMSE}\) of \(1.079\), we can interpret the generic ballot \(X\) as following a normal distribution with mean \(\mu=+8.53\) and standard deviation \(\sigma=1.079\), since there are error/residuals in our model. (Standard deviation is the \(\text{RMSE}\) of the difference to the mean \(e_i-\overline e\).) Using the cumulative distribution function of a normal distribution, the probability that the generic ballot is exactly or below D+4.3 is:
+\begin{align}
+    \DeclareMathOperator\erf{erf} P(X\leq+4.3)
+    &=\frac12 \left( 1+\erf\left(\frac{x-\mu}{\sigma\sqrt2}\right) \right) \\\\\\
+    &=\frac12 \left( 1+\erf\left(\frac{4.3-8.53}{1.079\sqrt2}\right) \right) \\\\\\
+    &=0.0000442
+\end{align}
+The probability that Republicans win the House is: \(0.00442\%\), or around a \(1\) in \(22600\).
+
+Take these predictions this with a grain of salt. Uniform national swing like this is not a good way of predicting the House as the [limitations](#limitations), specifically the localized effects, are even more pronounced. While we have somewhat adjusted for candidate, we have only done so by 2024 historical data. We have no information on electoral newcomers (something you would get from polling). Our candidate quality model is also not as sophisticated as, for example, [Split Ticket WAR](https://split-ticket.org/full-wins-above-replacement-war-database/).
+
+This is even worse at predicting the Senate, as candidate quality, localized effects, state-specific factors, etc are all have a greater effect on statewide races than House races. Here is a prediction anyway, but I will cheat a bit and adjust the generic ballot/CPVI model with the aforementioned Split Ticket WAR.
 <details>
 <summary>Senate</summary>
+Again, we use the formula:
+\[
+M_\text{seat}=M_N+2C+0.5\cdot\text{WAR}
+\]
+If neither candidate has a WAR rating (never run for Congress before), \(\text{WAR}=0\). If both candidates have WAR ratings, *add* them (not average). 
 
 ![Senate predictions](/images/2026-senate.png)
 
-This is actually consistent with where analysis of the Senate race is right now. The Lean R states of Iowa, Texas, Alaska, Ohio are the current battlegrounds, and a good/bad candidate and some localized trends give Democrats a chance to win. I'm would not rate New Hampshire and especially Maine as Safe D, but the model only considers generic ballot and in that case it would make sense.
+This came down to Sherrod Brown (D-OH) and Mary Peltola's (D-AK) overperformances in 2024 (WAR D+4.6, D+9.1, respectively). Susan Collins's (R-ME) overperformance in 2020 (WAR R+12.5) was not enough against Maine's partisanship and the generic ballot.
+
+We are missing WAR on some fairly important candidates in somewhat competitive states, including but not limited to (underlined means we have WAR):
+|State|D Candidate|R Candidate|
+|:-:|:-:|:-:|
+|Florida|Angie Nixon|Ashley Moody|
+|Texas|Ken Paxton|James Talarico|
+|Minnesota|Peggy Flanagan|Michelle Tafoya|
+|Maine|Troy Jackson|*|
+|Ohio|*|Jon Husted|
+|Michigan|Abdul El-Sayed|*|
+|Kansas|Adam Hamilton|*|
+|Iowa|Josh Turek|*|
+|New Hampshire|*|Chris Sununu|
+
+It would help our accuracy greatly if we had these. Anyway, of course WAR doesn't capture the full picture, and they were calculated from 2 or 6 years ago so may not be entirely accurate. I think it's still a reasonable prediction and consistent with the "analysis" (punditry) on the Senate right now.
 </details>
+
 
 ## Sources
 - WWU, [1992 Presidential Election by Congressional District](https://library.cqpress.com/cqalmanac/document.php?id=cqal93-844-25158-1103932#_).
@@ -306,6 +369,7 @@ This is actually consistent with where analysis of the Senate race is right now.
 - Ballotpedia, [Congressional Special Elections since 1987](https://ballotpedia.org/U.S._Congress_special_elections_historical_data,_1987-2024).
 - Gallup, [Presidential Approval Ratings Before 2026](https://news.gallup.com/poll/116677/presidential-approval-ratings-gallup-historical-statistics-trends.aspx).
 - Nate Silver, [Trump Approval Rating 2026](https://www.natesilver.net/p/trump-approval-ratings-nate-silver-bulletin).
+- Split Ticket, [Wins Above Replacement Database](https://split-ticket.org/full-wins-above-replacement-war-database/)
 - Too much from Wikipedia to count, but [VA elections](https://en.wikipedia.org/wiki/Elections_in_Virginia) and [NJ elections](https://en.wikipedia.org/wiki/Elections_in_New_Jersey).
 
 (WWU = Western Washington University. Something about Washington, I guess.)
