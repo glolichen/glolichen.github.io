@@ -50,9 +50,11 @@ Our model is quite simple and will have a number of limitations. We discuss them
 
 You can view the code and dataset [here](https://github.com/glolichen/election-2026).
 
-Note: you can verify the date of publication by checking the [Wayback Machine](https://web.archive.org/web/20261017014620/https://glolichen.github.io/blog/election-2026/). I made an archive on October 16.[^1]
+<!-- Note: you can verify the date of publication by checking the [Wayback Machine](https://web.archive.org/web/20261017014620/https://glolichen.github.io/blog/election-2026/). I made an archive on October 16.[^1] -->
+<!---->
+<!-- [^1]: Yeah, I forgot to update the publication date from 10/5. -->
 
-[^1]: Yeah, I forgot to update the publication date from 10/5.
+**November 1 update: there's been no substantial changes since October 16. (Approval rating has not changed much, and there's been no special elections.) So the October 16 result will be my "final" prediction.**
 
 ## Dataset
 

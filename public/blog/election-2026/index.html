@@ -91,7 +91,10 @@
 <p>Some forecasters already include these metrics. <a href="https://www.racetothewh.com/house/methodology">RaceToTheWH</a> uses CA/WA primaries, congressional special elections and NJ/VA gubernatorial elections, for example.</p>
 <p>Our model is quite simple and will have a number of limitations. We discuss them at the end. At the end, I&rsquo;ll also include a simple and dumb prediction for each House seat.</p>
 <p>You can view the code and dataset <a href="https://github.com/glolichen/election-2026">here</a>.</p>
-<p>Note: you can verify the date of publication by checking the <a href="https://web.archive.org/web/20261017014620/https://glolichen.github.io/blog/election-2026/">Wayback Machine</a>. I made an archive on October 16.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<!-- Note: you can verify the date of publication by checking the [Wayback Machine](https://web.archive.org/web/20261017014620/https://glolichen.github.io/blog/election-2026/). I made an archive on October 16.[^1] -->
+<!---->
+<!-- [^1]: Yeah, I forgot to update the publication date from 10/5. -->
+<p><strong>November 1 update: there&rsquo;s been no substantial changes since October 16. (Approval rating has not changed much, and there&rsquo;s been no special elections.) So the October 16 result will be my &ldquo;final&rdquo; prediction.</strong></p>
 <h2 id="dataset">Dataset</h2>
 <p>The full dataset will be:</p>
 <ul>
@@ -329,7 +332,7 @@ M_\text{seat}'=M_N+2C+\begin{cases}
  0.5(H_{2024}-\text{PVI}) & \text{otherwise}
 \end{cases}
 \]<p>
-Where \(H_{2024}\) is the D minus R percentage point margin in the 2024 House election. The \(\text{PVI}\) is as we calculated before: \(0.75P_{2024}+0.25P_{2020}\). It is not Cook PVI, but it is similar. For brevity, let \(O\) be the overperformance (piecewise) term.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+Where \(H_{2024}\) is the D minus R percentage point margin in the 2024 House election. The \(\text{PVI}\) is as we calculated before: \(0.75P_{2024}+0.25P_{2020}\). It is not Cook PVI, but it is similar. For brevity, let \(O\) be the overperformance (piecewise) term.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
 <p>The Democrats will win a seat if and only if \(M_\text{seat}>0\) (suppose there are no ties):
 </p>
 \[
@@ -822,10 +825,7 @@ If neither candidate has a WAR rating (never run for Congress before), \(\text{W
 <hr>
 <ol>
 <li id="fn:1">
-<p>Yeah, I forgot to update the publication date from 10/5.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:2">
-<p>If you&rsquo;re wondering why we use Cook PVI sometimes and why we use the custom \(\text{PVI}\) elsewhere: it is because I cannot find 2020 presidential election data on 2026 congressional districts, so I had to resort to the calculated Cook PVI values.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>If you&rsquo;re wondering why we use Cook PVI sometimes and why we use the custom \(\text{PVI}\) elsewhere: it is because I cannot find 2020 presidential election data on 2026 congressional districts, so I had to resort to the calculated Cook PVI values.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>

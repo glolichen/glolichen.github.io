@@ -1,0 +1,45 @@
+{{ partial "header.html" . }}
+
+{{ .Content }}
+
+{{ if eq .Section "projects" }}
+	{{ partial "project-list.html" .Pages }}
+{{ else if eq .Section "blog" }}
+	{{ partial "blog-list.html" .Pages }}
+{{ end }}
+
+{{ partial "footer.html" . }}
+
+<h2>Blog</h2>
+<ul>
+	{{ range (where .Site.RegularPages "Section" "blog").ByDate.Reverse }}
+	<li>
+		<a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+		—
+		{{ if .Params.period }}
+			<span>{{ .Params.period }}</span>
+		{{ else if .Date }}
+		<time datetime="{{ .Date.Format "2006-01-02" }}">
+			{{ .Date.Format "Jan 2, 2006" }}
+		</time>
+		{{ end }}
+	</li>
+	{{ end }}
+</ul>
+
+<h2>Projects</h2>
+<ul>
+	{{ range (where .Site.RegularPages "Section" "projects").ByDate.Reverse }}
+	<li>
+		<a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+		—
+		{{ if .Params.period }}
+			<span>{{ .Params.period }}</span>
+		{{ else if .Date }}
+		<time datetime="{{ .Date.Format "2006-01-02" }}">
+			{{ .Date.Format "Jan 2, 2006" }}
+		</time>
+		{{ end }}
+	</li>
+	{{ end }}
+</ul>
