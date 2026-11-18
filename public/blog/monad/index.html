@@ -38,15 +38,22 @@
 	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 
 <script>
-  MathJax = {
-    tex: {
-      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
-      inlineMath: [['\\(', '\\)']]                  
-    },
-    loader:{
-      load: ['ui/safe']
-    },
-  };
+	MathJax = {
+		tex: {
+			displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+			inlineMath: [['\\(', '\\)']]                  
+		},
+		loader:{
+			load: ['ui/safe']
+		},
+		options: {
+			enableMenu: false,
+			enableExplorer: false,
+			renderActions: {
+				addMenu: [0, '', '']
+			}
+		}
+	};
 </script>
 
 
@@ -64,13 +71,13 @@
 <!-- } -->
 <!-- </style> -->
 <p>I learned some category theory and abstract algebra in Math 55a at Harvard so I thought I&rsquo;d take a shot at trying to understand and explain this infamous sentence, starting with the definition of each word.</p>
-<p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> is a monoid in the category of endofunctors. :D <div style="text-align: right; margin-top: -50px;">□</div>
+<p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> is a monoid in the category of endofunctors. <div style="text-align: right; margin-top: -50px;">□</div>
 
 </p>
 <p><strong><u>Definition</u> (Monoid).</strong> A <em>monoid</em> is a set \(S\) together with a binary operator \(m:S\times S\to S\) called the <em>law of composition</em> satisfying two axioms (using the shorthand for the law of composition \(ab:=m(a,b)\) for all \(a,b\in S\)):</p>
 <ul>
 <li>Identity. There exists an element \(s\in S\) such that \(ae=ea=a\) for all \(a\in S\).</li>
-<li>Associativity. For all \(a,b,c\in S\), we have \((ab)c=a(bc)\). <div style="text-align: right; margin-top: -30px;">□</div>
+<li>Associativity. For all \(a,b,c\in S\), we have \((ab)c=a(bc)\). <div style="text-align: right; margin-top: -30px;">□</div><p></p>
 
 </li>
 </ul>
@@ -78,7 +85,7 @@
 <p><strong><u>Definition</u> (Category).</strong> A <em>category</em> \(\newcommand{\CC}{\mathcal C}\CC\) consists of:</p>
 <ul>
 <li>A collection of <em>objects</em> \(\DeclareMathOperator{\Ob}{Ob}\Ob(\CC)\).</li>
-<li>For every two objects \(A,B\in\Ob(\CC)\), a collection of structure preserving maps called <em>morphisms</em> \(\DeclareMathOperator{\Hom}{Hom}\Hom(A,B)\). The set of morphisms is called the <em>hom-set</em>.</li>
+<li>For every two objects \(A,B\in\Ob(\CC)\), a collection of structure preserving maps called <em>morphisms</em> \(\DeclareMathOperator{\Hom}{Hom}\Hom(A,B)\). This set of morphisms is called the <em>hom-set</em>. We write \(f:A\to B\) to mean a morphism from \(A\) to \(B\), and \(f\in\Hom(A,B)\).</li>
 <li>A partial binary operator called <em>composition</em> between morphisms. For all objects \(A,B,C\in\Ob(\CC)\), a composition between morphisms:
 
 \[
@@ -90,17 +97,67 @@ If \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\), we have that the codomain of \(f\) i
 <ul>
 <li>Associativity. Let \(A,B,C,D\in\Ob(\CC)\) and let \(f\in\Hom(A,B)\), \(g\in\Hom(B,C)\) and \(h\in\Hom(C,D)\). Then: \((h\circ g)\circ f=h\circ(g\circ f)\).</li>
 <li>Identity. For every \(A\in\Ob(\CC)\), there exists an identity morphism \(\DeclareMathOperator{\id}{id}\id_A\in\Hom(A,A)\) such that for all objects \(B\in\Ob(\CC)\) and morphisms \(f\in\Hom(A,B)\), we have
-\(f\circ\id_A=f=\id_B\circ f\). <div style="text-align: right; margin-top: -30px;">□</div>
+\(f\circ\id_A=f=\id_B\circ f\). <div style="text-align: right; margin-top: -30px;">□</div><p></p>
 
 </li>
 </ul>
-<p><strong><u>Example</u> (Category of finite-dimensional vector spaces).</strong> Let \(\DeclareMathOperator{\Vect}{Vect} \Vect_k\) be the category of finite-dimensional vector spaces over a field \(k\). The set of morphisms between any two objects \(V,W\in\Ob(\Vect_k)\) is the set of linear map/homomorphisms: \(\DeclareMathOperator{\LL}{\mathcal L} \Hom(V,W)=\LL(V,W)\) (using notation from Axler, LADR). \(\Hom(V,W)\) is not the set of all functions \(V\to W\) because morphisms preserve structure.</p>
-<p>Let \(U,V,W\in\Ob(\Vect_k)\). Composition between two linear maps \(f:U\to V\), \(g:V\to W\) is simply given by standard function composition, which is associative. The identity \(\id_U\) on any vector space \(U\) is simply the map \(\id_U:u\mapsto u\) for all \(u\in U\). <div style="text-align: right; margin-top: -50px;">□</div>
+<details>
+    <summary>Example: Category of finite-dimensional vector spaces</summary>
+    <p>Let \(\DeclareMathOperator{\Vect}{Vect} \Vect_k\) be the category of finite-dimensional vector spaces over a field \(k\). The set of morphisms between any two objects \(V,W\in\Ob(\Vect_k)\) is the set of linear map/homomorphisms: \(\DeclareMathOperator{\LL}{\mathcal L} \Hom(V,W)=\LL(V,W)\) (using notation from Axler, LADR). \(\Hom(V,W)\) is not the set of all functions \(V\to W\) because morphisms preserve structure.</p>
+    <p>Let \(U,V,W\in\Ob(\Vect_k)\). Composition between two linear maps \(f:U\to V\), \(g:V\to W\) is simply given by standard function composition, which is associative. The identity \(\id_U\) on any vector space \(U\) is simply the map \(\id_U:u\mapsto u\) for all \(u\in U\). <div style="text-align: right; margin-top: -50px;">□</div>
 
 </p>
-<p><strong><u>Definition</u> (Functor).</strong></p>
-<p><strong><u>Definition</u> (Endofunctor).</strong> An <em>endofunctor</em> is a functor from a category \(\CC\) to the same category \(\CC\).</p>
+</details>
+<p><strong><u>Definition</u> (Functor).</strong> A <em>functor</em> is a map of categories that preserve structure. Let \(\newcommand{\DD}{\mathcal D}\CC,\DD\) be categories; a functor \(F:\CC\to \DD\) is a map satisfying the following:</p>
+<ul>
+<li>Each object \(A\in \Ob(\CC)\) is associated to an object \(F(A)\in \Ob(\DD)\)</li>
+<li>Each morphism \(f\in\Hom(X,Y), f:X\to Y\) (where \(X,Y\in\Ob(\CC)\)) is associated to a morphism \( F(f)\in\Hom(F(X),F(Y)), F(f):F(X)\to F(Y) \).</li>
+</ul>
+<p>A functor \(F\) must preserve the structure of categories by preserving the identity and the composition of morphisms:</p>
+<ul>
+<li>Recall that for each object \(A\in\Ob(\CC)\), there exists an identity morphism \(\id_A\in\Hom(A,A)\) such that \(\id_A(a)=a\) for all \(a\in A\). The identity is preserved: \(F(\id_A)=\id_{F(a)}\), the identity morphism of the object \(F(A)\in\Ob(\DD)\).</li>
+<li>Let \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\) be morphisms. By definition of the composition operator, \(g\circ f\in\Hom(A,C)\) and is also a functor. Then \(F(g\circ f)\) is a functor from \(F(A)\) to \(F(C)\). Likewise, \(F(f):\Hom(F(A),F(B))\) and \(F(g):\Hom(F(B),F(C))\), so their composition \(F(g)\circ F(f)\) is a functor from \(F(A)\) to \(F(C)\). Functors preserve the composition of morphisms, so we require \(F(g\circ f)=F(g)\circ F(f)\). <div style="text-align: right; margin-top: -30px;">□</div><p></p>
+
+</li>
+</ul>
+<p><strong><u>Definition</u> (Endofunctor).</strong> An <em>endofunctor</em> is a functor from a category \(\CC\) to itself. \(\DeclareMathOperator{\End}{End}\End(\CC)\) is the collection<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> of all endofunctors in \(\CC\): \(\End(C)=\{F:\CC \to \CC\}\). <div style="text-align: right; margin-top: -50px;">□</div>
+
+</p>
+<p>Two claims: that \(\End(\CC)\) can itself be given a structure of a category (so \(\End(\CC)\) is the &ldquo;category of endofunctors&rdquo;), and that it is also a <em>monoidal category</em>, which we define later.</p>
+<p><strong><u>Proof</u> (\(\End(\CC)\) is a category).</strong> The objects of \(\End(\CC)\) are endofunctors \(F:\CC\to\CC\). The morphisms are a bit more complex. What actually is a morphism? In familiar categories like the category of sets or \(\Vect_k\), morphisms are functions/linear maps between two sets/vector spaces. These would be natural ways to define a morphism in these particular categories. But morphisms of categories in general do not have to be maps. In general, the hom-set of two objects of a category is just a &ldquo;thing that is provided when you define a category \(\CC\),&rdquo; and the hom-sets collectively have some additional properties like identity and composition. Morphisms are just &ldquo;things&rdquo; in the hom-set; what they specifically are depends on the category.</p>
+<p>For clarity, we will use \(\Hom_\DD\) to denote a hom-set in the category \(\DD\), since we will be working with \(\CC\) as well as the (supposed) category \(\End(\CC)\).</p>
+<p>Let \(F,G\in\Ob(\End(\CC))\), so \(F,G\) are both endofunctors in \(\CC\): \(F,G:\CC\to\CC\). We define the morphisms as follows: the hom-set \(\Hom_{\End(\CC)}(F,G)\) is the set of <em>natural transformations</em> from \(F\) to \(G\). A natural transformation \(\alpha:F\Rightarrow G\)<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> is the assignment from every object \(X\in\Ob(\CC)\) to a morphism \(\alpha_X:F(X)\to G(X)\) in \(\CC\), such that for all objects \(Y\in\Ob(\CC)\) and morphisms \(\phi:X\to Y\) in \(\CC\), the following diagram commutes:
+</p>
+\[
+\begin{CD}
+F(X) @> F(\phi) >> F(Y) \\
+@V \alpha_X VV @VV \alpha_Y V \\
+G(X) @>> G(\phi) > G(Y)
+\end{CD}
+\]<p>
+Note: \(F(X),F(Y)\in\Ob(\CC)\) and \(\phi\in\Hom_{\CC}(X,Y)\), and \(F:\CC\to\CC\) is an endofunctor. By definition of a functor, \(F(\phi)\) is a morphism from \(F(X)\) to \(F(Y)\). Likewise for \(G\).</p>
+<p>Why do we require the commutation above, and what does it do? Well, the diagram commuting ensures that \(\alpha\) works with every morphism in \(\CC\).</p>
+<p>. Since \(F,G:\CC\to\CC\) are endofunctors, they move \(X\) to another object of \(\CC\): \(F(X),G(X)\in\Ob(\CC)\).</p>
+<details>
+    <summary>Example: Polynomial (endo)functor</summary>
+    <p>\(\Vect_k\) is the category of finite-dimensional vector spaces over a field of \(k\). </p> 
+</details>
+<p>Now, returning to the definition of a monad, we naturally ask: a monad is a monoid in the category of endofunctors of <em>what</em>? Therefore, we have a more precise definition as follows:</p>
+<p><strong><u>Definition</u> (Monad).</strong> Let \(\CC\) be a category. A <em>monad</em> in \(\CC\) is a monoid in the category of endofunctors of \(\CC\). <div style="text-align: right; margin-top: -50px;">□</div>
+
+</p>
 <p><strong><u>Example</u> (Polynomial functor).</strong></p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>\(\End(C)\) is not always be a set, because it might be too big. For example, consider the category \(\CC\) of all sets. We have an embedding of all sets (i.e. objects of \(\CC\)) to an endofunctor of \(\CC\) as such: for all \(A\in\Ob(\CC)\), let \(K_A:\CC\to\CC\) be a mapping that maps all objects of \(\CC\) to the set/object \(A\), and all morphisms to \(\id_A\). \(K_A\) satisfies the requirements of a functor (preservation of composition and identity), and is thus an endofunctor. There is an associated endofunctor \(K_X\in\End(\CC)\) for each object in \(\CC\), so we have an embedding of every set in \(\End(C)\). But, a set cannot contain all sets (or have an embedding of all sets), so \(\End(C)\) is not a set. In this case, \(\End(C)\) is in fact a <em>proper class</em>. For &ldquo;small&rdquo; categories \(\CC\), however, \(\End(\CC)\) is actually a set.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>(Not an exponent!) I think the notational convention here is to use \(\Rightarrow\) for natural transformations between functors, like \(\alpha\), but use \(\to\) for morphisms and functors.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
 
 </main>
 

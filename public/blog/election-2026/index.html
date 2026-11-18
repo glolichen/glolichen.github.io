@@ -38,15 +38,22 @@
 	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 
 <script>
-  MathJax = {
-    tex: {
-      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
-      inlineMath: [['\\(', '\\)']]                  
-    },
-    loader:{
-      load: ['ui/safe']
-    },
-  };
+	MathJax = {
+		tex: {
+			displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+			inlineMath: [['\\(', '\\)']]                  
+		},
+		loader:{
+			load: ['ui/safe']
+		},
+		options: {
+			enableMenu: false,
+			enableExplorer: false,
+			renderActions: {
+				addMenu: [0, '', '']
+			}
+		}
+	};
 </script>
 
 
@@ -90,10 +97,7 @@
 </ul>
 <p>Some forecasters already include these metrics. <a href="https://www.racetothewh.com/house/methodology">RaceToTheWH</a> uses CA/WA primaries, congressional special elections and NJ/VA gubernatorial elections, for example.</p>
 <p>Our model is quite simple and will have a number of limitations. We discuss them at the end. At the end, I&rsquo;ll also include a simple and dumb prediction for each House seat.</p>
-<p>You can view the code and dataset <a href="https://github.com/glolichen/election-2026">here</a>.</p>
-<!-- Note: you can verify the date of publication by checking the [Wayback Machine](https://web.archive.org/web/20261017014620/https://glolichen.github.io/blog/election-2026/). I made an archive on October 16.[^1] -->
-<!---->
-<!-- [^1]: Yeah, I forgot to update the publication date from 10/5. -->
+<p>You can view the code and dataset <a href="https://github.com/glolichen/election-2026">here</a>, and you can verify the date of publication by checking the <a href="https://web.archive.org/web/20261101054240/https://glolichen.github.io/blog/election-2026/">Wayback Machine</a>.</p>
 <p><strong>November 1 update: there&rsquo;s been no substantial changes since October 16. (Approval rating has not changed much, and there&rsquo;s been no special elections.) So the October 16 result will be my &ldquo;final&rdquo; prediction.</strong></p>
 <h2 id="dataset">Dataset</h2>
 <p>The full dataset will be:</p>
