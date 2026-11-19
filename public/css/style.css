@@ -242,7 +242,7 @@ tr:nth-child(even) {
 }
 
 details {
-	background-color: #000000;
+	/* background-color: #000000; */
 	border: 1px solid #e2e8f0;
 	border-radius: 6px;
 	padding: 0.1em 1em;
@@ -264,4 +264,28 @@ details[open] summary {
 
 mjx-container, mjx-container *, .MathJax, .MathJax_Display {
 	pointer-events: none !important;
+}
+
+.post-content {
+  counter-reset: h2;
+}
+
+.post-content > h2 { counter-increment: h2; counter-reset: h3; }
+.post-content > h3 { counter-increment: h3; counter-reset: h4; }
+.post-content > h4 { counter-increment: h4; counter-reset: h5; }
+.post-content > h5 { counter-increment: h5; counter-reset: h6; }
+.post-content > h6 { counter-increment: h6; }
+
+.post-content > h2::before { content: counter(h2) ". "; }
+.post-content > h3::before { content: counter(h2) "." counter(h3) ". "; }
+.post-content > h4::before { content: counter(h2) "." counter(h3) "." counter(h4) ". "; }
+.post-content > h5::before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". "; }
+.post-content > h6::before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". "; }
+.post-content > .unnumbered {
+  counter-increment: none;
+  counter-reset: none;
+}
+
+.post-content > .unnumbered::before {
+  content: none;
 }

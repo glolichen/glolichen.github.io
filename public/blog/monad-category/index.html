@@ -3,7 +3,7 @@
   <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>A Monad is a Monoid in the Category of Endofunctors (WIP) | Jayden Li</title>
+	<title>A Monad is a Monoid in the Category of Endofunctors (WIP)</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     
@@ -27,8 +27,8 @@
 	<br>
 
 	
-	<time datetime="2026-11-17">
-		November 17, 2026
+	<time datetime="2026-11-19">
+		November 19, 2026
 	</time>
 	
 </div>
@@ -61,17 +61,18 @@
 
 
 
-<main>
+<main class="post-content">
 	<p><strong>In progress!</strong></p>
-<p>I learned some category theory and abstract algebra in Math 55a at Harvard, so here&rsquo;s (trying to) understand this <a href="https://james-iry.blogspot.com/2009/05/brief-incomplete-and-mostly-wrong.html">infamous sentence</a>.</p>
+<p>I learned some category theory and abstract algebra in Math 55a at Harvard, so here&rsquo;s (trying to) understand the <a href="https://www.reddit.com/r/ProgrammerHumor/comments/1ctgnng/amonadisamonoidinthecategoryofendofunctors/">Infamous</a> <a href="https://james-iry.blogspot.com/2009/05/brief-incomplete-and-mostly-wrong.html">Sentence</a>.</p>
 <p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> is a monoid in the category of endofunctors. <div style="text-align: right; margin-top: -50px;">□</div>
 
 </p>
-<p>Actually, this probability isn&rsquo;t the most precise definition. When I first saw this, I assumed &ldquo;monoid&rdquo; was a monoid in abstract algebra, which it isn&rsquo;t.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> We might also ask: &hellip; the category of endofunctors of <em>what</em>? So, we have the more precise definition of a monad below:</p>
+<p>Actually, this isn&rsquo;t the most precise definition. When I first saw this, I assumed &ldquo;monoid&rdquo; was a monoid in abstract algebra, which it isn&rsquo;t.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> We might also ask: &hellip; the category of endofunctors of <em>what</em>? So, we have the more precise definition of a monad below:</p>
 <p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> in a category \(\newcommand{\CC}{\mathcal C} \CC\) is a <em>monoid object</em> in the <em>monoidal category</em> of endofunctors of \(\CC\). <div style="text-align: right; margin-top: -50px;">□</div>
 
 </p>
 <p>Now, onto defining the terms in this definition.</p>
+<h2 id="category-of-endofunctors">Category of Endofunctors</h2>
 <p><strong><u>Definition</u> (Category).</strong> A <em>category</em> \(\CC\) consists of:</p>
 <ul>
 <li>A collection of <em>objects</em> \(\DeclareMathOperator{\Ob}{Ob}\Ob(\CC)\).</li>
@@ -91,7 +92,7 @@ If \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\), we have that the codomain of \(f\) i
 
 </li>
 </ul>
-<details>
+<details open>
 <summary>Example: Category of finite-dimensional vector spaces</summary>
 <p>Let \(\DeclareMathOperator{\Vect}{Vect} \Vect_k\) be the category of finite-dimensional vector spaces over a field \(k\). The set of morphisms between any two objects \(V,W\in\Ob(\Vect_k)\) is the set of linear map/homomorphisms: \(\DeclareMathOperator{\LL}{\mathcal L} \Hom(V,W)=\LL(V,W)\) (using notation from Axler, LADR). \(\Hom(V,W)\) is not the set of all functions \(V\to W\) because morphisms preserve structure.</p>
 <p>Let \(U,V,W\in\Ob(\Vect_k)\). Composition between two linear maps \(f:U\to V\), \(g:V\to W\) is simply given by standard function composition, which is associative. The identity \(\id_U\) on any vector space \(U\) is simply the map \(\id_U:u\mapsto u\) for all \(u\in U\). <div style="text-align: right; margin-top: -50px;">□</div>
@@ -113,7 +114,8 @@ If \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\), we have that the codomain of \(f\) i
 <p><strong><u>Definition</u> (Endofunctor).</strong> An <em>endofunctor</em> is a functor from a category \(\CC\) to itself. \(\DeclareMathOperator{\End}{End}\End(\CC)\) is the collection<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> of all endofunctors in \(\CC\): \(\End(C)=\{F:\CC \to \CC\}\). <div style="text-align: right; margin-top: -50px;">□</div>
 
 </p>
-<p>Two claims: that \(\End(\CC)\) can itself be given a structure of a category (so \(\End(\CC)\) is the &ldquo;category of endofunctors&rdquo;), and that it is also a <em>monoidal category</em>, which we define first.</p>
+<p>Two claims: that \(\End(\CC)\) can itself be given a structure of not just a category, but of what&rsquo;s called a <em>monoidal category</em>, so \(\End(\CC)\) is the &ldquo;monoidal category of endofunctors of \(C\).&rdquo; First, we define a monoidal category.</p>
+<h2 id="monoidal-category-of-endofunctors"><em>Monoidal Category</em> of Endofunctors</h2>
 <p><strong><u>Definition</u> (Product category).</strong> Let \(\CC,\DD\) be categories. The <em>product category</em> \(\CC\times\DD\) is similar to the notion of a Cartesian product of sets.</p>
 <ul>
 <li>The objects of \(\CC\times\DD\) are pairs of objects \((A,B)\) with \(A\in\Ob(\CC)\) and \(B\in\Ob(\DD)\), i.e. \(\Ob(\CC\times\DD)=\Ob(\CC)\times\Ob(\DD)\), where the \(\times\) on the right hand side is the Cartesian product of sets.</li>
@@ -152,7 +154,7 @@ Similiarly, this says that you can eliminate the identity object \(I\) directly 
 </p>
 <p>Note that some of the properties above are about &ldquo;natural isomorphisms.&rdquo; They are not equal! For example, the category of sets, with the bifunctor being the Cartesian product, is a monoidal category.<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> If \(X,Y,Z\) are sets, \((X\times Y)\times Z\) contain elements of the form \(((x,y), z)\), but \(X\times(Y\times Z)\) contains \((x,(y,z))\). They are not equal. But, there is a very natural and obvious isomorphism \((X\times Y)\times Z\xrightarrow{\sim} X\times (Y\times Z)\): the associator would be \(\alpha_{X,Y,Z}: ((x,y),z) \mapsto (x,(y,z)) \). But, since we are interested in structure, being isomorphic means they have the same structure and the two collections are &ldquo;the same&rdquo; up to renaming the elements, so they are good as equal.</p>
 <p>Ok, this is quite a complicated definition. It may be helpful to look at some examples below.</p>
-<details>
+<details open>
 <summary>Example: Tensor product of vector spaces makes \(\Vect_k\) a monoidal category</summary>
 <p>Recall \(\Vect_k\), the category of finite-dimensional vector spaces over a field \(k\), and the ordinary tensor product of vector spaces. I claim that the tensor product on vector spaces gives \(\Vect_k\) the structure of a monoidal category. There are a number of equivalent definitions of the tensor product \(V\otimes W\) of two vector spaces \(V,W\in\Vect_k\), but we focus on these two:</p>
 <ol>
@@ -247,13 +249,25 @@ G(X) @>> G(\phi) > G(Y)
 Note: \(F(X),F(Y)\in\Ob(\CC)\) and \(\phi\in\Hom_{\CC}(X,Y)\), and \(F:\CC\to\CC\) is an endofunctor. By definition of a functor, \(F(\phi)\) is a morphism in \(\CC\) from \(F(X)\) to \(F(Y)\) (since a functor must carry a morphism into another morphism). Likewise for \(G\).</p>
 <p>The diagram above commutes if and only if the following compositions are equal: \(G(\phi)\circ \alpha_X\) and \(\alpha_Y \circ F(\phi)\). Both of these are morphisms: \(\circ\) is the composition operator of morphisms defined in the category \(\CC\), which returns another morphism in \(\CC\).</p>
 <p>Finish proof of \(\End(\CC)\).</p>
+<h2 id="monoid-object-in-the-monoidal-category-of-endofunctors"><em>Monoid Object</em> in the Monoidal Category of Endofunctors</h2>
+<p>TODO</p>
+<h2 class="unnumbered" id="references">References</h2>
+<ul>
+<li>Joseph D. Harris, Math 55 lecture notes.</li>
+<li><a href="https://en.wikipedia.org/wiki/Category_(mathematics)">https://en.wikipedia.org/wiki/Category_(mathematics)</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Functor">https://en.wikipedia.org/wiki/Functor</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Product_category">https://en.wikipedia.org/wiki/Product_category</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Monoidal_category">https://en.wikipedia.org/wiki/Monoidal_category</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Tensor_product">https://en.wikipedia.org/wiki/Tensor_product</a>.</li>
+<li><a href="https://ncatlab.org/nlab/show/natural+transformation">https://ncatlab.org/nlab/show/natural+transformation</a>.</li>
+</ul>
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1">
 <p>In abstract algebra, a <em>monoid</em> is a set \(S\) together with a binary operator \(m:S\times S\to S\) called the <em>law of composition</em> satisfying two axioms (using the shorthand for the law of composition \(ab:=m(a,b)\) for all \(a,b\in S\)):</p>
 <ul>
-<li>Identity. There exists an element \(s\in S\) such that \(ae=ea=a\) for all \(a\in S\).</li>
+<li>Identity. There exists an element \(e\in S\) such that \(ae=ea=a\) for all \(a\in S\).</li>
 <li>Associativity. For all \(a,b,c\in S\), we have \((ab)c=a(bc)\).</li>
 </ul>
 <p>(If a monoid satisfies the inverse axiom, then it is also a <em>group</em>: for all \(a\in S\), there exists an <em>inverse</em> \(b\in S\) such that \(ab=ba=e\).) As we&rsquo;ll see, the a <em>monoid object</em> in category theory is a generalization of a monoid defined above.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
