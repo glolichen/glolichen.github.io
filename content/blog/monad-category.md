@@ -71,7 +71,7 @@ In short: the objects of \(\CC\times\DD\) is the Cartesian product of the object
 
 **<u>Definition</u> (Monoidal category).** A *monoidal category* is a category \(\CC\) together with the following to be defined:
 - A bifunctor \(\otimes:\CC\times\CC\to\CC\) (a functor whose domain is a product category) called the *tensor product*.
-- An *identity object* \(I\in\Ob(\CC)\).
+- A *unit object* \(I\in\Ob(\CC)\).
 - "Associativity": let \(X,Y,Z\in\Ob(\CC)\). By definition of the tensor product, \((X\otimes Y)\otimes Z\) and \(X\otimes(Y\otimes Z)\) are both objects in \(\CC\). The requirement here is that they are isomorphic. More specifically, to define a monoidal category, we must define a natural isomorphism (invertible morphism in \(\CC\)) between these for all \(X,Y,Z\). This isomorphism is called the *associator*: \(\alpha_{X,Y,Z}\) is an isomorphism such that \(\alpha_{X,Y,Z}:(X\otimes Y)\otimes Z \xrightarrow{\sim} X\otimes(Y\otimes Z)\). 
 - For each object \(X\in\Ob(\CC)\), we must define a *left unitor* \(L_X\) and a *right unitor* \(R_X\), which are natural isomorphisms: \(L_X:I\otimes X\xrightarrow{\sim} X\) and \(R_X:X\otimes I\xrightarrow{\sim} X\).
 
@@ -89,7 +89,7 @@ This is called the *pentagon axiom*, and it says that the two ways of reparenthe
 @V{R_X\otimes\mathrm{id}_Y}VV @VV{\mathrm{id}_X\otimes L_Y}V \\
 X\otimes Y @= X\otimes Y
 \end{CD}\]
-Similiarly, this says that you can eliminate the identity object \(I\) directly with the unitor, or you can reparenthesize \((X\otimes I)\otimes Y\) with the associator and then eliminate the identity. Both must give the same outcome.{{< p_qed >}}
+Similiarly, this says that you can eliminate the unit object \(I\) directly with the unitor, or you can reparenthesize \((X\otimes I)\otimes Y\) with the associator and then eliminate the identity. Both must give the same outcome.{{< p_qed >}}
 
 Note that some of the properties above are about "natural isomorphisms." They are not equal! For example, the category of sets, with the bifunctor being the Cartesian product, is a monoidal category.[^trust] If \(X,Y,Z\) are sets, \((X\times Y)\times Z\) contain elements of the form \(((x,y), z)\), but \(X\times(Y\times Z)\) contains \((x,(y,z))\). They are not equal. But, there is a very natural and obvious isomorphism \((X\times Y)\times Z\xrightarrow{\sim} X\times (Y\times Z)\): the associator would be \(\alpha_{X,Y,Z}: ((x,y),z) \mapsto (x,(y,z)) \). But, since we are interested in structure, being isomorphic means they have the same structure and the two collections are "the same" up to renaming the elements, so they are good as equal.
 [^trust]: trust me bro
@@ -105,8 +105,8 @@ Recall \(\Vect_k\), the category of finite-dimensional vector spaces over a fiel
 Not all elements of \(V\otimes W\) are pure tensors, but all are linear combinations of pure tensors, by definition of span. The rank of an element of \(V\otimes W\) is the smallest \(\ell\) such that it can be expressed as the sum of \(\ell\) pure tensors.
 
 Notice that this definition of a pure tensor makes the tensor product *bilinear*. That is, if \(v,v'\in V\), \(w,w'\in W\) and \(\lambda\in k\) is a scalar (in the underlying field \(k\)), then:
-\begin{equation*}
-    \left\\{\begin{aligned}
+\begin{align*}
+    &\left\\{\begin{aligned}
         (v+v')\otimes w
         &=v\otimes w+v'\otimes w \\\\
         v\otimes(w+w')
@@ -115,9 +115,9 @@ Notice that this definition of a pure tensor makes the tensor product *bilinear*
         &=\lambda(v\otimes w) \\\\
         v\otimes (\lambda w)
         &=\lambda(v\otimes w)
-    \end{aligned}\right.
+    \end{aligned}\right. \\\\
     \iff
-    \left\\{\begin{aligned}
+    {}&\left\\{\begin{aligned}
         (v+v')\otimes w
         -v\otimes w-v'\otimes w &= 0\\\\
         v\otimes(w+w')
@@ -127,7 +127,7 @@ Notice that this definition of a pure tensor makes the tensor product *bilinear*
         v\otimes (\lambda w)
         -\lambda(v\otimes w) &= 0
     \end{aligned}\right.
-\end{equation*}
+\end{align*}
 Notice that the right hand side of \(\iff\) above give the *relations* that the vector space \(V\otimes W\) must satisfy. This gives rise to our second definition.
 
 2. Let \(U\) be a vector spaced spanned by the set \(\{ v\otimes w \mid v\in V,w\in W \}\), i.e. \(U\) is the vector space consisting of *all* linear combination of all symbols \(v\otimes w\). Then, let \(U_0\) be the vector space spanned by the relations the tensor product satisfies (i.e. \((v+v')\otimes w-v\otimes w-v'\otimes w\) and other expressions above), for all \(v\in V\) and \(w\in W\). Then, by the properties of a quotient vector space, \(U/U_0\) will satisfy all the relations we want, so we define \(V\otimes W=U/U_0\).
@@ -142,7 +142,9 @@ Notice that the right hand side of \(\iff\) above give the *relations* that the 
         v\otimes (\lambda w)
         -\lambda(v\otimes w)
     \end{gathered}
-    \right| v\in V, w\in W, \lambda\in k\right\}
+    \right| \begin{gathered}
+        v\in V \\ w\in W \\ \lambda\in k
+    \end{gathered}\right\}
 \]
 
 We are going to see that the category of vector spaces \(\Vect_k\) can be given the structure of a monoidal category with the tensor product as the bifunctor. A bifunctor must associate to each pair of objects \(V,W\in\Ob(\Vect_k)\) (the objects of the category \(\Vect_k\) are vector spaces) another object/vector space. The tensor product does so my mapping the pair \((V,W)\) with \(V,W\in\Ob(\Vect_k)\) to the vector space \(V\otimes W\). 
@@ -179,7 +181,71 @@ Note \(v,v'\in V, w,w'\in W\). Likewise for the other 3 relations spanning \(U_0
 
 Ok, so we see that the definition of the linear map \(T\otimes S\) as \(v\otimes w\mapsto T(v)\otimes S(w)\) is well-defined. Note \(v\otimes w\in V\otimes W\) and \(T(v)\in V',S(w)\in W'\) so their tensor product is in \(V'\otimes W'\). Thus \(T\otimes S\) is a morphism \(V\otimes W\to V'\otimes W'\). Therefore, the tensor product \(\otimes\) also maps pairs of morphisms to morphisms.
 
-TODO: show that the \(\otimes\) satisfy some other functor requirements, i.e. preserves composition and the identity. The unit object is just the underlying field \(k\). The associator \(\alpha\) is really simple (same as the set associator given before as am example). The unitors are given by scalar multiplication. They satisfy the pentagon/triangle axioms obviously.
+To summarize so far, the tensor product of vector spaces \(\otimes\) sends a pair of vector spaces \(V,W\in\Ob(\Vect_k)\) to another vector space \(V\otimes W\in\Ob(\Vect_k)\). And it maps pairs of morphisms/linear map \(T:V\to V'\) and \(S:W\to W'\) to a morphism/linear map \(T\otimes S : V\otimes W \to V'\otimes W'\). The tensor product on morphisms is given by:
+\[
+    (T\otimes S)(v\otimes w)=T(v)\otimes S(w)
+\]
+Now, we check that the tensor product \(\otimes\) satisfies the other requirements of a (bi)functor. Let \(V,W\in\Ob(\Vect_k)\).
+
+Let \(\id_V:V\to V\) and \(\id_W:W\to W\) be the identity maps on \(V\) and \(W\), so that \(\id_V(v)=v\) and \(\id_W(w)=w\). Their tensor product is:
+\[
+    (\id_V\otimes\id_W)(v\otimes w)
+    =\id_V(v)\otimes\id_W(w)
+    =v\otimes w
+    =\id_{V\otimes W}(v\otimes w)
+\]
+If this holds for all pure tensors \(v\otimes w\), and all elements of \(V\otimes W\) are sums of pure tensors, we have \(id_{V\otimes W}(x)=(\id_V\otimes\id_W)(x)\) for all \(x\in V\otimes W\), so \(id_{V\otimes W}=\id_V\otimes\id_W\) and the tensor product preserves identities.
+
+A bifunctor must also preserve function composition. Let \(V,V',\overline V,W,W',\overline W\in\Ob(\Vect_k)\) be vector spaces. Let:
+\begin{alignat*}{2}
+    T&:V\to V' &\qquad
+    S&:W\to W'  \\\\
+    T'&:V'\to\overline V &\qquad
+    S'&:W'\to\overline W 
+\end{alignat*}
+be morphisms/linear maps. Composition by regular function composition gives:
+\[
+    T'\circ T:V\to\overline V
+    \qquad
+    S'\circ S:W\to\overline W
+\]
+The tensor product of \(T'\circ T\) and \(S'\circ S\) is a morphism \((T'\circ T) \otimes (S'\circ S):V\otimes W \to \overline V \otimes \overline W\).
+
+The tensor product on morphisms on \(T,S,T',S'\) gives:
+\begin{align*}
+    T\otimes S&:V\otimes W \to V'\otimes W' \\\\
+    T'\otimes S'&:V'\otimes W' \to \overline V\otimes \overline W
+\end{align*}
+These can be composed. The tensor product \(\otimes\) preserves function composition if: \((T'\otimes S')\circ(T\otimes S) = (T'\circ T) \otimes (S'\circ S)\). Note that their domains are both \(V\otimes W\) and their codomains are \(\overline V \otimes\overline W\). Check that their outputs are equal for all pure tensors \(v\otimes w\in V\otimes W\):
+\begin{align*}
+    \left((T'\otimes S')\circ(T\otimes S)\right)(v\otimes w)
+    &=(T'\otimes S')((T\otimes S)(v\otimes w)) \\\\
+    &=(T'\otimes S')(T(v)\otimes S(w)) \\\\
+    &=T'(T(v))\otimes S'(S(w)) \\\\ \\\\
+    \left((T'\circ T) \otimes (S'\circ S)\right)(v\otimes w)
+    &=(T'\circ T)(v)\otimes (S'\circ S)(w) \\\\
+    &=T'(T(v))\otimes S'(S(w))
+\end{align*}
+Luca Bocresion is giving you your present
+When you meet him tell him he’s a terrible person
+(Follows from the definition \((T\otimes S)(v\otimes w)=T(v)\otimes S(w)\).) Since this holds for all pure tensors it holds for all elements of \(V\otimes W\). Thus \((T'\otimes S')\circ(T\otimes S) = (T'\circ T) \otimes (S'\circ S)\) and the tensor product of vector spaces preserves composition.
+
+The unit object is the underlying field \(k\in\Ob(\Vect_k)\) (the underlying field can always be viewed as a 1-dimensional vector space). \(k\otimes V\) and \(V\otimes k\) are both naturally isomorphic to \(V\). To see this, let \(v_1,v_2,\ldots,v_n\) be a basis for the vector space \(V\). Any nonzero element \(a\in k\) is a basis for \(k\) (\(\operatorname{span}(a)\) is all scalar multiples of \(a\) by any scalar in \(k\), so the span is all of \(k\)). We notice that \(V\otimes k \cong k\otimes V\cong V\).[^tensorisom] Specifically we have the left and right unitors \(L_V:k\otimes V\xrightarrow{\sim} V\) and \(R_V:V\otimes k\xrightarrow{\sim} V\):
+\begin{align*}
+    L_V: a\otimes v &\mapsto av \\\\
+    R_V: v\otimes a &\mapsto av
+\end{align*}
+where \(a\in k, v\in V\) and \(av\) is by scalar multiplication.
+
+[^tensorisom]: \(V\otimes k\) has basis \(\{ v_i\otimes a \mid 1\leq i\leq n \}\) and \(k\otimes V\) has basis \(\{ a\otimes v_i \mid 1\leq i\leq n \}\), with \(a\in k, a\neq 0\) (so that \(a\) is a basis for \(k\) viewed as a vector space). Both have exactly \(n=\dim V\) basis vectors, so \(\dim V=\dim(V\otimes k)=\dim(k\otimes V)\). Since all are vector spaces over the field \(k\), and all vector spaces of the same dimension over the same field are isomorphic, the statement above is true.
+
+Let \(U,V,W\) be vector spaces over \(k\). We define the associator \(\alpha_{U,V,W}: (U\otimes V)\otimes W \xrightarrow{\sim} U\otimes(V\otimes W)\) naturally. Let \(u\in U,v\in V,w\in W\):
+\[
+    \alpha_{U,V,W}: (u\otimes v)\otimes w \mapsto u\otimes(v\otimes w)
+\]
+It's fairly obvious that the associator and unitors are injective: only \((0\otimes 0)\otimes 0\) maps to zero in \(u\otimes(v\otimes w)\), and likewise for the unitors if \(av=0\) then \(a=0\) or \(v=0\), so the tensor product \(a\otimes v=0\), and all kernels are trivial. Likewise they are both surjective by choosing the appropriate inputs.
+
+The associator reparenthesizes any expression as "expected," so it ought to satisfy the pentagon axiom. Likewise the unitors are such that we can swap any scalar/element of the unit object \(k\) as expected, so it satisfies the triangle axiom. Full proof: ask a toddler on the street. Therefore we see \(\Vect_k\) can be given the structure of a monoidal category. {{< p_qed >}}
 </details>
 
 [^coset]: The cosets of a subspace are parallel shifts of that subspace by a constant vector: if \(W\) is a subspace of \(V\), then for all \(v\in V\) we have a coset of \(W\): \(v+W=\{v+w \mid w\in W\}\). Two elements \(a,b\in U\) are in the same coset if and only if \(a+U_0\) and \(b+U_0\) the same coset. If \(a+U_0=b+U_0\), then for all \(r\in U_0\), there exists some \(r'\in U_0\) such that \(a+r=b+r_0 \implies a-b=r-r_0 \implies a-b\in U_0\). The converse is trivial.

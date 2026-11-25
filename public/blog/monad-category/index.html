@@ -59,16 +59,16 @@
 
 </head>
 
-
+<div id="post-views"></div>
 
 <main class="post-content">
 	<p><strong>In progress!</strong></p>
 <p>I learned some category theory and abstract algebra in Math 55a at Harvard, so here&rsquo;s (trying to) understand the <a href="https://www.reddit.com/r/ProgrammerHumor/comments/1ctgnng/amonadisamonoidinthecategoryofendofunctors/">Infamous</a> <a href="https://james-iry.blogspot.com/2009/05/brief-incomplete-and-mostly-wrong.html">Sentence</a>.</p>
-<p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> is a monoid in the category of endofunctors. <div style="text-align: right; margin-top: -50px;">□</div>
+<p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> is a monoid in the category of endofunctors. <div style="text-align: right; margin-top: -47px;">□</div>
 
 </p>
 <p>Actually, this isn&rsquo;t the most precise definition. When I first saw this, I assumed &ldquo;monoid&rdquo; was a monoid in abstract algebra, which it isn&rsquo;t.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> We might also ask: &hellip; the category of endofunctors of <em>what</em>? So, we have the more precise definition of a monad below:</p>
-<p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> in a category \(\newcommand{\CC}{\mathcal C} \CC\) is a <em>monoid object</em> in the <em>monoidal category</em> of endofunctors of \(\CC\). <div style="text-align: right; margin-top: -50px;">□</div>
+<p><strong><u>Definition</u> (Monad).</strong> A <em>monad</em> in a category \(\newcommand{\CC}{\mathcal C} \CC\) is a <em>monoid object</em> in the <em>monoidal category</em> of endofunctors of \(\CC\). <div style="text-align: right; margin-top: -47px;">□</div>
 
 </p>
 <p>Now, onto defining the terms in this definition.</p>
@@ -88,14 +88,14 @@ If \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\), we have that the codomain of \(f\) i
 <ul>
 <li>Associativity. Let \(A,B,C,D\in\Ob(\CC)\) and let \(f\in\Hom(A,B)\), \(g\in\Hom(B,C)\) and \(h\in\Hom(C,D)\). Then: \((h\circ g)\circ f=h\circ(g\circ f)\).</li>
 <li>Identity. For every \(A\in\Ob(\CC)\), there exists an identity morphism \(\DeclareMathOperator{\id}{id}\id_A\in\Hom(A,A)\) such that for all objects \(B\in\Ob(\CC)\) and morphisms \(f\in\Hom(A,B)\), we have
-\(f\circ\id_A=f=\id_B\circ f\). <div style="text-align: right; margin-top: -30px;">□</div><p></p>
+\(f\circ\id_A=f=\id_B\circ f\). <div style="text-align: right; margin-top: -28px;">□</div><p></p>
 
 </li>
 </ul>
 <details open>
 <summary>Example: Category of finite-dimensional vector spaces</summary>
 <p>Let \(\DeclareMathOperator{\Vect}{Vect} \Vect_k\) be the category of finite-dimensional vector spaces over a field \(k\). The set of morphisms between any two objects \(V,W\in\Ob(\Vect_k)\) is the set of linear map/homomorphisms: \(\DeclareMathOperator{\LL}{\mathcal L} \Hom(V,W)=\LL(V,W)\) (using notation from Axler, LADR). \(\Hom(V,W)\) is not the set of all functions \(V\to W\) because morphisms preserve structure.</p>
-<p>Let \(U,V,W\in\Ob(\Vect_k)\). Composition between two linear maps \(f:U\to V\), \(g:V\to W\) is simply given by standard function composition, which is associative. The identity \(\id_U\) on any vector space \(U\) is simply the map \(\id_U:u\mapsto u\) for all \(u\in U\). <div style="text-align: right; margin-top: -50px;">□</div>
+<p>Let \(U,V,W\in\Ob(\Vect_k)\). Composition between two linear maps \(f:U\to V\), \(g:V\to W\) is simply given by standard function composition, which is associative. The identity \(\id_U\) on any vector space \(U\) is simply the map \(\id_U:u\mapsto u\) for all \(u\in U\). <div style="text-align: right; margin-top: -47px;">□</div>
 
 </p>
 </details>
@@ -107,11 +107,11 @@ If \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\), we have that the codomain of \(f\) i
 <p>A functor \(F\) must preserve the structure of categories by preserving the identity and the composition of morphisms:</p>
 <ul>
 <li>Recall that for each object \(A\in\Ob(\CC)\), there exists an identity morphism \(\id_A\in\Hom(A,A)\) such that \(\id_A(a)=a\) for all \(a\in A\). The identity is preserved: \(F(\id_A)=\id_{F(a)}\), the identity morphism of the object \(F(A)\in\Ob(\DD)\).</li>
-<li>Let \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\) be morphisms. By definition of the composition operator, \(g\circ f\in\Hom(A,C)\) and is also a functor. Then \(F(g\circ f)\) is a functor from \(F(A)\) to \(F(C)\). Likewise, \(F(f):\Hom(F(A),F(B))\) and \(F(g):\Hom(F(B),F(C))\), so their composition \(F(g)\circ F(f)\) is a functor from \(F(A)\) to \(F(C)\). Functors preserve the composition of morphisms, so we require \(F(g\circ f)=F(g)\circ F(f)\). <div style="text-align: right; margin-top: -30px;">□</div><p></p>
+<li>Let \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\) be morphisms. By definition of the composition operator, \(g\circ f\in\Hom(A,C)\) and is also a functor. Then \(F(g\circ f)\) is a functor from \(F(A)\) to \(F(C)\). Likewise, \(F(f):\Hom(F(A),F(B))\) and \(F(g):\Hom(F(B),F(C))\), so their composition \(F(g)\circ F(f)\) is a functor from \(F(A)\) to \(F(C)\). Functors preserve the composition of morphisms, so we require \(F(g\circ f)=F(g)\circ F(f)\). <div style="text-align: right; margin-top: -28px;">□</div><p></p>
 
 </li>
 </ul>
-<p><strong><u>Definition</u> (Endofunctor).</strong> An <em>endofunctor</em> is a functor from a category \(\CC\) to itself. \(\DeclareMathOperator{\End}{End}\End(\CC)\) is the collection<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> of all endofunctors in \(\CC\): \(\End(C)=\{F:\CC \to \CC\}\). <div style="text-align: right; margin-top: -50px;">□</div>
+<p><strong><u>Definition</u> (Endofunctor).</strong> An <em>endofunctor</em> is a functor from a category \(\CC\) to itself. \(\DeclareMathOperator{\End}{End}\End(\CC)\) is the collection<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> of all endofunctors in \(\CC\): \(\End(C)=\{F:\CC \to \CC\}\). <div style="text-align: right; margin-top: -47px;">□</div>
 
 </p>
 <p>Two claims: that \(\End(\CC)\) can itself be given a structure of not just a category, but of what&rsquo;s called a <em>monoidal category</em>, so \(\End(\CC)\) is the &ldquo;monoidal category of endofunctors of \(C\).&rdquo; First, we define a monoidal category.</p>
@@ -123,13 +123,13 @@ If \(f\in\Hom(A,B)\) and \(g\in\Hom(B,C)\), we have that the codomain of \(f\) i
 <li>The composition of two morphisms \((f,g)\) and \((f',g')\) is given by pairwise composition of morphisms in categories \(\CC\) and \(\DD\): \((f,g)\circ(f',g')=(f\circ_\CC f', g\circ_\DD g')\).</li>
 <li>The identity morphism associated with the object \((A,B)\in\Ob(\CC\times\DD)\) is the pair \(\id_A,\id_B\), which are the identity morphisms in the respective categories \(\CC\) and \(\DD\).</li>
 </ul>
-<p>In short: the objects of \(\CC\times\DD\) is the Cartesian product of the objects of both categories, and morphisms are defined naturally as pairs.<div style="text-align: right; margin-top: -50px;">□</div>
+<p>In short: the objects of \(\CC\times\DD\) is the Cartesian product of the objects of both categories, and morphisms are defined naturally as pairs.<div style="text-align: right; margin-top: -47px;">□</div>
 
 </p>
 <p><strong><u>Definition</u> (Monoidal category).</strong> A <em>monoidal category</em> is a category \(\CC\) together with the following to be defined:</p>
 <ul>
 <li>A bifunctor \(\otimes:\CC\times\CC\to\CC\) (a functor whose domain is a product category) called the <em>tensor product</em>.</li>
-<li>An <em>identity object</em> \(I\in\Ob(\CC)\).</li>
+<li>A <em>unit object</em> \(I\in\Ob(\CC)\).</li>
 <li>&ldquo;Associativity&rdquo;: let \(X,Y,Z\in\Ob(\CC)\). By definition of the tensor product, \((X\otimes Y)\otimes Z\) and \(X\otimes(Y\otimes Z)\) are both objects in \(\CC\). The requirement here is that they are isomorphic. More specifically, to define a monoidal category, we must define a natural isomorphism (invertible morphism in \(\CC\)) between these for all \(X,Y,Z\). This isomorphism is called the <em>associator</em>: \(\alpha_{X,Y,Z}\) is an isomorphism such that \(\alpha_{X,Y,Z}:(X\otimes Y)\otimes Z \xrightarrow{\sim} X\otimes(Y\otimes Z)\).</li>
 <li>For each object \(X\in\Ob(\CC)\), we must define a <em>left unitor</em> \(L_X\) and a <em>right unitor</em> \(R_X\), which are natural isomorphisms: \(L_X:I\otimes X\xrightarrow{\sim} X\) and \(R_X:X\otimes I\xrightarrow{\sim} X\).</li>
 </ul>
@@ -149,7 +149,7 @@ This is called the <em>pentagon axiom</em>, and it says that the two ways of rep
 @V{R_X\otimes\mathrm{id}_Y}VV @VV{\mathrm{id}_X\otimes L_Y}V \\
 X\otimes Y @= X\otimes Y
 \end{CD}\]<p>
-Similiarly, this says that you can eliminate the identity object \(I\) directly with the unitor, or you can reparenthesize \((X\otimes I)\otimes Y\) with the associator and then eliminate the identity. Both must give the same outcome.<div style="text-align: right; margin-top: -50px;">□</div>
+Similiarly, this says that you can eliminate the unit object \(I\) directly with the unitor, or you can reparenthesize \((X\otimes I)\otimes Y\) with the associator and then eliminate the identity. Both must give the same outcome.<div style="text-align: right; margin-top: -47px;">□</div>
 
 </p>
 <p>Note that some of the properties above are about &ldquo;natural isomorphisms.&rdquo; They are not equal! For example, the category of sets, with the bifunctor being the Cartesian product, is a monoidal category.<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> If \(X,Y,Z\) are sets, \((X\times Y)\times Z\) contain elements of the form \(((x,y), z)\), but \(X\times(Y\times Z)\) contains \((x,(y,z))\). They are not equal. But, there is a very natural and obvious isomorphism \((X\times Y)\times Z\xrightarrow{\sim} X\times (Y\times Z)\): the associator would be \(\alpha_{X,Y,Z}: ((x,y),z) \mapsto (x,(y,z)) \). But, since we are interested in structure, being isomorphic means they have the same structure and the two collections are &ldquo;the same&rdquo; up to renaming the elements, so they are good as equal.</p>
@@ -164,8 +164,8 @@ Similiarly, this says that you can eliminate the identity object \(I\) directly 
 Not all elements of \(V\otimes W\) are pure tensors, but all are linear combinations of pure tensors, by definition of span. The rank of an element of \(V\otimes W\) is the smallest \(\ell\) such that it can be expressed as the sum of \(\ell\) pure tensors.</li>
 </ol>
 <p>Notice that this definition of a pure tensor makes the tensor product <em>bilinear</em>. That is, if \(v,v'\in V\), \(w,w'\in W\) and \(\lambda\in k\) is a scalar (in the underlying field \(k\)), then:
-\begin{equation*}
-\left\{\begin{aligned}
+\begin{align*}
+&amp;\left\{\begin{aligned}
 (v+v&rsquo;)\otimes w
 &amp;=v\otimes w+v&rsquo;\otimes w \\
 v\otimes(w+w&rsquo;)
@@ -174,9 +174,9 @@ v\otimes(w+w&rsquo;)
 &amp;=\lambda(v\otimes w) \\
 v\otimes (\lambda w)
 &amp;=\lambda(v\otimes w)
-\end{aligned}\right.
+\end{aligned}\right. \\
 \iff
-\left\{\begin{aligned}
+{}&amp;\left\{\begin{aligned}
 (v+v&rsquo;)\otimes w
 -v\otimes w-v&rsquo;\otimes w &amp;= 0\\
 v\otimes(w+w&rsquo;)
@@ -186,7 +186,7 @@ v\otimes(w+w&rsquo;)
 v\otimes (\lambda w)
 -\lambda(v\otimes w) &amp;= 0
 \end{aligned}\right.
-\end{equation*}
+\end{align*}
 Notice that the right hand side of \(\iff\) above give the <em>relations</em> that the vector space \(V\otimes W\) must satisfy. This gives rise to our second definition.</p>
 <ol start="2">
 <li>Let \(U\) be a vector spaced spanned by the set \(\{ v\otimes w \mid v\in V,w\in W \}\), i.e. \(U\) is the vector space consisting of <em>all</em> linear combination of all symbols \(v\otimes w\). Then, let \(U_0\) be the vector space spanned by the relations the tensor product satisfies (i.e. \((v+v')\otimes w-v\otimes w-v'\otimes w\) and other expressions above), for all \(v\in V\) and \(w\in W\). Then, by the properties of a quotient vector space, \(U/U_0\) will satisfy all the relations we want, so we define \(V\otimes W=U/U_0\).
@@ -202,7 +202,9 @@ Notice that the right hand side of \(\iff\) above give the <em>relations</em> th
         v\otimes (\lambda w)
         -\lambda(v\otimes w)
     \end{gathered}
-    \right| v\in V, w\in W, \lambda\in k\right\}
+    \right| \begin{gathered}
+        v\in V \\ w\in W \\ \lambda\in k
+    \end{gathered}\right\}
 \]</li>
 </ol>
 <p>We are going to see that the category of vector spaces \(\Vect_k\) can be given the structure of a monoidal category with the tensor product as the bifunctor. A bifunctor must associate to each pair of objects \(V,W\in\Ob(\Vect_k)\) (the objects of the category \(\Vect_k\) are vector spaces) another object/vector space. The tensor product does so my mapping the pair \((V,W)\) with \(V,W\in\Ob(\Vect_k)\) to the vector space \(V\otimes W\).</p>
@@ -233,11 +235,73 @@ We defined \(\phi\) to be a linear map \(U\to V'\otimes W'\), so by linearity:
 \end{align*}
 Note \(v,v'\in V, w,w'\in W\). Likewise for the other 3 relations spanning \(U_0\).</p>
 <p>Ok, so we see that the definition of the linear map \(T\otimes S\) as \(v\otimes w\mapsto T(v)\otimes S(w)\) is well-defined. Note \(v\otimes w\in V\otimes W\) and \(T(v)\in V',S(w)\in W'\) so their tensor product is in \(V'\otimes W'\). Thus \(T\otimes S\) is a morphism \(V\otimes W\to V'\otimes W'\). Therefore, the tensor product \(\otimes\) also maps pairs of morphisms to morphisms.</p>
-<p>TODO: show that the \(\otimes\) satisfy some other functor requirements, i.e. preserves composition and the identity. The unit object is just the underlying field \(k\). The associator \(\alpha\) is really simple (same as the set associator given before as am example). The unitors are given by scalar multiplication. They satisfy the pentagon/triangle axioms obviously.</p>
+<p>To summarize so far, the tensor product of vector spaces \(\otimes\) sends a pair of vector spaces \(V,W\in\Ob(\Vect_k)\) to another vector space \(V\otimes W\in\Ob(\Vect_k)\). And it maps pairs of morphisms/linear map \(T:V\to V'\) and \(S:W\to W'\) to a morphism/linear map \(T\otimes S : V\otimes W \to V'\otimes W'\). The tensor product on morphisms is given by:
+</p>
+\[
+    (T\otimes S)(v\otimes w)=T(v)\otimes S(w)
+\]<p>
+Now, we check that the tensor product \(\otimes\) satisfies the other requirements of a (bi)functor. Let \(V,W\in\Ob(\Vect_k)\).</p>
+<p>Let \(\id_V:V\to V\) and \(\id_W:W\to W\) be the identity maps on \(V\) and \(W\), so that \(\id_V(v)=v\) and \(\id_W(w)=w\). Their tensor product is:
+</p>
+\[
+    (\id_V\otimes\id_W)(v\otimes w)
+    =\id_V(v)\otimes\id_W(w)
+    =v\otimes w
+    =\id_{V\otimes W}(v\otimes w)
+\]<p>
+If this holds for all pure tensors \(v\otimes w\), and all elements of \(V\otimes W\) are sums of pure tensors, we have \(id_{V\otimes W}(x)=(\id_V\otimes\id_W)(x)\) for all \(x\in V\otimes W\), so \(id_{V\otimes W}=\id_V\otimes\id_W\) and the tensor product preserves identities.</p>
+<p>A bifunctor must also preserve function composition. Let \(V,V',\overline V,W,W',\overline W\in\Ob(\Vect_k)\) be vector spaces. Let:
+\begin{alignat*}{2}
+T&amp;:V\to V&rsquo; &amp;\qquad
+S&amp;:W\to W&rsquo;  \\
+T&rsquo;&amp;:V&rsquo;\to\overline V &amp;\qquad
+S&rsquo;&amp;:W&rsquo;\to\overline W
+\end{alignat*}
+be morphisms/linear maps. Composition by regular function composition gives:
+</p>
+\[
+    T'\circ T:V\to\overline V
+    \qquad
+    S'\circ S:W\to\overline W
+\]<p>
+The tensor product of \(T'\circ T\) and \(S'\circ S\) is a morphism \((T'\circ T) \otimes (S'\circ S):V\otimes W \to \overline V \otimes \overline W\).</p>
+<p>The tensor product on morphisms on \(T,S,T',S'\) gives:
+\begin{align*}
+T\otimes S&amp;:V\otimes W \to V&rsquo;\otimes W&rsquo; \\
+T&rsquo;\otimes S&rsquo;&amp;:V&rsquo;\otimes W&rsquo; \to \overline V\otimes \overline W
+\end{align*}
+These can be composed. The tensor product \(\otimes\) preserves function composition if: \((T'\otimes S')\circ(T\otimes S) = (T'\circ T) \otimes (S'\circ S)\). Note that their domains are both \(V\otimes W\) and their codomains are \(\overline V \otimes\overline W\). Check that their outputs are equal for all pure tensors \(v\otimes w\in V\otimes W\):
+\begin{align*}
+\left((T&rsquo;\otimes S&rsquo;)\circ(T\otimes S)\right)(v\otimes w)
+&amp;=(T&rsquo;\otimes S&rsquo;)((T\otimes S)(v\otimes w)) \\
+&amp;=(T&rsquo;\otimes S&rsquo;)(T(v)\otimes S(w)) \\
+&amp;=T&rsquo;(T(v))\otimes S&rsquo;(S(w)) \\ \\
+\left((T&rsquo;\circ T) \otimes (S&rsquo;\circ S)\right)(v\otimes w)
+&amp;=(T&rsquo;\circ T)(v)\otimes (S&rsquo;\circ S)(w) \\
+&amp;=T&rsquo;(T(v))\otimes S&rsquo;(S(w))
+\end{align*}
+Luca Bocresion is giving you your present
+When you meet him tell him he’s a terrible person
+(Follows from the definition \((T\otimes S)(v\otimes w)=T(v)\otimes S(w)\).) Since this holds for all pure tensors it holds for all elements of \(V\otimes W\). Thus \((T'\otimes S')\circ(T\otimes S) = (T'\circ T) \otimes (S'\circ S)\) and the tensor product of vector spaces preserves composition.</p>
+<p>The unit object is the underlying field \(k\in\Ob(\Vect_k)\) (the underlying field can always be viewed as a 1-dimensional vector space). \(k\otimes V\) and \(V\otimes k\) are both naturally isomorphic to \(V\). To see this, let \(v_1,v_2,\ldots,v_n\) be a basis for the vector space \(V\). Any nonzero element \(a\in k\) is a basis for \(k\) (\(\operatorname{span}(a)\) is all scalar multiples of \(a\) by any scalar in \(k\), so the span is all of \(k\)). We notice that \(V\otimes k \cong k\otimes V\cong V\).<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup> Specifically we have the left and right unitors \(L_V:k\otimes V\xrightarrow{\sim} V\) and \(R_V:V\otimes k\xrightarrow{\sim} V\):
+\begin{align*}
+L_V: a\otimes v &amp;\mapsto av \\
+R_V: v\otimes a &amp;\mapsto av
+\end{align*}
+where \(a\in k, v\in V\) and \(av\) is by scalar multiplication.</p>
+<p>Let \(U,V,W\) be vector spaces over \(k\). We define the associator \(\alpha_{U,V,W}: (U\otimes V)\otimes W \xrightarrow{\sim} U\otimes(V\otimes W)\) naturally. Let \(u\in U,v\in V,w\in W\):
+</p>
+\[
+    \alpha_{U,V,W}: (u\otimes v)\otimes w \mapsto u\otimes(v\otimes w)
+\]<p>
+It&rsquo;s fairly obvious that the associator and unitors are injective: only \((0\otimes 0)\otimes 0\) maps to zero in \(u\otimes(v\otimes w)\), and likewise for the unitors if \(av=0\) then \(a=0\) or \(v=0\), so the tensor product \(a\otimes v=0\), and all kernels are trivial. Likewise they are both surjective by choosing the appropriate inputs.</p>
+<p>The associator reparenthesizes any expression as &ldquo;expected,&rdquo; so it ought to satisfy the pentagon axiom. Likewise the unitors are such that we can swap any scalar/element of the unit object \(k\) as expected, so it satisfies the triangle axiom. Full proof: ask a toddler on the street. Therefore we see \(\Vect_k\) can be given the structure of a monoidal category. <div style="text-align: right; margin-top: -47px;">□</div>
+
+</p>
 </details>
 <p><strong><u>Proof</u> (\(\End(\CC)\) is a monoidal category).</strong> The objects of \(\End(\CC)\) are endofunctors \(F:\CC\to\CC\). The morphisms are a bit more complex. What actually is a morphism? In familiar categories like the category of sets or \(\Vect_k\), morphisms are functions/linear maps between two sets/vector spaces. These would be natural ways to define a morphism in these particular categories. But morphisms of categories in general do not have to be maps. In general, the hom-set of two objects of a category is just a &ldquo;thing that is provided when you define a category \(\CC\),&rdquo; and the hom-sets collectively have some additional properties like identity and composition. Morphisms are just &ldquo;things&rdquo; in the hom-set; what they specifically are depends on the category.</p>
 <p>For clarity, we will use \(\Hom_\DD\) to denote a hom-set in the category \(\DD\), since we will be working with \(\CC\) as well as the (supposed) category \(\End(\CC)\).</p>
-<p>Let \(F,G\in\Ob(\End(\CC))\), so \(F,G\) are both endofunctors in \(\CC\): \(F,G:\CC\to\CC\). We define the morphisms as follows: the hom-set \(\Hom_{\End(\CC)}(F,G)\) is the set of <em>natural transformations</em> from \(F\) to \(G\). A natural transformation \(\alpha:F\Rightarrow G\)<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup> is the assignment from every object \(X\in\Ob(\CC)\) to a morphism \(\alpha_X:F(X)\to G(X)\) in \(\CC\), such that for all objects \(X,Y\in\Ob(\CC)\) and morphisms \(\phi:X\to Y\) in \(\CC\), the following diagram commutes:
+<p>Let \(F,G\in\Ob(\End(\CC))\), so \(F,G\) are both endofunctors in \(\CC\): \(F,G:\CC\to\CC\). We define the morphisms as follows: the hom-set \(\Hom_{\End(\CC)}(F,G)\) is the set of <em>natural transformations</em> from \(F\) to \(G\). A natural transformation \(\alpha:F\Rightarrow G\)<sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup> is the assignment from every object \(X\in\Ob(\CC)\) to a morphism \(\alpha_X:F(X)\to G(X)\) in \(\CC\), such that for all objects \(X,Y\in\Ob(\CC)\) and morphisms \(\phi:X\to Y\) in \(\CC\), the following diagram commutes:
 </p>
 \[
 \begin{CD}
@@ -291,7 +355,10 @@ Note: \(F(X),F(Y)\in\Ob(\CC)\) and \(\phi\in\Hom_{\CC}(X,Y)\), and \(F:\CC\to\CC
 In the first line note that \(u\) is the linear combination (with weights \(-1\) and \(-3\)) of two expressions in the basis of \(U_0\) defined before (specifically, the last two). \(a+u=6(v\otimes w)\), so therefore \(6(v\otimes w)\) and \((2v)\otimes (3w)\) are in the same coset and are therefore in fact the same in \(V\otimes W=U/U_0\).&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:5">
-<p>(Not an exponent!) I think the notational convention here is to use \(\Rightarrow\) for natural transformations between functors, like \(\alpha\), but use \(\to\) for morphisms and functors.&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>\(V\otimes k\) has basis \(\{ v_i\otimes a \mid 1\leq i\leq n \}\) and \(k\otimes V\) has basis \(\{ a\otimes v_i \mid 1\leq i\leq n \}\), with \(a\in k, a\neq 0\) (so that \(a\) is a basis for \(k\) viewed as a vector space). Both have exactly \(n=\dim V\) basis vectors, so \(\dim V=\dim(V\otimes k)=\dim(k\otimes V)\). Since all are vector spaces over the field \(k\), and all vector spaces of the same dimension over the same field are isomorphic, the statement above is true.&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6">
+<p>(Not an exponent!) I think the notational convention here is to use \(\Rightarrow\) for natural transformations between functors, like \(\alpha\), but use \(\to\) for morphisms and functors.&#160;<a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>
