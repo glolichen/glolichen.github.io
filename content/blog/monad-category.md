@@ -237,7 +237,7 @@ The unit object is the underlying field \(k\in\Ob(\Vect_k)\) (the underlying fie
 \end{align*}
 where \(a\in k, v\in V\) and \(av\) is by scalar multiplication.
 
-[^tensorisom]: \(V\otimes k\) has basis \(\{ v_i\otimes a \mid 1\leq i\leq n \}\) and \(k\otimes V\) has basis \(\{ a\otimes v_i \mid 1\leq i\leq n \}\), with \(a\in k, a\neq 0\) (so that \(a\) is a basis for \(k\) viewed as a vector space). Both have exactly \(n=\dim V\) basis vectors, so \(\dim V=\dim(V\otimes k)=\dim(k\otimes V)\). Since all are vector spaces over the field \(k\), and all vector spaces of the same dimension over the same field are isomorphic, the statement above is true.
+[^tensorisom]: \(V\otimes k\) has basis \(\{ v_i\otimes a \mid 1\leq i\leq n \}\) and \(k\otimes V\) has basis \(\{ a\otimes v_i \mid 1\leq i\leq n \}\), with \(a\in k, a\neq 0\) (so that \(a\) is a basis for \(k\) viewed as a vector space). Both have exactly \(n=\dim V\) basis vectors, so \(\dim V=\dim(V\otimes k)=\dim(k\otimes V)\). Since all are vector spaces over a field \(k\), and all vector spaces of the same dimension over the same field are isomorphic, the statement above is true.
 
 Let \(U,V,W\) be vector spaces over \(k\). We define the associator \(\alpha_{U,V,W}: (U\otimes V)\otimes W \xrightarrow{\sim} U\otimes(V\otimes W)\) naturally. Let \(u\in U,v\in V,w\in W\):
 \[
@@ -259,22 +259,137 @@ The associator reparenthesizes any expression as "expected," so it ought to sati
 \end{aligned}\]
 In the first line note that \(u\) is the linear combination (with weights \(-1\) and \(-3\)) of two expressions in the basis of \(U_0\) defined before (specifically, the last two). \(a+u=6(v\otimes w)\), so therefore \(6(v\otimes w)\) and \((2v)\otimes (3w)\) are in the same coset and are therefore in fact the same in \(V\otimes W=U/U_0\).
 
-**<u>Proof</u> (\(\End(\CC)\) is a monoidal category).** The objects of \(\End(\CC)\) are endofunctors \(F:\CC\to\CC\). The morphisms are a bit more complex. What actually is a morphism? In familiar categories like the category of sets or \(\Vect_k\), morphisms are functions/linear maps between two sets/vector spaces. These would be natural ways to define a morphism in these particular categories. But morphisms of categories in general do not have to be maps. In general, the hom-set of two objects of a category is just a "thing that is provided when you define a category \(\CC\)," and the hom-sets collectively have some additional properties like identity and composition. Morphisms are just "things" in the hom-set; what they specifically are depends on the category.
+We introduce a definition that is useful to show \(\End(\CC)\) is a (monoidal) category:
 
-For clarity, we will use \(\Hom_\DD\) to denote a hom-set in the category \(\DD\), since we will be working with \(\CC\) as well as the (supposed) category \(\End(\CC)\).
-
-Let \(F,G\in\Ob(\End(\CC))\), so \(F,G\) are both endofunctors in \(\CC\): \(F,G:\CC\to\CC\). We define the morphisms as follows: the hom-set \(\Hom_{\End(\CC)}(F,G)\) is the set of *natural transformations* from \(F\) to \(G\). A natural transformation \(\alpha:F\Rightarrow G\)[^notation] is the assignment from every object \(X\in\Ob(\CC)\) to a morphism \(\alpha_X:F(X)\to G(X)\) in \(\CC\), such that for all objects \(X,Y\in\Ob(\CC)\) and morphisms \(\phi:X\to Y\) in \(\CC\), the following diagram commutes:
+**<u>Definition</u> (Natural transformation).** A *natural transformation* is a morphism between 2 functors. Let \(\CC,\DD\) be categories, and let \(F,G:\CC\to\DD\) be functors. A natural transformation \(\alpha:F\Rightarrow G\)[^notation] is the assignment from every object \(x\in\Ob(\CC)\) to a morphism \(\alpha_x:F(x)\to G(x)\) (\(\alpha_x\) is called the *component* of \(\alpha\) at the object \(x\)) in \(\DD\) (since \(F,G\) are functors, \(F(x),G(x)\in\Ob(\DD)\)), such that for all objects \(x,y\in\Ob(\CC)\) and morphisms \(\phi:x\to y\) in \(\CC\), the following diagram commutes:
 \[
 \begin{CD}
-F(X) @> F(\phi) >> F(Y) \\
-@V \alpha_X VV @VV \alpha_Y V \\
-G(X) @>> G(\phi) > G(Y)
+F(x) @> F(\phi) >> F(y) \\
+@V \alpha_x VV @VV \alpha_y V \\
+G(x) @>> G(\phi) > G(y)
 \end{CD}
 \]
-Note: \(F(X),F(Y)\in\Ob(\CC)\) and \(\phi\in\Hom_{\CC}(X,Y)\), and \(F:\CC\to\CC\) is an endofunctor. By definition of a functor, \(F(\phi)\) is a morphism in \(\CC\) from \(F(X)\) to \(F(Y)\) (since a functor must carry a morphism into another morphism). Likewise for \(G\).
 [^notation]: (Not an exponent!) I think the notational convention here is to use \(\Rightarrow\) for natural transformations between functors, like \(\alpha\), but use \(\to\) for morphisms and functors.
 
-The diagram above commutes if and only if the following compositions are equal: \(G(\phi)\circ \alpha_X\) and \(\alpha_Y \circ F(\phi)\). Both of these are morphisms: \(\circ\) is the composition operator of morphisms defined in the category \(\CC\), which returns another morphism in \(\CC\).
+Note: \(F(x),F(y),G(x),G(y)\in\Ob(\DD)\), and \(\alpha_x,\alpha_y,F(\phi),G(\phi)\) are morphisms in \(\DD\).
+
+The diagram above commutes if and only if the following morphisms in \(\DD\) are equal: \(G(\phi)\circ \alpha_x\) and \(\alpha_y \circ F(\phi)\), and \(\circ\) is composition defined in \(\DD\). To put it simply, we require that \(\alpha\) makes the diagram commute in order for it to preserve the structure of categories \(\CC,\DD\) and that of its functors/morphisms. {{< p_qed >}}
+
+<details open>
+<summary>Example: Vector space to its double dual</summary>
+
+Let \(V\) be a vector space over a field \(k\). Recall its dual space \(V^*\) is:
+\[
+    V^*=\{\text{linear maps } V\to k\}=\LL(V,k)
+\]
+The double dual \(V^{**}\) (also written \((V^*)^*\)) of \(V\) is the dual space of \(V^*\):
+\[
+    V^{**}=\{\text{linear maps } V^*\to k\}=\LL(V^*,k)
+\]
+\(V\) is naturally isomorphic to \(V^{**}\). Why?
+
+We can do so by the evaluation map. We associate any \(v\in V\) to a map \(V^*\to k\) as such: for any \(\ell:V\to k, \ell\in V^*\), we map it to its value evaluated at \(v\) by \(\ell\mapsto \ell(v)\), which gives a map from \(V^*\) to \(k\). Intuitively, this map is natural because we do not need to "choose" anything. It is also injective and surjective. Thus \(V\) is naturally isomorphic to \(V^{**}\).
+
+In category theoretical terms: \(V,V^{**}\in\Ob(\Vect_k)\) (since the linear maps form a vector space). We have the *identity* functor \(\id:\Vect_k\to\Vect_k\) that maps each vector space \(V\) to itself, and maps each morphism/linear map \(T:V\to W\) to itself.
+
+The double dual is also a functor \(\Phi\). It maps objects/vector space \(V\) to \(V^{**}\), obviously. If \(V,W\in\Ob(\Vect_k)\), then morphisms are linear maps \(T:V\to W\). \(\Phi\) should map \(T\) to a linear map in the double dual spaces \(V^{**}\to W^{**}\). We can do so by the *transpose* of linear maps.[^transpose] The first transpose of \(T\) is \(^tT:W^*\to V^*\), and the second transpose is \(^t\left(^t T\right):V^{**}\to W^{**}\). 
+
+Specifically, if \(V,W\in\Ob(\Vect_k)\) and \(T:V\to W\) is a linear map, then the double dual functor \(\Phi\) does the following:
+\[
+    \Phi(V)=V^{**}
+    \qquad
+    \Phi(T)={} ^t\left(^t T\right)
+\]
+\(\Phi(T)={}^t\left(^tT\right)\) is not literally the same thing as \(T\), of course, as they are linear maps between different vector spaces. But, we have a natural association between them.
+
+This satisfies the functor laws. Briefly, if \(\id_V\) is the identity morphism/linear map in \(V\), then \(\Phi(\id_V)=^t\left(^t \id_V\right)=\id_{V^{**}}\) by definition of the transpose. Likewise, for composition:
+\[
+    \Phi(S\circ T)
+    ={}^t\left(^t(S\circ T)\right)
+    ={}^t \left(^tT\circ {}^tS\right)
+    ={}^tS \circ {} ^tT
+\]
+So \(\Phi\) preserves both composition and the identity, so \(\Phi\) is indeed a functor.
+[^transpose]: Let \(V,W\) be vector spaces over a field \(k\). For a linear map \(T:V\to W\), we can naturally define an induced map \(W^*\to V^*\) called the *transpose* \(^tT\). Let \(\ell:W\to k\) (so \(\ell\in W^*\)). We can map it to an element in \(V^*\) by composition: \(\ell\circ T:V\to k\). The map from \(\ell\in W^*\) to \(\ell\circ T\in V^*\) is the transpose \(^t T\). See the following diagram:
+\[
+\begin{CD}
+V @> T >> W \\
+@V {}\left(^tT\right)(\ell){}={}\ell\circ T VV @VV \ell V \\
+k @= k
+\end{CD}
+\]
+If \(A\) is the matrix representation of \(T:V\to W\) with respect to the basis \(v_1,\ldots,v_m\) for \(V\) and \(w_1,\ldots,w_n\) for \(W\), then the matrix representation of the transpose \(^tT:W^*\to V^*\) is the matrix transpose \(A^T\) with respect to the [dual basis](https://en.wikipedia.org/wiki/Dual_basis) \(w_1^*,\ldots,w_n^*\) for \(W^*\) and \(v_1^*,\ldots,v_m^*\) for \(V^*\). Because of, uhh, [reasons](https://math.stackexchange.com/a/1138700).
+
+We can define the natural transformation \(\alpha\) between functors \(\id\) and \(\Phi\) as such: for each object/vector space \(V\in\Ob(\Vect_k)\), define the component \(\alpha_V:\id(V)\to\Phi(V)\) (i.e. \(V\to V^{**}\)) as follows, for \(v\in V\):
+\[
+    \alpha_V(v)=(\underbrace{\ell}_{V^*} \mapsto \underbrace{\ell(v)}_{k}) \in V^{**}
+\]
+i.e. the evaluation map with \(\ell:V\to k\) as *any arbitrary* element of \(V^*\). We do not need to make a choice for \(\ell\). We need to check: \(\alpha_V\) is indeed a morphism/linear map in \(V^{**}\), and it makes the diagram in the definition commute.
+
+By definition, each component \(\alpha_V\) must be a morphism in \(V^{**}\), i.e. a linear map. Indeed \(\alpha_V\in V^{**}\), so it remains to check whether it is linear. Let \(v,v'\in V\):
+\begin{align*}
+    \alpha_V(v+v')
+    &=(\ell\mapsto \ell(v+v')) 
+    =(\ell\mapsto (\ell(v)+\ell(v'))) \\\\
+    &=(\ell\mapsto\ell(v))+(\ell\mapsto\ell(v'))
+    =\alpha_V(v)+\alpha_V(v')
+\end{align*}
+Since \(\ell\in V^*\) is linear. The sum of elements in the dual space is defined as the pointwise sum, and scalar multiples are defined as pointwise scalar multiples. Let \(\lambda\in k\) be a scalar value:
+\begin{align*}
+    \alpha_V(\lambda v)
+    &=(\ell\mapsto \ell(\lambda v)) 
+    =(\ell\mapsto (\lambda\ell(v))) \\\\
+    &=\lambda(\ell\mapsto\ell(v))
+    =\lambda\alpha_V(v)
+\end{align*}
+So \(\alpha_V\) is indeed linear, so it is a morphism in \(V^{**}\).
+
+Since we claim to have a natural transformation \(\id\Rightarrow\Phi\) we want the following diagram to commute (since \(\Phi(V)=V^{**}\) and likewise for \(W\)):
+\[
+\begin{CD}
+V @> T >> W \\
+@V \alpha_{V} VV @VV \alpha_W V \\
+V^{**} @>> \Phi(T) > W^{**}
+\end{CD}
+\]
+where \(V,W\in\Ob(\Vect_k)\) are objects/vector spaces, \(T:V\to W\) is a morphism/linear map, and \(\Phi\) is the double dual functor defined previously. Recall \(\Phi(T)={}^t\left(^tT\right):V^{**}\to W^{**}\), the double transpose of \(T\).
+
+We check that \(\Phi(T)\circ \alpha_V=\alpha_W\circ T\). Clearly, both are maps \(V\to W^{**}\). Let \(v\in V\).
+\[
+    (\alpha_W\circ T)(v)
+    =\alpha_W(T(v))
+    =(\ell\mapsto \ell(T(v)))
+\]
+Note that unlike before, \(\ell\in W^*\) (instead of \(V^*\)). The above is indeed defined because \(T(v)\in W\), so \(\ell(T(v))\in k\).
+
+Note \((\Phi(T)\circ\alpha_V)(v)=\left(^t\left(^t T\right)\right)(\alpha_V(v))\). By definition, \(^t\left(^t T\right):V^{**}\to W^{**}\) and is given by \(\left(^t\left(^t T\right)\right)(\mu)=\mu\circ{}^t T\) with \(\mu\in V^{**}\) (this follows by taking the transpose of \(^tT\)). Since \(\alpha_V(v)\in V^{**}\):[^intertext]
+\[
+    (\Phi(T)\circ\alpha_V)(v)
+    =\left(^t\left(^t T\right)\right)(\alpha_V(v))
+    ={} \alpha_V(v)\circ{}^tT
+\]
+Check types: \(\Phi(T)\circ\alpha_V:V\to W^{**}\), so we expect the value above (which is the a map \(V\to W^{**}\) evaluated at \(v\in V\)) to be an element of \(W^{**}\), i.e. a map \(W^*\to k\). The input would be an input to \(^tT:W^*\to V^*\), which is \(W^*\) as expected. The output is the output of \(\alpha_V(v):V\to k\), which is \(k\). OK.
+[^intertext]: I apologize for the lack of alignment of "\(=\)" in these calculations; it does bother me somewhat too. Apparently Hugo \(\LaTeX\) does not support `\intertext`, and I am too lazy to screw around with CSS to emulate it.
+
+We know the composition above is an element of \(W^{**}\), or a map \(W^*\to k\). Interpret this as "given an element \(\ell\in W^*\), we first use \(^tT\) to map it to an element of \(V^*\), then evaluate that at \(v\in V\) by \(\alpha_V\)." To do this, we can write:
+\[
+    (\Phi(T)\circ\alpha_V)(v)
+    =(\ell \mapsto \left(\left(^tT\right)(\ell)\right)(v) )
+\]
+Again, by definition of the transpose \(^tT:W^*\to V^*\), we have \(\left(^tT\right)(\ell)=\ell\circ T\in V^*\).
+\[
+    (\Phi(T)\circ\alpha_V)(v)
+    =(\ell \mapsto (\ell\circ T)(v) )
+    =(\ell \mapsto \ell(T(v)) )
+\]
+This is exactly \((\alpha_W\circ T)(v)\) from before, so we conclude that the diagram does indeed commute by our definitions of \(\alpha\) as the evaluation map and \(\Phi\) as the double transpose. Thus, we have demonstrated above a natural transformation \(\alpha:\id \Rightarrow \Phi\).
+</details>
+
+**<u>Proof</u> (\(\End(\CC)\) is a monoidal category).** The objects of \(\End(\CC)\) are endofunctors \(F:\CC\to\CC\). The morphisms are a bit more complex. What actually is a morphism? In familiar categories like the category of sets or \(\Vect_k\), morphisms are functions/linear maps between two sets/vector spaces. These would be natural ways to define a morphism in these particular categories. But morphisms of categories in general do not have to be maps. In general, the hom-set of two objects of a category is just a "thing that is provided when you define a category \(\CC\)," and the hom-sets collectively have some additional properties like identity and composition. Morphisms are just "things" in the hom-set; what they specifically are depends on the category.
+
+For clarity, we will use \(\Hom_X\) to denote a hom-set in the category \(X\), since we will be working with \(\CC\) as well as the (supposed) category \(\End(\CC)\).
+
+Let \(F,G\in\Ob(\End(\CC))\), so \(F,G\) are both endofunctors in \(\CC\): \(F,G:\CC\to\CC\). We define the morphisms as follows: the hom-set \(\Hom_{\End(\CC)}(F,G)\) is the set of *natural transformations* from \(F\) to \(G\). 
 
 Finish proof of \(\End(\CC)\).
 
