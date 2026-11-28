@@ -48,9 +48,9 @@ li:last-child {
 	margin-bottom: 0;
 }
 
-h2,h3,h4,h5,h6 {
-	margin-bottom: -0.5em;
-}
+/* h2,h3,h4,h5,h6 { */
+/* 	margin-bottom: -0.2em; */
+/* } */
 
 h2.post-list-title {
 	margin-bottom: 0em;
@@ -267,7 +267,7 @@ mjx-container, mjx-container *, .MathJax, .MathJax_Display {
 }
 
 .post-content {
-  counter-reset: h2;
+	counter-reset: h2;
 }
 
 .post-content > h2 { counter-increment: h2; counter-reset: h3; }
@@ -282,10 +282,81 @@ mjx-container, mjx-container *, .MathJax, .MathJax_Display {
 .post-content > h5::before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". "; }
 .post-content > h6::before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". "; }
 .post-content > .unnumbered {
-  counter-increment: none;
-  counter-reset: none;
+	counter-increment: none;
+	counter-reset: none;
 }
 
 .post-content > .unnumbered::before {
-  content: none;
+	content: none;
+}
+
+.p_qed {
+	float: right;
+	margin-left: 0.5em;
+	position: relative;
+	top: 0.2em;
+}
+.ul_qed {
+	float: right;
+	margin-left: 0.5em;
+	position: relative;
+	top: 0.2em;
+}
+
+@media print {
+	html, body {
+		background: #fff !important;
+		color: #000 !important;
+		font-size: 14px;
+	}
+
+	a {
+		color: #0000ff;
+	}
+
+	.article-meta,
+	.article-meta h1,
+	.article-meta h1 * {
+		color: #000 !important;
+	}
+
+	code {
+		background: #ffffff;
+		padding: 0.1em 0.25em;
+		border-radius: 3px;
+	}
+
+	pre code {
+		background: none;
+		padding: 0;
+	}
+
+	details {
+		border: 1px solid #000000;
+	}
+
+	#p_qed {
+		margin-top: -1em !important;
+	}
+
+	nav {
+		display: none !important;
+	}
+
+	main.post-content {
+		break-inside: auto !important;
+	}
+
+	.post-content #references {
+		break-before: auto !important;
+	}
+
+	.post-content .footnotes,
+	.post-content .footnotes > ol,
+	.post-content .footnotes li,
+	.post-content .footnotes p {
+		break-before: auto !important;
+		break-after: auto !important;
+		break-inside: auto !important;
+	}
 }
