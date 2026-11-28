@@ -294,7 +294,6 @@ mjx-container, mjx-container *, .MathJax, .MathJax_Display {
 	float: right;
 	margin-left: 0.5em;
 	position: relative;
-	top: 0.2em;
 }
 .ul_qed {
 	float: right;

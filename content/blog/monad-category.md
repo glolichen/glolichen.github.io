@@ -1,7 +1,7 @@
 ---
 title: A Monad is a Monoid in the Category of Endofunctors (WIP)
 author: 'Jayden Li'
-date: "2026-11-19"
+date: "2026-11-28"
 ---
 
 **In progress!**
@@ -38,6 +38,12 @@ Composition must satisfy two axioms:
 - Identity. For every \(A\in\Ob(\CC)\), there exists an identity morphism \(\DeclareMathOperator{\id}{id}\id_A\in\Hom(A,A)\) such that for all objects \(B\in\Ob(\CC)\) and morphisms \(f\in\Hom(A,B)\), we have
 \(f\circ\id_A=f=\id_B\circ f\). {{< ul_qed >}}
 
+Important note: thoughout this article, we use the following notation for different "identities":
+- \(\id_X:X\to X\) for the identity morphism, where \(X\) is an object.
+- \(\DeclareMathOperator{\Id}{Id}\Id_\CC:\CC\to\CC\) for the identity functor, where \(\CC\) is a category.
+- \(1_F:F\Rightarrow F\) for the identity natural transformation, where \(F\) is a functor.
+We introduce the last two later.
+
 <details open>
 <summary>Example: Category of finite-dimensional vector spaces</summary>
 
@@ -67,10 +73,27 @@ Two claims: that \(\End(\CC)\) can itself be given a structure of not just a cat
 - The composition of two morphisms \((f,g)\) and \((f',g')\) is given by pairwise composition of morphisms in categories \(\CC\) and \(\DD\): \((f,g)\circ(f',g')=(f\circ_\CC f', g\circ_\DD g')\).
 - The identity morphism associated with the object \((A,B)\in\Ob(\CC\times\DD)\) is the pair \(\id_A,\id_B\), which are the identity morphisms in the respective categories \(\CC\) and \(\DD\).
 
-In short: the objects of \(\CC\times\DD\) is the Cartesian product of the objects of both categories, and morphisms are defined naturally as pairs.{{< p_qed >}}
+In short: the objects of \(\CC\times\DD\) is the Cartesian product of the objects of both categories, and morphisms are defined naturally as pairs. {{< p_qed >}}
+
+**<u>Definition</u> (Bifunctor).** A *bifunctor* is a functor whose domain is a product category \(\CC\times\CC\), where \(\CC\) is a category. A bifunctor \(\Phi:\CC\times\CC\to\CC\) sends pairs of objects \(A,B\in\Ob(\CC)\) (alternatively, an object in the product category \(\CC\times\CC\)) to an object \(\Phi(A,B)\in\Ob(\CC)\), and pairs of morphisms \(f:A\to A', g:B\to B'\) to a morphism:
+\[
+    \Phi(f,g):\Phi(A,B)\to\Phi(A',B').
+\]
+Let \(A,A',\overline A,B,B',\overline B\in\Ob(\CC)\) be objects, and let the following be morphisms:
+\begin{alignat*}{2}
+    f&:A\to A' &\qquad
+    g&:B\to B'  \\\\
+    f'&:A'\to\overline A &\qquad
+    g'&:B'\to\overline B
+\end{alignat*}
+\(\Phi\) satisfies the following laws:
+- Let \(\id_A:A\to A\) and \(\id_B:B\to B\) be the identity morphisms. Then \(\Phi(\id_A,\id_B)=\id_{\Phi(A,B)}\).
+- \(\Phi\left(f\circ f', g\circ g'\right)=\Phi(f,g)\circ\Phi(f',g')\). {{< ul_qed >}}
+
+This definition is motivated by the fact that we want a functor from a product category \(\CC\times\CC\). Objects, morphisms and identity morphisms in a product category are all pairs, and composition is defined as componentwise composition in \(\CC\). The requirements above are equivalent to the identity and composition axioms of a regular functor applied on pairs of objects and morphisms in \(\CC\times\CC\).
 
 **<u>Definition</u> (Monoidal category).** A *monoidal category* is a category \(\CC\) together with the following to be defined:
-- A bifunctor \(\otimes:\CC\times\CC\to\CC\) (a functor whose domain is a product category) called the *tensor product*. 
+- A bifunctor \(\otimes:\CC\times\CC\to\CC\) called the *tensor product*. 
 - A *unit object* \(I\in\Ob(\CC)\).
 - "Associativity": let \(X,Y,Z\in\Ob(\CC)\). By definition of the tensor product, \((X\otimes Y)\otimes Z\) and \(X\otimes(Y\otimes Z)\) are both objects in \(\CC\). The requirement here is that they are isomorphic. More specifically, to define a monoidal category, we must define a natural isomorphism (invertible morphism in \(\CC\)) between these for all \(X,Y,Z\). This isomorphism is called the *associator*: \(\alpha_{X,Y,Z}\) is an isomorphism such that \(\alpha_{X,Y,Z}:(X\otimes Y)\otimes Z \xrightarrow{\sim} X\otimes(Y\otimes Z)\). 
 - For each object \(X\in\Ob(\CC)\), we must define a *left unitor* \(L_X\) and a *right unitor* \(R_X\), which are natural isomorphisms: \(L_X:I\otimes X\xrightarrow{\sim} X\) and \(R_X:X\otimes I\xrightarrow{\sim} X\).
@@ -101,7 +124,11 @@ Ok, this is quite a complicated definition. It may be helpful to look at some ex
 <!-- <details open> -->
 <!-- <summary>Example: Tensor product of vector spaces makes \(\Vect_k\) a monoidal category</summary> -->
 <!---->
-<!-- Recall \(\Vect_k\), the category of finite-dimensional vector spaces over a field \(k\), and the ordinary tensor product of vector spaces. I claim that the tensor product on vector spaces gives \(\Vect_k\) the structure of a monoidal category. There are a number of equivalent definitions of the tensor product \(V\otimes W\) of two vector spaces \(V,W\in\Vect_k\), but we focus on these two: -->
+<!-- Recall \(\Vect_k\), the category of finite-dimensional vector spaces over a field \(k\), and the ordinary tensor product of vector spaces. I claim that the tensor product on vector spaces gives \(\Vect_k\) the structure of a monoidal category.  -->
+<!---->
+<!-- #### Define tensor product of objects/vector spaces -->
+<!---->
+<!-- There are a number of equivalent definitions of the tensor product \(V\otimes W\) of two vector spaces \(V,W\in\Vect_k\), but we focus on these two: -->
 <!-- 1. Let \(v_1,\ldots,v_m\) be a basis for \(V\) and let \(w_1,\ldots,w_n\) be a basis for \(W\). The tensor product \(V\otimes W\) is the vector space with basis \(v_i\otimes w_j\) for all \(1\leq i\leq m,1\leq j\leq n\). If \(v=\sum_{i=1}a_iv_i\in V\) and \(w=\sum_{j=1}b_jw_j\in W\) (linear combination of basis vectors), then we define a pure tensor \(v\otimes w\) as: -->
 <!-- \[ v\otimes w=\left(\sum_{i=1}^{m}a_iv_i\right)\otimes\left(\sum_{j=1}^{n}b_jw_j\right)=\sum_{i=1}^{m}\sum_{j=1}^{n} a_i b_j (v_i\otimes w_j) \] -->
 <!-- Not all elements of \(V\otimes W\) are pure tensors, but all are linear combinations of pure tensors, by definition of span. The rank of an element of \(V\otimes W\) is the smallest \(\ell\) such that it can be expressed as the sum of \(\ell\) pure tensors. -->
@@ -151,6 +178,8 @@ Ok, this is quite a complicated definition. It may be helpful to look at some ex
 <!---->
 <!-- We are going to see that the category of vector spaces \(\Vect_k\) can be given the structure of a monoidal category with the tensor product as the bifunctor. A bifunctor must associate to each pair of objects \(V,W\in\Ob(\Vect_k)\) (the objects of the category \(\Vect_k\) are vector spaces) another object/vector space. The tensor product does so my mapping the pair \((V,W)\) with \(V,W\in\Ob(\Vect_k)\) to the vector space \(V\otimes W\).  -->
 <!---->
+<!-- #### Define tensor product of morphisms/linear maps -->
+<!---->
 <!-- But a bifunctor must also map pairs of morphisms (in \(\Vect_k\), this would be pairs of linear maps) to another morphism/linear map. Specifically, let \(V,V',W,W'\in\Ob(\Vect_k)\) be vector spaces, and let \(T\in\Hom(V,V')=\LL(V,V')\) and \(S\in\Hom(W,W')=\LL(V,V')\) be morphisms/linear maps. In order for \(\otimes\) to be a bifunctor, we want \(T\otimes S\) to be a morphism from \(V\otimes W\) to \(V'\otimes W'\). There is a natural way to define this: define the tensor product of linear maps as \(T\otimes S:v\otimes w\mapsto T(v)\otimes S(w)\in V'\otimes W'\). -->
 <!---->
 <!-- There are a few concerns with this definition. First, a pure tensor might have multiple names, and the map is only well-defined if all such names map to the same output. For example, \(v\otimes 2w=2v\otimes w\), and we want \(T(v)\otimes S(2w)=T(2v)\otimes S(w)\). -->
@@ -188,6 +217,8 @@ Ok, this is quite a complicated definition. It may be helpful to look at some ex
 <!--     (T\otimes S)(v\otimes w)=T(v)\otimes S(w) -->
 <!-- \] -->
 <!-- Now, we check that the tensor product \(\otimes\) satisfies the other requirements of a (bi)functor. Let \(V,W\in\Ob(\Vect_k)\). -->
+<!---->
+<!-- #### Check bifunctoriality -->
 <!---->
 <!-- Let \(\id_V:V\to V\) and \(\id_W:W\to W\) be the identity maps on \(V\) and \(W\), so that \(\id_V(v)=v\) and \(\id_W(w)=w\). Their tensor product is: -->
 <!-- \[ -->
@@ -230,6 +261,8 @@ Ok, this is quite a complicated definition. It may be helpful to look at some ex
 <!-- \end{align*} -->
 <!-- (Follows from the definition \((T\otimes S)(v\otimes w)=T(v)\otimes S(w)\).) Since this holds for all pure tensors it holds for all elements of \(V\otimes W\). Thus \((T'\otimes S')\circ(T\otimes S) = (T'\circ T) \otimes (S'\circ S)\) and the tensor product of vector spaces preserves composition. -->
 <!---->
+<!-- #### Define unit object -->
+<!---->
 <!-- The unit object is the underlying field \(k\in\Ob(\Vect_k)\) (the underlying field can always be viewed as a 1-dimensional vector space). \(k\otimes V\) and \(V\otimes k\) are both naturally isomorphic to \(V\). To see this, let \(v_1,v_2,\ldots,v_n\) be a basis for the vector space \(V\). Any nonzero element \(a\in k\) is a basis for \(k\) (\(\operatorname{span}(a)\) is all scalar multiples of \(a\) by any scalar in \(k\), so the span is all of \(k\)). We notice that \(V\otimes k \cong k\otimes V\cong V\).[^tensorisom] Specifically we have the left and right unitors \(L_V:k\otimes V\xrightarrow{\sim} V\) and \(R_V:V\otimes k\xrightarrow{\sim} V\): -->
 <!-- \begin{align*} -->
 <!--     L_V: a\otimes v &\mapsto av \\\\ -->
@@ -238,6 +271,8 @@ Ok, this is quite a complicated definition. It may be helpful to look at some ex
 <!-- where \(a\in k, v\in V\) and \(av\) is by scalar multiplication. -->
 <!---->
 <!-- [^tensorisom]: \(V\otimes k\) has basis \(\{ v_i\otimes a \mid 1\leq i\leq n \}\) and \(k\otimes V\) has basis \(\{ a\otimes v_i \mid 1\leq i\leq n \}\), with \(a\in k, a\neq 0\) (so that \(a\) is a basis for \(k\) viewed as a vector space). Both have exactly \(n=\dim V\) basis vectors, so \(\dim V=\dim(V\otimes k)=\dim(k\otimes V)\). Since all are vector spaces over a field \(k\), and all vector spaces of the same dimension over the same field are isomorphic, the statement above is true. -->
+<!---->
+<!-- #### Define associator and unitors -->
 <!---->
 <!-- Let \(U,V,W\) be vector spaces over \(k\). We define the associator \(\alpha_{U,V,W}: (U\otimes V)\otimes W \xrightarrow{\sim} U\otimes(V\otimes W)\) naturally. Let \(u\in U,v\in V,w\in W\): -->
 <!-- \[ -->
@@ -292,23 +327,25 @@ The double dual \(V^{**}\) (also written \((V^*)^*\)) of \(V\) is the dual space
 
 We can do so by the evaluation map. We associate any \(v\in V\) to a map \(V^*\to k\) as such: for any \(\ell:V\to k, \ell\in V^*\), we map it to its value evaluated at \(v\) by \(\ell\mapsto \ell(v)\), which gives a map from \(V^*\) to \(k\). Intuitively, this map is natural because we do not need to "choose" anything. It is also injective and surjective. Thus \(V\) is naturally isomorphic to \(V^{**}\).
 
-In category theoretical terms: \(V,V^{**}\in\Ob(\Vect_k)\) (since the linear maps form a vector space). We have the *identity* functor \(\id:\Vect_k\to\Vect_k\) that maps each vector space \(V\) to itself, and maps each morphism/linear map \(T:V\to W\) to itself.
+#### Define identity and double dual functors
 
-The double dual is also a functor \(\Phi\). It maps objects/vector space \(V\) to \(V^{**}\), obviously. If \(V,W\in\Ob(\Vect_k)\), then morphisms are linear maps \(T:V\to W\). \(\Phi\) should map \(T\) to a linear map in the double dual spaces \(V^{**}\to W^{**}\). We can do so by the *transpose* of linear maps.[^transpose] The first transpose of \(T\) is \(^tT:W^*\to V^*\), and the second transpose is \(^t\left(^t T\right):V^{**}\to W^{**}\). 
+In category theoretical terms: \(V,V^{**}\in\Ob(\Vect_k)\) (since the linear maps form a vector space). We have the *identity* functor \(\Id_{\Vect_k}:\Vect_k\to\Vect_k\) that maps each vector space \(V\) to itself, and maps each morphism/linear map \(T:V\to W\) to itself.
+
+The double dual is also a functor \(\Phi\). It maps objects/vector space \(V\) to \(V^{**}\), obviously. If \(V,W\in\Ob(\Vect_k)\), then morphisms are linear maps \(T:V\to W\). \(\Phi\) should map \(T\) to a linear map in the double dual spaces \(V^{**}\to W^{**}\). We can do so by the *transpose* of linear maps.[^transpose] The first transpose of \(T\) is \(^tT:W^*\to V^*\), and the second transpose is \(^t(^t T):V^{**}\to W^{**}\). 
 
 Specifically, if \(V,W\in\Ob(\Vect_k)\) and \(T:V\to W\) is a linear map, then the double dual functor \(\Phi\) does the following:
 \[
     \Phi(V)=V^{**}
     \qquad
-    \Phi(T)={} ^t\left(^t T\right)
+    \Phi(T)={} ^t(^t T)
 \]
-\(\Phi(T)={}^t\left(^tT\right)\) is not literally the same thing as \(T\), of course, as they are linear maps between different vector spaces. But, we have a natural association between them.
+\(\Phi(T)={}^t(^tT)\) is not literally the same thing as \(T\), of course, as they are linear maps between different vector spaces. But, we have a natural association between them.
 
-This satisfies the functor laws. Briefly, if \(\id_V\) is the identity morphism/linear map in \(V\), then \(\Phi(\id_V)=^t\left(^t \id_V\right)=\id_{V^{**}}\) by definition of the transpose. Likewise, for composition:
+This satisfies the functor laws. Briefly, if \(\id_V\) is the identity morphism/linear map in \(V\), then \(\Phi(\id_V)=^t(^t \id_V)=\id_{V^{**}}\) by definition of the transpose. Likewise, for composition:
 \[
     \Phi(S\circ T)
-    ={}^t\left(^t(S\circ T)\right)
-    ={}^t \left(^tT\circ {}^tS\right)
+    ={}^t(^t(S\circ T))
+    ={}^t(^tT\circ {}^tS)
     ={}^tS \circ {} ^tT
 \]
 So \(\Phi\) preserves both composition and the identity, so \(\Phi\) is indeed a functor.
@@ -322,7 +359,9 @@ k @= k
 \]
 If \(A\) is the matrix representation of \(T:V\to W\) with respect to the basis \(v_1,\ldots,v_m\) for \(V\) and \(w_1,\ldots,w_n\) for \(W\), then the matrix representation of the transpose \(^tT:W^*\to V^*\) is the matrix transpose \(A^T\) with respect to the [dual basis](https://en.wikipedia.org/wiki/Dual_basis) \(w_1^*,\ldots,w_n^*\) for \(W^*\) and \(v_1^*,\ldots,v_m^*\) for \(V^*\). Because of, uhh, [reasons](https://math.stackexchange.com/a/1138700).
 
-We can define the natural transformation \(\alpha\) between functors \(\id\) and \(\Phi\) as such: for each object/vector space \(V\in\Ob(\Vect_k)\), define the component \(\alpha_V:\id(V)\to\Phi(V)\) (i.e. \(V\to V^{**}\)) as follows, for \(v\in V\):
+#### Define natural transformation \(\Id_{\Vect_k}\Rightarrow\Phi\)
+
+We can define the natural transformation \(\alpha\) between functors \(\Id_{\Vect_k}\) and \(\Phi\) as such: for each object/vector space \(V\in\Ob(\Vect_k)\), define the component \(\alpha_V:\Id_{\Vect_k}(V)\to\Phi(V)\) (i.e. \(V\to V^{**}\)) as follows, for \(v\in V\):
 \[
     \alpha_V(v)=(\underbrace{\ell}_{V^*} \mapsto \underbrace{\ell(v)}_{k}) \in V^{**}
 \]
@@ -346,7 +385,9 @@ Since \(\ell\in V^*\) is linear. The sum of elements in the dual space is define
 \end{align*}
 So \(\alpha_V\) is indeed linear, so it is a morphism in \(V^{**}\).
 
-Since we claim to have a natural transformation \(\id\Rightarrow\Phi\) we want the following diagram to commute (since \(\Phi(V)=V^{**}\) and likewise for \(W\)):
+#### Check natural transformation axiom
+
+Since we claim to have a natural transformation \(\Id_{\Vect_k}\Rightarrow\Phi\) we want the following diagram to commute (since \(\Phi(V)=V^{**}\) and likewise for \(W\)):
 \[
 \begin{CD}
 V @> T >> W \\
@@ -354,7 +395,7 @@ V @> T >> W \\
 V^{**} @>> \Phi(T) > W^{**}
 \end{CD}
 \]
-where \(V,W\in\Ob(\Vect_k)\) are objects/vector spaces, \(T:V\to W\) is a morphism/linear map, and \(\Phi\) is the double dual functor defined previously. Recall \(\Phi(T)={}^t\left(^tT\right):V^{**}\to W^{**}\), the double transpose of \(T\).
+where \(V,W\in\Ob(\Vect_k)\) are objects/vector spaces, \(T:V\to W\) is a morphism/linear map, and \(\Phi\) is the double dual functor defined previously. Recall \(\Phi(T)={}^t(^tT):V^{**}\to W^{**}\), the double transpose of \(T\).
 
 We check that \(\Phi(T)\circ \alpha_V=\alpha_W\circ T\). Clearly, both are maps \(V\to W^{**}\). Let \(v\in V\).
 \[
@@ -364,10 +405,10 @@ We check that \(\Phi(T)\circ \alpha_V=\alpha_W\circ T\). Clearly, both are maps 
 \]
 Note that unlike before, \(\ell\in W^*\) (instead of \(V^*\)). The above is indeed defined because \(T(v)\in W\), so \(\ell(T(v))\in k\).
 
-Note \((\Phi(T)\circ\alpha_V)(v)=\left(^t\left(^t T\right)\right)(\alpha_V(v))\). By definition, \(^t\left(^t T\right):V^{**}\to W^{**}\) and is given by \(\left(^t\left(^t T\right)\right)(\mu)=\mu\circ{}^t T\) with \(\mu\in V^{**}\) (this follows by taking the transpose of \(^tT\)). Since \(\alpha_V(v)\in V^{**}\):[^intertext]
+Note \((\Phi(T)\circ\alpha_V)(v)=\left(^t(^t T)\right)(\alpha_V(v))\). By definition, \(^t(^t T):V^{**}\to W^{**}\) and is given by \(\left(^t(^t T)\right)(\mu)=\mu\circ{}^t T\) with \(\mu\in V^{**}\) (this follows by taking the transpose of \(^tT\)). Since \(\alpha_V(v)\in V^{**}\):[^intertext]
 \[
     (\Phi(T)\circ\alpha_V)(v)
-    =\left(^t\left(^t T\right)\right)(\alpha_V(v))
+    =\left(^t(^t T)\right)(\alpha_V(v))
     ={} \alpha_V(v)\circ{}^tT
 \]
 Check types: \(\Phi(T)\circ\alpha_V:V\to W^{**}\), so we expect the value above (which is the a map \(V\to W^{**}\) evaluated at \(v\in V\)) to be an element of \(W^{**}\), i.e. a map \(W^*\to k\). The input would be an input to \(^tT:W^*\to V^*\), which is \(W^*\) as expected. The output is the output of \(\alpha_V(v):V\to k\), which is \(k\). OK.
@@ -384,9 +425,9 @@ Again, by definition of the transpose \(^tT:W^*\to V^*\), we have \(\left(^tT\ri
     =(\ell \mapsto (\ell\circ T)(v) )
     =(\ell \mapsto \ell(T(v)) )
 \]
-This is exactly \((\alpha_W\circ T)(v)\) from before, so we conclude that the diagram does indeed commute by our definitions of \(\alpha\) as the evaluation map and \(\Phi\) as the double transpose. Thus, we have demonstrated above a natural transformation \(\alpha:\id \Rightarrow \Phi\).
+This is exactly \((\alpha_W\circ T)(v)\) from before, so we conclude that the diagram does indeed commute by our definitions of \(\alpha\) as the evaluation map and \(\Phi\) as the double transpose. Thus, we have demonstrated above a natural transformation \(\alpha:\Id_{\Vect_k} \Rightarrow \Phi\).
 
-Last thing: notice that \(\id\) and \(\Phi\) are both endofunctors: \(\id\) obviously, but \(\Phi\) takes vector spaces \(V\) to double dual *vector spaces* \(V^{**}\), so in fact \(\Phi:\Vect_k\to\Vect_k\). As we'll see next we can give \(\End(\Vect_k)\) the structure of a category such that \(\alpha_V\) is a morphism between objects \(\id\) and \(\Phi\).
+Last thing: notice that \(\Id_{\Vect_k}\) and \(\Phi\) are both endofunctors: \(\Id_{\Vect_k}\) obviously, but \(\Phi\) takes vector spaces \(V\) to double dual *vector spaces* \(V^{**}\), so in fact \(\Phi:\Vect_k\to\Vect_k\). As we'll see next we can give \(\End(\Vect_k)\) the structure of a category such that \(\alpha_V\) is a morphism between objects \(\Id_{\Vect_k}\) and \(\Phi\).
 </details>
 Now we have enough for the proof that \(\End(\CC)\) is a monoidal category.
 
@@ -401,7 +442,7 @@ Let \(F,G\in\Ob(\End(\CC))\), so \(F,G:\CC\to\CC\) are endofunctors of \(\CC\). 
 <details open>
 <summary>Example: Other objects and endofunctors of \(\End(\Vect_k)\)</summary>
 
-Previously, we defined the identity \(\id\) and double dual \(\Phi\) endofunctors on \(\Vect_k\). If \(V\) is a vector space over a field \(k\) and \(V^{**}\) is its double dual, we defined a natural transformation \(\alpha:\id\Rightarrow\Phi\) with components \(\alpha_V(v)=(\ell \mapsto \ell(v))\) where \(\ell\in V^*\).
+Previously, we defined the identity \(\Id_{\Vect_k}\) and double dual \(\Phi\) endofunctors on \(\Vect_k\). If \(V\) is a vector space over a field \(k\) and \(V^{**}\) is its double dual, we defined a natural transformation \(\alpha:\Id_{\Vect_k}\Rightarrow\Phi\) with components \(\alpha_V(v)=(\ell \mapsto \ell(v))\) where \(\ell\in V^*\).
 
 But this is not the only natural transformation we can choose. For example:
 \[
@@ -409,14 +450,14 @@ But this is not the only natural transformation we can choose. For example:
 \]
 where \(\lambda\in k\) is a scalar. This will still make the diagram commute as part of the definition of a natural transformation. Actually, these (scalar multiples as above) are the *only* natural transformations from the identity to the double dual functor.
 
-Since \(\id,\Phi\) are endofunctors of \(\Vect_k\), the "scalar multiple evaluation maps" above are morphisms (elements of the hom-set) in \(\End(\Vect_k)\), but they are not the only ones. For example, we could have the direct sum and tensor product endofunctors (\(S\) and \(P\), respectively):
+Since \(\Id_{\Vect_k},\Phi\) are endofunctors of \(\Vect_k\), the "scalar multiple evaluation maps" above are morphisms (elements of the hom-set) in \(\End(\Vect_k)\), but they are not the only ones. For example, we could have the direct sum and tensor product endofunctors (\(S\) and \(P\), respectively):
 \begin{alignat*}{2}
     S(V)&=V\oplus V &\qquad
     S(T)&=T\oplus T  \\\\
     P(V)&=V\otimes V &\qquad
     P(T)&=T\otimes T 
 \end{alignat*}
-where \(T:V\to W\) is a linear map. \(S\) and \(P\) are additional objects in \(\End(\Vect_k)\). We have some other natural transformations such as \(\id\Rightarrow S,S\Rightarrow S,P\Rightarrow P\), among others, which are in turn morphisms in \(\End(\Vect_k)\).
+where \(T:V\to W\) is a linear map. \(S\) and \(P\) are additional objects in \(\End(\Vect_k)\). We have some other natural transformations such as \(\Id_{\Vect_k}\Rightarrow S,S\Rightarrow S,P\Rightarrow P\), among others, which are in turn morphisms in \(\End(\Vect_k)\).
 </details>
 
 Two things to check: the structure above makes \(\End(\CC)\) a category *and* a monoidal category.
@@ -479,7 +520,7 @@ To check that composition in \(\End(\CC)\) is associative, let \(F,G,H,K\in\Ob(\
 \end{align*}
 Since composition \(*\) in \(\CC\) is associative by definition, the above lines are equal, and composition \(\circ\) in \(\End(\CC)\) is also associative.
 
-The other composition axiom to check is the existence of an identity. Specifically, for all \(F\in\Ob(\End(\CC))\), we need an identity morphism/natural transformation \(\id_F:F\Rightarrow F\), such that for all \(G\in\Ob(\End(\CC))\) and natural transformations \(\alpha:F\Rightarrow G\), we have \(\alpha\circ \id_F = \alpha=\id_G\circ \alpha\). This is accomplished simply by defining the components of \(\id_F\) at \(X\in\Ob(\CC)\) as \((\id_F)_X=\id_{F(X)}:F(X) \to F(X)\), the identity morphism X\) in \(\CC\) which must exist by definition of the category \(\CC\). This choice of \(\id_F:F\Rightarrow F\) satisfies the identity axiom (proof omitted).
+The other composition axiom to check is the existence of an identity. Specifically, for all \(F\in\Ob(\End(\CC))\), we need an identity morphism/natural transformation \(1_F:F\Rightarrow F\), such that for all \(G\in\Ob(\End(\CC))\) and natural transformations \(\alpha:F\Rightarrow G\), we have \(\alpha\circ 1_F = \alpha=1_G\circ \alpha\). This is accomplished simply by defining the components of \(1_F\) at \(X\in\Ob(\CC)\) as \((1_F)_X=\id_{F(X)}:F(X) \to F(X)\), the identity morphism \(X\) in \(\CC\) which must exist by definition of the category \(\CC\). This choice of \(1_F:F\Rightarrow F\) satisfies the identity axiom (proof omitted).
 
 To summarize, we've defined composition of natural transformations \(\alpha,\beta\) as \((\alpha\circ\beta)_X=\alpha_X * \beta_X\), and found that it satisfies:
 1. \(\alpha\circ\beta:F\Rightarrow H\) is also a natural transformation.
@@ -506,19 +547,129 @@ I claim this diagram commutes. Why? View \(\beta_X\) as a morphism: by definitio
 - "\(y\)" to \(G'(X)\), and therefore "\(\alpha_y\)" to \(\alpha_{G'(X)}\).
 - "\(F\)" to \(F\) and "\(G\)" to \(F'\).
 
-And the diagram above easily follows from the fact that \(\alpha\) is a natural transformation. This tells us that we can define \(\alpha\otimes\beta\) in two equivalent ways:
+And the diagram above easily follows from the fact that \(\alpha\) is a natural transformation. This tells us that if \(\alpha:F\Rightarrow F', \beta:G\Rightarrow G'\) we can define \(\alpha\otimes\beta:F\circ G\Rightarrow F'\circ G'\) in two equivalent ways:
 \[
     (\alpha\otimes\beta)_X
     =\alpha_{G'(X)} \circ F(\beta_X)
     =F'(\beta_X) \circ \alpha_{G(X)}
 \]
-We choose to use the first one. Now we verify that \(\alpha\otimes\beta\) is in fact a natural transformation \(F\circ G \Rightarrow F'\circ G'\).
+We choose to use the first one. Now we verify that \(\alpha\otimes\beta\) is in fact a natural transformation \(F\circ G \Rightarrow F'\circ G'\), i.e. it satisfies the naturality square, for all \(X,Y\in\Ob(\CC)\) and morphisms \(\phi:X\to Y\) in \(\CC\):
+\[
+\boxed{\;\begin{CD}
+F(G(X)) @> F(G(\phi)) >> F(G(Y)) \\
+@V (\alpha\otimes\beta)_X VV @VV (\alpha\otimes\beta)_Y V \\
+F'(G'(X)) @>> F'(G'(\phi)) > F'(G'(Y))
+\end{CD}}
+\]
+We want to show this diagram commutes. Since \(\alpha:F\Rightarrow F',\beta:G\Rightarrow G'\) are natural transformations:
+\[
+\begin{CD}
+F(A) @> F(\psi) >> F(B) \\
+@V \alpha_A VV @VV \alpha_B V \\
+F'(A) @>> F'(\psi) > F'(B)
+\end{CD}
+\qquad
+\begin{CD}
+G(A) @> G(\psi) >> G(B) \\
+@V \beta_A VV @VV \beta_B V \\
+G'(A) @>> G'(\psi) > G'(B)
+\end{CD}
+\]
+where \(A,B\in\Ob(\CC)\) and \(\psi:A\to B\) is a morphism in \(\CC\). Since \(G'\) is an endofunctor \(\CC\to\CC\), take \(A=G'(X), B=G'(Y)\), which are also objects in \(\CC\). Next, choose \(\psi=G'(\phi)\), which is a morphism in \(\CC\).
+\[
+\begin{CD}
+F(G'(X)) @> F(G'(\phi)) >> F(G'(Y)) \\
+@V \alpha_{G'(X)} VV @VV \alpha_{G'(Y)} V \\
+F'(G'(X)) @>> F'(G'(\phi)) > F'(G'(Y))
+\end{CD}
+\]
+Now we verify the naturality square for \(\alpha\otimes\beta\) above. By definition of \(\alpha\otimes\beta\) and the commutative diagram above:
+\[\begin{align*}
+    F'(G'(\phi))\circ(\alpha\otimes\beta)_X
+    &=F'(G'(\phi))\circ\alpha_{G'(X)}\circ F(\beta_X) \\
+    &=\alpha_{G'(Y)}\circ F(G'(\phi))\circ F(\beta_X) 
+\end{align*}\]
+Since \(F\) is a functor, it preserves composition of morphisms \(G'(\phi)\) and \(\beta_X\):
+\[
+    F'(G'(\phi))\circ(\alpha\otimes\beta)_X
+    =\alpha_{G'(Y)}\circ F\left(G'(\phi)\circ \beta_X\right) 
+\]
+Now consider the naturality square for \(\beta:G\Rightarrow G'\) previously. Take \(\psi=\phi, A=X,B=Y\):
+\[
+\begin{CD}
+G(X) @> G(\phi) >> G(Y) \\
+@V \beta_X VV @VV \beta_Y V \\
+G'(X) @>> G'(\phi) > G'(Y)
+\end{CD}
+\]
+By this diagram, we have \(G'(\phi)\circ\beta_X=\beta_Y\circ G(\phi)\).
+\[
+    F'(G'(\phi))\circ(\alpha\otimes\beta)_X
+    =\alpha_{G'(Y)}\circ F\left(\beta_Y\circ G(\phi)\right) 
+\]
+Again, since \(F\) is a functor and preserves composition:
+\[
+    F'(G'(\phi))\circ(\alpha\otimes\beta)_X
+    =\alpha_{G'(Y)}\circ F(\beta_Y)\circ F(G(\phi))
+\]
+By definition of \(\alpha\otimes\beta\), we have \((\alpha\otimes\beta)_Y=\alpha(G'(Y))\circ F(\beta_Y)\)
+\[
+    F'(G'(\phi))\circ(\alpha\otimes\beta)_X
+    =(\alpha\otimes\beta)_Y\circ F(G(\phi))
+\]
+Therefore, the \(\boxed{\text{boxed diagram}}\) before commutes, and \(\alpha\otimes\beta\) satisfies the naturality square. So \(\alpha\otimes\beta\) is a valid morphism in \(\End(\CC)\).
 
-TODO
+#### Check \(\otimes\) is a bifunctor
+
+Let \(F,F',\overline F,G,G',\overline G\in\Ob(\CC)\) be endofunctors, and let:
+\begin{alignat*}{2}
+    \alpha&:F\Rightarrow F' &\qquad
+    \beta&:G\Rightarrow G'  \\\\
+    \alpha'&:F'\Rightarrow\overline F &\qquad
+    \beta'&:G'\Rightarrow\overline G
+\end{alignat*}
+be morphisms/natural transformations. A bifunctor must satisfy the following laws:
+- Let \(1_F:F\Rightarrow F\) and \(1_G:G\Rightarrow G\) be the identity morphisms/natural transformations. "Identity axiom": \(1_F\otimes1_F=1_{F\otimes G}\), which in turn is defined to be \(1_{F\otimes G}=1_{F\circ G}\).
+- "Interchange axiom": \((\alpha\circ\alpha')\otimes(\beta\circ\beta')=(\alpha\otimes\beta)\circ(\alpha'\otimes\beta')\).
+
+For the identity axiom, use the definition of the tensor product in \(\End(\CC)\). For all \(X\in\Ob(\CC)\), the component at \(X\) is:
+\[
+    (1_F\otimes1_G)_X
+    =(1_F)_{G(X)}\circ F((1_G)_X)
+\]
+By definition of the identity morphism in \(\End(\CC)\) previously, \((1_F)_{G(X)}=\id_{F(G(X))}\) and \((1_G)_X=\id_{G(X)}\). \(F\) is a functor so it preserves identities, therefore \(F(\id_{G(X)})=\id_{F(G(X))}\):
+\[\begin{align*}
+    (1_F\otimes1_G)_X
+    &=\id_{F(G(X))} \circ F(\id_{G(X)}) \\
+    &=\id_{F(G(X))} \circ \id_{F(G(X))} \\
+    &=\id_{F(G(X))}
+\end{align*}\]
+This is simply the component of the identity in \(F\circ G\) at \(X\):
+\[
+    (1_F\otimes1_G)_X
+    =\id_{F(G(X))}
+    =(1_{F\circ G})_X
+\]
+Therefore the identity axiom is satisfied.
+
+As for the interchange axiom, note that \(\alpha:F\Rightarrow F'\) is a natural transformation. Use the morphism \(\beta'_X:G'(X)\to \overline{G}(X)\). Then, we have the commutative diagram:
+\[
+\begin{CD}
+F(G'(X)) @> F(\beta'_X) >> F(\overline{G}(X)) \\
+@V \alpha_{G'(X)} VV @VV \alpha_{\overline{G}(X)} V \\
+F'(G'(X)) @>> F'(\beta'_X) > F'(\overline{G}(X))
+\end{CD}
+\]
+Which means that \(\alpha_{\overline{G}(X)}\circ F(\beta'_X)=F'(\beta'_X)\circ\alpha_{G'(X)}\). Along with the definition of composition, the bifunctor \(\otimes\) and that \(F\) is a functor, we have:
+\[
+    ((\alpha'\circ\alpha)\otimes(\beta'\circ\beta))_X
+    =((\alpha'\otimes\beta')\circ(\alpha\otimes\beta))_X.
+\]
+The derivation is left as an exercise to the reader.
 
 #### Define unit object
 
-Define the unit object to be the identity functor \(\id_\CC\) that maps each object and morphism in \(\CC\) to itself.
+Define the unit object to be the identity functor \(\Id_\CC\) that maps each object and morphism in \(\CC\) to itself.
 
 #### Define associator and unitors
 
